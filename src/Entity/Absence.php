@@ -17,6 +17,10 @@ class Absence
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $absenceDate = null;
 
+    #[ORM\ManyToOne(inversedBy: 'absences')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Driver $driver = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -30,6 +34,18 @@ class Absence
     public function setAbsenceDate(?\DateTimeInterface $absenceDate): Absence
     {
         $this->absenceDate = $absenceDate;
+        return $this;
+    }
+
+    public function getDriver(): ?Driver
+    {
+        return $this->driver;
+    }
+
+    public function setDriver(?Driver $driver): static
+    {
+        $this->driver = $driver;
+
         return $this;
     }
 

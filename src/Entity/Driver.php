@@ -33,19 +33,16 @@ class Driver
     #[ORM\Column(nullable: true)]
     private ?int $waitTime = null;
 
-    #[ORM\ManyToOne]
-    private ?Absence $absences = null;
-
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Schedule $schedule = null;
-
     #[ORM\ManyToMany(targetEntity: Group::class, inversedBy: 'drivers')]
     private Collection $groupCollection;
+
+    #[ORM\OneToMany(mappedBy: 'driver', targetEntity: Absence::class, orphanRemoval: true)]
+    private Collection $absences;
 
     public function __construct()
     {
         $this->groupCollection = new ArrayCollection();
+        $this->absences = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -119,30 +116,6 @@ class Driver
         return $this;
     }
 
-    public function getAbsences(): ?Absence
-    {
-        return $this->absences;
-    }
-
-    public function setAbsences(?Absence $absences): static
-    {
-        $this->absences = $absences;
-
-        return $this;
-    }
-
-    public function getSchedule(): ?Schedule
-    {
-        return $this->schedule;
-    }
-
-    public function setSchedule(?Schedule $schedule): static
-    {
-        $this->schedule = $schedule;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, Group>
      */
@@ -163,6 +136,36 @@ class Driver
     public function removeGroupCollection(Group $groupCollection): static
     {
         $this->groupCollection->removeElement($groupCollection);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Absence>
+     */
+    public function getAbsences(): Collection
+    {
+        return $this->absences;
+    }
+
+    public function addAbsence(Absence $absence): static
+    {
+        if (!$this->absences->contains($absence)) {
+            $this->absences->add($absence);
+            $absence->setDriver($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAbsence(Absence $absence): static
+    {
+        if ($this->absences->removeElement($absence)) {
+            // set the owning side to null (unless already changed)
+            if ($absence->getDriver() === $this) {
+                $absence->setDriver(null);
+            }
+        }
 
         return $this;
     }
