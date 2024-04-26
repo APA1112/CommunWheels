@@ -17,6 +17,10 @@ class NonSchoolDay
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $dayDate = null;
 
+    #[ORM\ManyToOne(inversedBy: 'nonSchoolDay')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Group $band;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -30,6 +34,18 @@ class NonSchoolDay
     public function setDayDate(\DateTimeInterface $dayDate): static
     {
         $this->dayDate = $dayDate;
+
+        return $this;
+    }
+
+    public function getBand(): ?Group
+    {
+        return $this->band;
+    }
+
+    public function setBand(?Group $band): static
+    {
+        $this->band = $band;
 
         return $this;
     }

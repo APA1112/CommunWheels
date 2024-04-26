@@ -28,9 +28,13 @@ class Group
     #[ORM\ManyToMany(targetEntity: Driver::class, mappedBy: 'groupCollection')]
     private Collection $drivers;
 
+    #[ORM\OneToMany(mappedBy: 'band', targetEntity: NonSchoolDay::class, orphanRemoval: true)]
+    private Collection $nonSchoolDay;
+
     public function __construct()
     {
         $this->drivers = new ArrayCollection();
+        $this->nonSchoolDay = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -93,6 +97,36 @@ class Group
     {
         if ($this->drivers->removeElement($driver)) {
             $driver->removeGroupCollection($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, NonSchoolDay>
+     */
+    public function getNonSchoolDay(): Collection
+    {
+        return $this->nonSchoolDay;
+    }
+
+    public function addNonSchoolDay(NonSchoolDay $nonSchoolDay): static
+    {
+        if (!$this->nonSchoolDay->contains($nonSchoolDay)) {
+            $this->nonSchoolDay->add($nonSchoolDay);
+            $nonSchoolDay->setBand($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNonSchoolDay(NonSchoolDay $nonSchoolDay): static
+    {
+        if ($this->nonSchoolDay->removeElement($nonSchoolDay)) {
+            // set the owning side to null (unless already changed)
+            if ($nonSchoolDay->getBand() === $this) {
+                $nonSchoolDay->setBand(null);
+            }
         }
 
         return $this;
