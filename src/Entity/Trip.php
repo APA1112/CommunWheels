@@ -1,0 +1,63 @@
+<?php
+
+namespace App\Entity;
+
+use App\Repository\TripRepository;
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Entity(repositoryClass: TripRepository::class)]
+class Trip
+{
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $tripDate = null;
+
+    #[ORM\Column]
+    private ?int $entrySlot = null;
+
+    #[ORM\Column]
+    private ?int $exitSlot = null;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getTripDate(): ?string
+    {
+        return $this->tripDate;
+    }
+
+    public function setTripDate(?string $tripDate): Trip
+    {
+        $this->tripDate = $tripDate;
+        return $this;
+    }
+
+    public function getEntrySlot(): ?int
+    {
+        return $this->entrySlot;
+    }
+
+    public function setEntrySlot(?int $entrySlot): Trip
+    {
+        $this->entrySlot = $entrySlot;
+        return $this;
+    }
+
+    public function getExitSlot(): ?int
+    {
+        return $this->exitSlot;
+    }
+
+    public function setExitSlot(?int $exitSlot): Trip
+    {
+        $this->exitSlot = $exitSlot;
+        return $this;
+    }
+
+}
