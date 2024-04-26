@@ -22,6 +22,10 @@ class Schedule
     #[ORM\Column]
     private ?int $exitSlot = null;
 
+    #[ORM\ManyToOne(inversedBy: 'schedules')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Driver $driver = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -57,6 +61,18 @@ class Schedule
     public function setExitSlot(?int $exitSlot): Schedule
     {
         $this->exitSlot = $exitSlot;
+        return $this;
+    }
+
+    public function getDriver(): ?Driver
+    {
+        return $this->driver;
+    }
+
+    public function setDriver(?Driver $driver): static
+    {
+        $this->driver = $driver;
+
         return $this;
     }
 

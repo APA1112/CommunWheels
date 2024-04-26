@@ -39,10 +39,14 @@ class Driver
     #[ORM\OneToMany(mappedBy: 'driver', targetEntity: Absence::class, orphanRemoval: true)]
     private Collection $absences;
 
+    #[ORM\OneToMany(mappedBy: 'driver', targetEntity: Schedule::class, orphanRemoval: true)]
+    private Collection $schedules;
+
     public function __construct()
     {
         $this->groupCollection = new ArrayCollection();
         $this->absences = new ArrayCollection();
+        $this->schedules = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -164,6 +168,36 @@ class Driver
             // set the owning side to null (unless already changed)
             if ($absence->getDriver() === $this) {
                 $absence->setDriver(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Schedule>
+     */
+    public function getSchedules(): Collection
+    {
+        return $this->schedules;
+    }
+
+    public function addSchedule(Schedule $schedule): static
+    {
+        if (!$this->schedules->contains($schedule)) {
+            $this->schedules->add($schedule);
+            $schedule->setDriver($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSchedule(Schedule $schedule): static
+    {
+        if ($this->schedules->removeElement($schedule)) {
+            // set the owning side to null (unless already changed)
+            if ($schedule->getDriver() === $this) {
+                $schedule->setDriver(null);
             }
         }
 
