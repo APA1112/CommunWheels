@@ -22,6 +22,10 @@ class Trip
     #[ORM\Column]
     private ?int $exitSlot = null;
 
+    #[ORM\ManyToOne(inversedBy: 'trips')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?TimeTable $timeTable = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -57,6 +61,18 @@ class Trip
     public function setExitSlot(?int $exitSlot): Trip
     {
         $this->exitSlot = $exitSlot;
+        return $this;
+    }
+
+    public function getTimeTable(): ?TimeTable
+    {
+        return $this->timeTable;
+    }
+
+    public function setTimeTable(?TimeTable $timeTable): static
+    {
+        $this->timeTable = $timeTable;
+
         return $this;
     }
 
