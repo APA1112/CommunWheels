@@ -31,6 +31,9 @@ class Driver
     #[ORM\Column(nullable: true)]
     private ?int $waitTime = null;
 
+    #[ORM\ManyToOne]
+    private ?Absence $absences = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -99,6 +102,18 @@ class Driver
     public function setWaitTime(?int $waitTime): Driver
     {
         $this->waitTime = $waitTime;
+        return $this;
+    }
+
+    public function getAbsences(): ?Absence
+    {
+        return $this->absences;
+    }
+
+    public function setAbsences(?Absence $absences): static
+    {
+        $this->absences = $absences;
+
         return $this;
     }
 }
