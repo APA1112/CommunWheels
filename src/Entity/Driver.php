@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\DriverRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: DriverRepository::class)]
@@ -33,6 +35,18 @@ class Driver
 
     #[ORM\ManyToOne]
     private ?Absence $absences = null;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Schedule $schedule = null;
+
+    #[ORM\ManyToMany(targetEntity: Group::class, inversedBy: 'drivers')]
+    private Collection $groupCollection;
+
+    public function __construct()
+    {
+        $this->groupCollection = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -113,6 +127,42 @@ class Driver
     public function setAbsences(?Absence $absences): static
     {
         $this->absences = $absences;
+
+        return $this;
+    }
+
+    public function getSchedule(): ?Schedule
+    {
+        return $this->schedule;
+    }
+
+    public function setSchedule(?Schedule $schedule): static
+    {
+        $this->schedule = $schedule;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Group>
+     */
+    public function getGroupCollection(): Collection
+    {
+        return $this->groupCollection;
+    }
+
+    public function addGroupCollection(Group $groupCollection): static
+    {
+        if (!$this->groupCollection->contains($groupCollection)) {
+            $this->groupCollection->add($groupCollection);
+        }
+
+        return $this;
+    }
+
+    public function removeGroupCollection(Group $groupCollection): static
+    {
+        $this->groupCollection->removeElement($groupCollection);
 
         return $this;
     }

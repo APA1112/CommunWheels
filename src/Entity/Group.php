@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\GroupRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: GroupRepository::class)]
@@ -22,6 +24,14 @@ class Group
 
     #[ORM\Column(length: 255)]
     private ?string $destination = null;
+
+    #[ORM\ManyToMany(targetEntity: Driver::class, mappedBy: 'groupCollection')]
+    private Collection $drivers;
+
+    public function __construct()
+    {
+        $this->drivers = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -58,6 +68,33 @@ class Group
     public function setDestination(?string $destination): Group
     {
         $this->destination = $destination;
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Driver>
+     */
+    public function getDrivers(): Collection
+    {
+        return $this->drivers;
+    }
+
+    public function addDriver(Driver $driver): static
+    {
+        if (!$this->drivers->contains($driver)) {
+            $this->drivers->add($driver);
+            $driver->addGroupCollection($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDriver(Driver $driver): static
+    {
+        if ($this->drivers->removeElement($driver)) {
+            $driver->removeGroupCollection($this);
+        }
+
         return $this;
     }
 
