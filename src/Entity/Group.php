@@ -31,10 +31,14 @@ class Group
     #[ORM\OneToMany(mappedBy: 'band', targetEntity: NonSchoolDay::class, orphanRemoval: true)]
     private Collection $nonSchoolDay;
 
+    #[ORM\OneToMany(mappedBy: 'band', targetEntity: TimeTable::class, orphanRemoval: true)]
+    private Collection $timeTables;
+
     public function __construct()
     {
         $this->drivers = new ArrayCollection();
         $this->nonSchoolDay = new ArrayCollection();
+        $this->timeTables = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -126,6 +130,36 @@ class Group
             // set the owning side to null (unless already changed)
             if ($nonSchoolDay->getBand() === $this) {
                 $nonSchoolDay->setBand(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TimeTable>
+     */
+    public function getTimeTables(): Collection
+    {
+        return $this->timeTables;
+    }
+
+    public function addTimeTable(TimeTable $timeTable): static
+    {
+        if (!$this->timeTables->contains($timeTable)) {
+            $this->timeTables->add($timeTable);
+            $timeTable->setBand($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTimeTable(TimeTable $timeTable): static
+    {
+        if ($this->timeTables->removeElement($timeTable)) {
+            // set the owning side to null (unless already changed)
+            if ($timeTable->getBand() === $this) {
+                $timeTable->setBand(null);
             }
         }
 
