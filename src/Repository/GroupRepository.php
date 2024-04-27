@@ -21,28 +21,36 @@ class GroupRepository extends ServiceEntityRepository
         parent::__construct($registry, Group::class);
     }
 
-//    /**
-//     * @return Group[] Returns an array of Group objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('g')
-//            ->andWhere('g.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('g.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function groupsData()
+    {
+        return $this
+            ->createQueryBuilder('g')
+            ->leftJoin('g.drivers', 'd')
+            ->getQuery()
+            ->getResult();
+    }
 
-//    public function findOneBySomeField($value): ?Group
-//    {
-//        return $this->createQueryBuilder('g')
-//            ->andWhere('g.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function findGroupById(int $id)
+    {
+        /*Preguntar para un join de tres tablas*/
+        return $this->createQueryBuilder('g')
+            ->join('g.drivers', 'd')
+            ->andWhere('g.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public function save()
+    {
+        $this->getEntityManager()->flush();
+    }
+
+    public function remove(Group $group){
+        $this->getEntityManager()->remove($group);
+    }
+
+    public function add(Group $group){
+        $this->getEntityManager()->persist($group);
+    }
 }

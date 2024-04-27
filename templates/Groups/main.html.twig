@@ -1,18 +1,35 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="table_container">
-        <table class="tabla">
-            <thead>
+    <div class="container">
+        <div class="primaryButton">
+            <a href="#"><i class="ti ti-table-plus"></i>Nuevo grupo</a>
+        </div>
+        <div class="table_container">
+            <table class="tabla">
+                <thead>
                 <tr>
                     <th>Nombre</th>
                     <th>Origen</th>
                     <th>Destino</th>
-                    <th>Gestiones</th>
+                    <th>Participantes</th>
                 </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                {% for group in groups %}
+                    <tr>
+                        <td>
+                            <a href="{{ path('group_mod', {'id':group.id}) }}">
+                                {{ group.name }}
+                            </a>
+                        </td>
+                        <td>{{ group.origin }}</td>
+                        <td>{{ group.destination }}</td>
+                        <td>{{ group.drivers.count }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 {% endblock %}

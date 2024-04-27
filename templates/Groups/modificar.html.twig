@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {{ dump(group) }}
+    <div class="container">
+        <div class="secondaryButton">
+            <a href="{{ path('group_main') }}">Volver</a>
+        </div>
+        <div class="deleteButton">
+            <a href="#">Borrar grupo</a>
+        </div>
+    </div>
+{% endblock %}
+

@@ -4,6 +4,12 @@
     --original-back-color: #263D42;
     --back-color: hsla(192, 19%, 15%);
     --back-color-blur: hsla(192, 19%, 15%, 0.25);
+    --primary-button: #63C7B2;
+    --primary-button-hover: hsla(168, 58%, 73%, 1);;
+    --secondary-button: #80CED7;
+    --secondary-button-hover: hsla(184, 50%, 80%, 1);;
+    --delete-button: #8E6C88;
+    --delete-button-hover: hsla(294, 33%, 70%, 1);
 }
 body{
     background-color: var(--original-back-color);
@@ -12,10 +18,11 @@ body{
 .container{
     height: 80vh;
     display: flex;
-    flex-direction: row;
+    flex-wrap: wrap;
     align-items: center;
     padding: 4rem;
     justify-content: space-between;
+    gap: 10px;
 }
 .card{
     height: 25%;
@@ -40,6 +47,7 @@ body{
 @media(max-width: 700px){
     .container{
         flex-direction: column;
+        flex-wrap: nowrap;
     }
     .card{
         width: 100%;
@@ -48,12 +56,72 @@ body{
 .table_container{
     height: 80vh;
     display: flex;
-    flex-direction: column; /* Cambiamos la dirección del flexbox a columna */
-    justify-content: center; /* Centramos tanto vertical como horizontalmente */
-    padding: 4rem;
+    flex-direction: column;
+    width: 100%;
+}
+.table_container a{
+    text-decoration: none;
+    color: var(--text-color);
+}
+.table_container tr td:first-child:hover{
+    background-color: var(--hover-color);
+    color: var(--back-color);
+    cursor: pointer;
 }
 .tabla, thead, tbody, tr, th, td{
     border: 1px solid var(--text-color);
     padding: 1rem;
     border-collapse: collapse;
+    text-align: center;
+}
+thead{
+    background-color: var(--back-color);
+}
+.primaryButton{
+    border: 1px solid var(--text-color);
+    border-radius: 10px;
+    padding: 1rem;
+    background-color: var(--primary-button);
+}
+.primaryButton a{
+    text-decoration: none;
+    font-size: large;
+    color: var(--original-back-color);
+}
+.primaryButton:hover{
+    background-color: var(--primary-button-hover);
+    cursor: pointer;
+    color: var(--hover-color);
+}
+.secondaryButton{
+    border: 1px solid var(--text-color);
+    border-radius: 10px;
+    padding: 1rem;
+    background-color: var(--secondary-button);
+}
+.secondaryButton a{
+    text-decoration: none;
+    font-size: large;
+    color: var(--original-back-color);
+}
+.secondaryButton:hover{
+    background-color: var(--secondary-button-hover);
+    cursor: pointer;
+    color: var(--hover-color);
+}
+.deleteButton{
+    border: 1px solid var(--text-color);
+    border-radius: 10px;
+    padding: 1rem;
+    background-color: var(--delete-button);
+}
+.deleteButton a{
+    text-decoration: none;
+    font-size: large;
+    color: var(--original-back-color);
+}
+.deleteButton:hover{
+    background-color: var(--delete-button-hover);
+    cursor: pointer;
+    color: var(--hover-color);
 }
