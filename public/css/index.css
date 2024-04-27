@@ -1,4 +1,59 @@
+:root{
+    --text-color: hsl(190, 20%, 50%);
+    --hover-color: #CCDBDC;
+    --original-back-color: #263D42;
+    --back-color: hsla(192, 19%, 15%);
+    --back-color-blur: hsla(192, 19%, 15%, 0.25);
+}
 body{
-    background-color: #263D42;
-    color: white;
+    background-color: var(--original-back-color);
+    color: var(--text-color);
+}
+.container{
+    height: 80vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 4rem;
+    justify-content: space-between;
+}
+.card{
+    height: 25%;
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #CCDBDC;
+    border-radius: 10px;
+}
+.card:hover{
+    background-color: var(--back-color);
+    cursor: pointer;
+}
+.card a{
+    text-decoration: none;
+    color: var(--text-color);
+    font-size: xx-large;
+    text-align: center;
+}
+@media(max-width: 700px){
+    .container{
+        flex-direction: column;
+    }
+    .card{
+        width: 100%;
+    }
+}
+.table_container{
+    height: 80vh;
+    display: flex;
+    flex-direction: column; /* Cambiamos la dirección del flexbox a columna */
+    justify-content: center; /* Centramos tanto vertical como horizontalmente */
+    padding: 4rem;
+}
+.tabla, thead, tbody, tr, th, td{
+    border: 1px solid var(--text-color);
+    padding: 1rem;
+    border-collapse: collapse;
 }

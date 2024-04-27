@@ -1,5 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-
+    <div class="container">
+        {% include 'Users/card.html.twig' %}
+        {% include 'Groups/card.html.twig' %}
+        {% include 'Notify/card.html.twig' %}
+    </div>
 {% endblock %}
