@@ -34,7 +34,7 @@ class AbsenceController extends AbstractController
         return $this->modificar($absence, $absenceRepository, $request);
     }
 
-    #[Route('/notificar', name: 'mod_absence')]
+    #[Route('/notificacion/modificar/{id}', name: 'mod_absence')]
     public function modificar(Absence $absence, AbsenceRepository $absenceRepository, Request $request):Response
     {
         $form = $this->createForm(AbsenceType::class, $absence);
@@ -59,6 +59,26 @@ class AbsenceController extends AbstractController
         return $this->render('Notify/modificar.html.twig', [
             'form' => $form->createView(),
             'absence' => $absence,
+        ]);
+    }
+    #[Route('/notificacion/eliminar/{id}', name: 'absence_delete')]
+    public function eliminar(
+        Request $request,
+        AbsenceRepository $absenceRepository,
+        Absence $absence): Response
+    {
+        if ($request->request->has('confirmar')) {
+            try {
+                $absenceRepository->remove($absence);
+                $absenceRepository->save();
+                $this->addFlash('success', 'Notificación de ausencia eliminada con éxito');
+                return $this->redirectToRoute('notify_main');
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'No se ha podido eliminar la notificacion de ausencia');
+            }
+        }
+        return $this->render('Notify/eliminar.html.twig', [
+            'absence' => $absence
         ]);
     }
 }

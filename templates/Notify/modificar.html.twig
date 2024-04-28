@@ -13,7 +13,7 @@
             <div class="buttons">
                 <button type="submit" class="primaryButton">Guardar</button>
                 {% if absence.id is not null %}
-                <a href="#" class="deleteButton">Borrar notificación</a>
+                <a href="{{ path('absence_delete', {'id':absence.id}) }}" class="deleteButton">Borrar notificación</a>
                 {% endif %}
             </div>
             {{ form_end(form) }}

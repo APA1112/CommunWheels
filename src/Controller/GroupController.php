@@ -16,7 +16,18 @@ class GroupController extends AbstractController
 {
     #[Route('/grupos', name: 'group_main')]
     public function index(GroupRepository $groupRepository): Response{
-        $groups = $groupRepository->groupsData();
+
+        $user = $this->getUser();
+
+        $groups = [];
+
+        if ($user->isIsAdmin()) {
+            $groups = $groupRepository->groupsData();
+        } else {
+            $userId = $this->getUser()->getDriver();
+            $groups = $groupRepository->findGroupsByDriverId($userId);
+        }
+
         return $this->render('Groups/main.html.twig', ['groups' => $groups]);
     }
 

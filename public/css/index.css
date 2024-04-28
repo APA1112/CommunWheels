@@ -194,6 +194,11 @@ CSS FOR FORM
 .form_container p{
     font-size: x-large;
 }
+.form_container textarea{
+    height: calc(3 * 1.2rem);
+    width: 99.5%;
+    font-size: 1.2em;
+}
 /**
 
     CSS FOR BUTTONS CONTAINER

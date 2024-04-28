@@ -42,6 +42,16 @@ class GroupRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
+    public function findGroupsByDriverId($driverId)
+    {
+        $qb = $this->createQueryBuilder('g');
+        $qb->innerJoin('g.drivers', 'd')
+            ->andWhere('d.id = :driverId')
+            ->setParameter('driverId', $driverId);
+
+        return $qb->getQuery()->getResult();
+    }
+
     public function save()
     {
         $this->getEntityManager()->flush();

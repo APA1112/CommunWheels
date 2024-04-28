@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Absence;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -22,6 +23,9 @@ class AbsenceType extends AbstractType
              * al usuario actual el que aparece en este campo
              */
             ->add('driver')
+            ->add('description', TextareaType::class, [
+                'label' => 'Descripcion',
+            ])
         ;
     }
 
