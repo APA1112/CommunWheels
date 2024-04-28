@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Iniciar sesión{% endblock %}
+
+{% block body %}
+    <form method="post">
+        <h1>Acceso a la aplicación</h1>
+        {% if error %}
+            <h2 style="color: red">{{ error.message }}</h2>
+        {% endif %}
+        <input type="text" value="{{ last_username }}" name="_username" placeholder="Usuario" required {% if not error %}autofocus{% endif %}>
+        <input type="password" name="_password" placeholder="Contraseña" required {% if error %}autofocus{% endif %}>
+        <button type="submit" class="primaryButton">Entrar</button>
+    </form>
+{% endblock %}

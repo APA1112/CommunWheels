@@ -42,6 +42,9 @@ class Driver
     #[ORM\OneToMany(mappedBy: 'driver', targetEntity: Schedule::class, orphanRemoval: true)]
     private Collection $schedules;
 
+    #[ORM\OneToOne(mappedBy: 'driver', cascade: ['persist', 'remove'])]
+    private ?User $user = null;
+
     public function __construct()
     {
         $this->groupCollection = new ArrayCollection();
@@ -207,6 +210,18 @@ class Driver
     public function __toString(): string
     {
         return $this->getName() .' '.  $this->getLastName();
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
     }
 
 }

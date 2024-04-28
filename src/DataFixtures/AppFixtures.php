@@ -2,13 +2,21 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\User;
 use App\Factory\DriverFactory;
 use App\Factory\GroupFactory;
+use App\Factory\UserFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
 {
+    private UserPasswordHasherInterface $passwordHasher;
+    public function __construct(UserPasswordHasherInterface $passwordHasher)
+    {
+        $this->passwordHasher = $passwordHasher;
+    }
     public function load(ObjectManager $manager): void
     {
         // $product = new Product();
@@ -20,6 +28,16 @@ class AppFixtures extends Fixture
             ];
         });
 
+        UserFactory::createOne([
+            'username' => 'admin',
+            'password' => $this->passwordHasher->hashPassword(new User(), 'admin'),
+            'isAdmin' => true,
+        ]);
+        UserFactory::createMany(9, [
+            'password'=>$this->passwordHasher->hashPassword(new User(),'password'),
+            'isDriver'=> true,
+            'isAdmin' => false,
+        ]);
         $manager->flush();
     }
 }

@@ -4,9 +4,11 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -27,6 +29,9 @@ class User
 
     #[ORM\Column]
     private ?bool $isDriver = null;
+
+    #[ORM\OneToOne(inversedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?Driver $driver = null;
 
     public function getId(): ?int
     {
@@ -91,5 +96,48 @@ class User
         $this->isDriver = $isDriver;
 
         return $this;
+    }
+
+    public function getDriver(): ?Driver
+    {
+        return $this->driver;
+    }
+
+    public function setDriver(Driver $driver): static
+    {
+        // set the owning side of the relation if necessary
+        if ($driver->getUser() !== $this) {
+            $driver->setUser($this);
+        }
+
+        $this->driver = $driver;
+
+        return $this;
+    }
+
+
+    public function getRoles(): array
+    {
+        $roles = [];
+        //Guarantee at least every user has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function getSalt(): ?string
+    {
+        return null;
+    }
+
+    public function eraseCredentials()
+    {
+        // In case you store any temporary, sensitive information
+    }
+
+
+    public function getUserIdentifier(): string
+    {
+        return (string)$this->username;
     }
 }
