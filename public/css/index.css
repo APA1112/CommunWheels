@@ -38,16 +38,14 @@ CSS FOR CARD
     justify-content: center;
     border: 2px solid #CCDBDC;
     border-radius: 10px;
-}
-.card:hover{
-    background-color: var(--back-color);
-    cursor: pointer;
-}
-.card a{
     text-decoration: none;
     color: var(--text-color);
     font-size: xx-large;
     text-align: center;
+}
+.card:hover{
+    background-color: var(--back-color);
+    cursor: pointer;
 }
 @media(max-width: 700px){
     .container{

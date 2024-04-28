@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <a href="{{ path('driver_new') }}" class="primaryButton"><i class="ti ti-table-plus"></i>Nuevo conductor</a>
+        <div class="table_container">
+            <table class="tabla">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Asientos</th>
+                    <th>Dias conducidos</th>
+                    <th>Tiempo de espera</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for driver in drivers %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>
+                            <a href="{{ path('driver_mod', {'id':driver.id}) }}">
+                                {{ driver.name}} {{ driver.lastName }}
+                            </a>
+                        </td>
+                        <td>{{ driver.email }}</td>
+                        <td>{{ driver.seats }}</td>
+                        <td>{{ driver.daysDriven }}</td>
+                        <td>{{ driver.waitTime }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

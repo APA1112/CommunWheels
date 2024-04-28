@@ -18,7 +18,7 @@ class GroupController extends AbstractController
         return $this->render('Groups/main.html.twig', ['groups' => $groups]);
     }
 
-    #[Route('/grupos/nuevo', name: 'group_new')]
+    #[Route('/grupo/nuevo', name: 'group_new')]
     public function nuevo(GroupRepository $groupRepository, Request $request): Response
     {
         $group = new Group();
@@ -26,7 +26,7 @@ class GroupController extends AbstractController
         return $this->modificar($group, $groupRepository, $request);
     }
 
-    #[Route('/grupos/{id}', name: 'group_mod')]
+    #[Route('/grupo/modificar/{id}', name: 'group_mod')]
     public function modificar(Group $group, GroupRepository $groupRepository, Request $request):Response
     {
         $form = $this->createForm(GroupType::class, $group);
