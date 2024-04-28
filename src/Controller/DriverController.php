@@ -3,11 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Driver;
-use App\Entity\Group;
 use App\Form\DriverType;
-use App\Form\GroupType;
 use App\Repository\DriverRepository;
-use App\Repository\GroupRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,9 +15,15 @@ class DriverController extends AbstractController
     #[Route('/conductores', name: 'driver_main')]
     public function index(DriverRepository $driverRepository): Response{
         $drivers = $driverRepository->findAll();
-        return $this->render('Users/main.html.twig', ['drivers' => $drivers]);
+
+        return $this->render('Users/main.html.twig', [
+            'drivers' => $drivers,
+        ]);
     }
 
+    /**
+     * Preguntar si esta funcion tiene que ir en ScheduleController o puede ir en DriverController
+     */
     #[Route('/conductores/nuevo', name: 'driver_new')]
     public function nuevo(DriverRepository $driverRepository, Request $request): Response
     {

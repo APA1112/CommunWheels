@@ -21,6 +21,29 @@ class DriverRepository extends ServiceEntityRepository
         parent::__construct($registry, Driver::class);
     }
 
+    public function findDriverById(int $id)
+    {
+        $qb = $this->createQueryBuilder('d');
+
+        return $qb->where('d.id = :id')
+            ->leftJoin('d.groupCollection', 'g')
+            ->addSelect('g')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+    public function findDriverSchedule(int $id)
+    {
+        $qb = $this->createQueryBuilder('d');
+
+        $qb->where('d.id = :id')
+            ->setParameter('id', $id)
+            ->leftJoin('d.schedules', 's')
+            ->addSelect('s')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
     public function save()
     {
         $this->getEntityManager()->flush();
