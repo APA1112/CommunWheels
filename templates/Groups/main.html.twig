@@ -2,7 +2,9 @@
 
 {% block body %}
     <div class="container">
-        <a href="{{ path('group_new') }}" class="primaryButton"><i class="ti ti-table-plus"></i>Nuevo grupo</a>
+        {% if is_granted('ROLE_GROUP_ADMIN') %}
+            <a href="{{ path('group_new') }}" class="primaryButton"><i class="ti ti-table-plus"></i>Nuevo grupo</a>
+        {% endif %}
         <div class="table_container">
             <table class="tabla">
                 <thead>
@@ -17,9 +19,15 @@
                 {% for group in groups %}
                     <tr>
                         <td>
-                            <a href="{{ path('group_mod', {'id':group.id}) }}">
-                                {{ group.name }}
-                            </a>
+                            {% if is_granted('ROLE_GROUP_ADMIN') %}
+                                <a href="{{ path('group_mod', {'id':group.id}) }}">
+                                    {{ group.name }}
+                                </a>
+                            {% else %}
+                                <a href="{{ path('timetable_main') }}">
+                                    {{ group.name }}
+                                </a>
+                            {% endif %}
                         </td>
                         <td>{{ group.origin }}</td>
                         <td>{{ group.destination }}</td>

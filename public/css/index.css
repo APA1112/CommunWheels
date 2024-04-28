@@ -30,8 +30,8 @@ CSS FOR CARD
 
  */
 .card{
-    height: 25%;
-    width: 25%;
+    height: auto;
+    min-width: 45%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -46,7 +46,12 @@ CSS FOR CARD
 .card:hover{
     background-color: var(--back-color);
     cursor: pointer;
-    transform: scale(1.2);
+    transform: scale(1.05);
+}
+@media(max-width: 1060px){
+    .logo{
+        display: none;
+    }
 }
 @media(max-width: 700px){
     .container{
@@ -197,5 +202,61 @@ CSS FOR FORM
 .button_container{
     display: flex;
     justify-content: space-between;
+    width: 100%;
+}
+/**
+
+CSS FOR LOGIN FORM
+
+ */
+.login_form_container{
+    background-color: var(--back-color);
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    padding: 2rem;
+    gap: 10px 20px;
+    width: 50%;
+}
+.login_form_container h2{
+    font-size: xx-large;
+    font-weight: bold;
+    text-align: center;
+}
+.login_form_container label{
+    font-weight: bold;
+    font-size: large;
+}
+.login_form_container input{
+    padding: .5rem;
+    width: auto;
+    border-radius: 5px;
+    min-width: 96%;
+    margin-top: 1rem;
+}
+.login_form_container .buttons{
+    margin-top: 2rem;
+    display: flex;
+    justify-content: space-between;
+}
+.login_form_container .buttons button{
+    width: 100%;
+}
+.login_form_container h3{
+    font-size: x-large;
+    font-weight: bold;
+    text-align: center;
+}
+/*
+
+    CSS LOGO
+
+ */
+.logo{
+    padding: 5rem;
+    width: 25%;
+}
+.logo img{
+    height: 100%;
     width: 100%;
 }

@@ -2,7 +2,9 @@
 
 {% block body %}
     <div class="container">
-        {% include 'Users/card.html.twig' %}
+        {% if is_granted('ROLE_GROUP_ADMIN') %}
+            {% include 'Users/card.html.twig' %}
+        {% endif %}
         {% include 'Groups/card.html.twig' %}
         {% include 'Notify/card.html.twig' %}
     </div>

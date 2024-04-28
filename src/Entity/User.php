@@ -120,7 +120,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $roles = [];
         //Guarantee at least every user has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        $roles[] = 'ROLE_DRIVER';
+
+        if ($this->isGroupAdmin){
+            $roles[] = 'ROLE_GROUP_ADMIN';
+        }
+
+        if ($this->isAdmin){
+            $roles[] = 'ROLE_ADMIN';
+        }
 
         return array_unique($roles);
     }
@@ -140,4 +148,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return (string)$this->username;
     }
+
+    public function __toString(): string
+    {
+        return $this->getUsername();
+    }
+
 }

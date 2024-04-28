@@ -1,15 +1,25 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Iniciar sesión{% endblock %}
+{% block header %}{% endblock %}
 
 {% block body %}
-    <form method="post">
-        <h1>Acceso a la aplicación</h1>
-        {% if error %}
-            <h2 style="color: red">{{ error.message }}</h2>
-        {% endif %}
-        <input type="text" value="{{ last_username }}" name="_username" placeholder="Usuario" required {% if not error %}autofocus{% endif %}>
-        <input type="password" name="_password" placeholder="Contraseña" required {% if error %}autofocus{% endif %}>
-        <button type="submit" class="primaryButton">Entrar</button>
-    </form>
+    <div class="container">
+        <div class="login_form_container">
+            <form method="post">
+                <h2>CommunWheels</h2>
+                <h3>Iniciar sesión</h3>
+                {% if error %}
+                    <h2 style="color: red">{{ error.message }}</h2>
+                {% endif %}
+                <input type="text" value="{{ last_username }}" name="_username" placeholder="Usuario" required {% if not error %}autofocus{% endif %}>
+                <input type="password" name="_password" placeholder="Contraseña" required {% if error %}autofocus{% endif %}>
+                <div class="buttons">
+                    <button type="submit" class="primaryButton">Entrar</button>
+                </div>
+            </form>
+        </div>
+        <div class="logo">
+            <img src="{{ asset('images/logo.jpg') }}" alt="Logo">
+        </div>
+    </div>
 {% endblock %}
