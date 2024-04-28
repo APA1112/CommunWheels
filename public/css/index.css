@@ -82,8 +82,6 @@ thead{
     border-radius: 10px;
     padding: 1rem;
     background-color: var(--primary-button);
-}
-.primaryButton a{
     text-decoration: none;
     font-size: large;
     color: var(--original-back-color);
@@ -91,15 +89,13 @@ thead{
 .primaryButton:hover{
     background-color: var(--primary-button-hover);
     cursor: pointer;
-    color: var(--hover-color);
+    color: var(--back-color);
 }
 .secondaryButton{
     border: 1px solid var(--text-color);
     border-radius: 10px;
     padding: 1rem;
     background-color: var(--secondary-button);
-}
-.secondaryButton a{
     text-decoration: none;
     font-size: large;
     color: var(--original-back-color);
@@ -107,15 +103,13 @@ thead{
 .secondaryButton:hover{
     background-color: var(--secondary-button-hover);
     cursor: pointer;
-    color: var(--hover-color);
+    color: var(--back-color);
 }
 .deleteButton{
     border: 1px solid var(--text-color);
     border-radius: 10px;
     padding: 1rem;
     background-color: var(--delete-button);
-}
-.deleteButton a{
     text-decoration: none;
     font-size: large;
     color: var(--original-back-color);
@@ -123,5 +117,5 @@ thead{
 .deleteButton:hover{
     background-color: var(--delete-button-hover);
     cursor: pointer;
-    color: var(--hover-color);
+    color: var(--back-color);
 }

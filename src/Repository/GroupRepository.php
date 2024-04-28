@@ -23,8 +23,8 @@ class GroupRepository extends ServiceEntityRepository
 
     public function groupsData()
     {
-        return $this
-            ->createQueryBuilder('g')
+        $qb = $this->createQueryBuilder('g');
+        return $qb
             ->leftJoin('g.drivers', 'd')
             ->getQuery()
             ->getResult();
@@ -32,9 +32,10 @@ class GroupRepository extends ServiceEntityRepository
 
     public function findGroupById(int $id)
     {
+        $qb = $this->createQueryBuilder('g');
         /*Preguntar para un join de tres tablas*/
-        return $this->createQueryBuilder('g')
-            ->join('g.drivers', 'd')
+        return $qb
+            ->leftJoin('g.drivers', 'd')
             ->andWhere('g.id = :id')
             ->setParameter('id', $id)
             ->getQuery()
