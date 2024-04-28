@@ -21,30 +21,21 @@ class AbsenceRepository extends ServiceEntityRepository
         parent::__construct($registry, Absence::class);
     }
 
-//    /**
-//     * @return Absence[] Returns an array of Absence objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('a.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Absence
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function findAllAbsences()
+    {
+        return $this->createQueryBuilder('a')
+            ->select('a')
+            ->getQuery()
+            ->getResult();
+    }
+    public function findDriverAbsences($id){
+        return $this->createQueryBuilder('a')
+            ->select('a')
+            ->where('a.driver = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getResult();
+    }
     public function save()
     {
         $this->getEntityManager()->flush();

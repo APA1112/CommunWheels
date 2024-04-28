@@ -15,8 +15,13 @@ class AbsenceType extends AbstractType
         $builder
             ->add('absenceDate', DateType::class, [
                 'label' => 'Fecha',
-                'required' => true,
+                'widget' => 'single_text',
             ])
+            /**
+             * Como puedo hacer que sea el conductor asociado
+             * al usuario actual el que aparece en este campo
+             */
+            ->add('driver')
         ;
     }
 

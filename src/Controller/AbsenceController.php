@@ -19,8 +19,7 @@ class AbsenceController extends AbstractController
     public function index(AbsenceRepository $absenceRepository, DriverRepository $driverRepository, Request $request): Response
     {
         $userId = $this->getUser()->getDriver();
-        $driver = $driverRepository->findDriverById($userId);
-        $absences = $absenceRepository->findBy(['driver' => $driver]);
+        $absences = $absenceRepository->findDriverAbsences($userId);
 
         return $this->render('Notify/main.html.twig', [
             'absences' => $absences,
@@ -28,7 +27,7 @@ class AbsenceController extends AbstractController
     }
 
     #[Route('/notificacion/nueva', name: 'new_absence')]
-    public function new(AbsenceRepository $absenceRepository, DriverRepository $driverRepository, Request $request): Response
+    public function new(AbsenceRepository $absenceRepository, Request $request): Response
     {
         $absence = new Absence();
         $absenceRepository->add($absence);

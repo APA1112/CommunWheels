@@ -17,6 +17,9 @@ class Absence
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $absenceDate = null;
 
+    #[ORM\Column(type: Types::TEXT, nullable: false)]
+    private ?string $description = null;
+
     #[ORM\ManyToOne(inversedBy: 'absences')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Driver $driver = null;
@@ -36,6 +39,18 @@ class Absence
         $this->absenceDate = $absenceDate;
         return $this;
     }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): Absence
+    {
+        $this->description = $description;
+        return $this;
+    }
+
 
     public function getDriver(): ?Driver
     {
