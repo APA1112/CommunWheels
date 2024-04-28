@@ -24,6 +24,11 @@ body{
     justify-content: space-between;
     gap: 10px;
 }
+/**
+
+CSS FOR CARD
+
+ */
 .card{
     height: 25%;
     width: 25%;
@@ -53,6 +58,11 @@ body{
         width: 100%;
     }
 }
+/**
+
+CSS FOR TABLE AND TABLE CONTAINER
+
+ */
 .table_container{
     height: 80vh;
     display: flex;
@@ -77,6 +87,11 @@ body{
 thead{
     background-color: var(--back-color);
 }
+/**
+
+CSS FOR PRIMARY BUTTON
+
+ */
 .primaryButton{
     border: 1px solid var(--text-color);
     border-radius: 10px;
@@ -91,6 +106,11 @@ thead{
     cursor: pointer;
     color: var(--back-color);
 }
+/**
+
+CSS FOR SECONDARY BUTTON
+
+ */
 .secondaryButton{
     border: 1px solid var(--text-color);
     border-radius: 10px;
@@ -105,6 +125,11 @@ thead{
     cursor: pointer;
     color: var(--back-color);
 }
+/**
+
+CSS FOR DELETE BUTTON
+
+ */
 .deleteButton{
     border: 1px solid var(--text-color);
     border-radius: 10px;
@@ -118,4 +143,60 @@ thead{
     background-color: var(--delete-button-hover);
     cursor: pointer;
     color: var(--back-color);
+}
+/**
+
+CSS FOR FORM
+
+ */
+.form_container{
+    background-color: var(--back-color);
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    padding: 2rem;
+    gap: 10px 20px;
+    width: 100%;
+}
+.form_container div{
+    margin-top: .5rem;
+}
+.form_container h2{
+    font-size: xx-large;
+    font-weight: bold;
+    text-align: center;
+}
+.form_container label{
+    font-weight: bold;
+    font-size: large;
+}
+.form_container input{
+    padding: .5rem;
+    width: auto;
+    border-radius: 5px;
+    min-width: 98.7%;
+}
+.form_container select{
+    width: auto;
+    border-radius: 5px;
+    padding: .5rem;
+    min-width: 100%;
+}
+.form_container .buttons{
+    margin-top: 2rem;
+    display: flex;
+    justify-content: space-between;
+}
+.form_container p{
+    font-size: x-large;
+}
+/**
+
+    CSS FOR BUTTONS CONTAINER
+
+ */
+.button_container{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
 }

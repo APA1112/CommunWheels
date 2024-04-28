@@ -24,6 +24,16 @@
                 {% include 'navbar.html.twig' %}
             {% endblock %}
         </header>
+        {% for mensaje in app.flashes('success') %}
+            <div style="border: 1px solid; background-color: darkseagreen">
+                {{ mensaje }}
+            </div>
+        {% endfor %}
+        {% for mensaje in app.flashes('error') %}
+            <div style="border: 1px solid; background-color: tomato">
+                {{ mensaje }}
+            </div>
+        {% endfor %}
         {% block body %}{% endblock %}
     </body>
 </html>

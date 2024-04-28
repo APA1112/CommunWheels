@@ -1,10 +1,25 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {{ dump(group) }}
     <div class="container">
-        <a href="{{ path('group_main') }}" class="secondaryButton">Volver</a>
-        <a href="#" class="deleteButton">Borrar grupo</a>
+        <div class="form_container">
+            {% if group.id is null %}
+                <h2>Datos del nuevo grupo</h2>
+            {% else %}
+                <h2>Datos del Grupo</h2>
+            {% endif %}
+            {{ form_start(form) }}
+                {{ form_widget(form) }}
+            <div class="buttons">
+                <button type="submit" class="primaryButton">Guardar</button>
+                {% if group.id is not null %}
+                <a href="{{ path('group_delete', {'id':group.id}) }}" class="deleteButton">Borrar grupo</a>
+                {% endif %}
+            </div>
+            {{ form_end(form) }}
+        </div>
+        <div class="button_container">
+            <a href="{{ path('group_main') }}" class="secondaryButton">Volver</a>
+        </div>
     </div>
 {% endblock %}
-
