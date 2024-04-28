@@ -1,1 +1,31 @@
 {% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <a href="{{ path('new_absence') }}" class="primaryButton"><i class="ti ti-table-plus"></i>Nuevo ausencia</a>
+        <div class="table_container">
+            <table class="tabla">
+                <thead>
+                <tr>
+                    <th>Fecha</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for absence in absences %}
+                    <tr>
+                        <td>
+                            <a href="{{ path('mod_absence', {'id':absence.id}) }}">
+                                {{ absence.absenceDate }}
+                            </a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td>No hay notificaciones</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

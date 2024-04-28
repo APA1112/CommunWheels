@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Absence;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -12,8 +13,10 @@ class AbsenceType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('absenceDate')
-            ->add('driver')
+            ->add('absenceDate', DateType::class, [
+                'label' => 'Fecha',
+                'required' => true,
+            ])
         ;
     }
 

@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="form_container">
+            {% if absence.id is null %}
+                <h2>Nueva notificación</h2>
+            {% else %}
+                <h2>Modificar notificación</h2>
+            {% endif %}
+            {{ form_start(form) }}
+                {{ form_widget(form) }}
+            <div class="buttons">
+                <button type="submit" class="primaryButton">Guardar</button>
+                {% if absence.id is not null %}
+                <a href="#" class="deleteButton">Borrar notificación</a>
+                {% endif %}
+            </div>
+            {{ form_end(form) }}
+        </div>
+        <div class="button_container">
+            <a href="{{ path('notify_main') }}" class="secondaryButton">Volver</a>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="form_container">
+            <h2>Eliminar grupo</h2>
+            <p>El grupo {{ group.name }} será eliminado de la aplicación.
+                La operación no se puede deshacer.</p>
+            <form method="post" class="button_container">
+                <a href="{{ path('group_main') }}" class="secondaryButton">Volver al listado</a>
+                <button type="submit" name="confirmar" class="deleteButton">Confirmar eliminación</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+

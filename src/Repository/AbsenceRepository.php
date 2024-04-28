@@ -45,4 +45,16 @@ class AbsenceRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+    public function save()
+    {
+        $this->getEntityManager()->flush();
+    }
+
+    public function remove(Absence $absence){
+        $this->getEntityManager()->remove($absence);
+    }
+
+    public function add(Absence $absence){
+        $this->getEntityManager()->persist($absence);
+    }
 }
