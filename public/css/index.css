@@ -46,6 +46,7 @@ CSS FOR CARD
 .card:hover{
     background-color: var(--back-color);
     cursor: pointer;
+    transform: scale(1.2);
 }
 @media(max-width: 700px){
     .container{
