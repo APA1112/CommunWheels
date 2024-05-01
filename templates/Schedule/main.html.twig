@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        {% if schedules is null %}
+            <div class="form_container">
+                <p>Todavia no has registrado tu horario. Para poder pertenecer a un grupo es necesario el horario</p>
+                <a href="#" class="primaryButton"><i class="ti ti-table-plus"></i>Añadir horario</a>
+            </div>
+        {% else %}
+        <div class="table_container">
+            <h2 class="titulo">Horario de {{ app.user.driver }}</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Dia</th>
+                        <th>Entrada</th>
+                        <th>Salida</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for schedule in schedules %}
+                    <tr>
+                        <td><a href="#">{{ schedule.weekDay }}</a></td>
+                        <td>{{ schedule.entrySlot }}</td>
+                        <td>{{ schedule.exitSlot }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+    </div>
+{% endblock %}
