@@ -49,6 +49,9 @@ class DriverRepository extends ServiceEntityRepository
     }
 
     public function remove(Driver $driver){
+        if ($driver->getUser()) {
+            $this->getEntityManager()->remove($driver->getUser());
+        }
         $this->getEntityManager()->remove($driver);
     }
 

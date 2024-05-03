@@ -11,11 +11,16 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[IsGranted('ROLE_GROUP_ADMIN')]
 class DriverController extends AbstractController
 {
+    public function __construct(UserPasswordHasherInterface $passwordHasher)
+    {
+        $this->passwordHasher = $passwordHasher;
+    }
     #[Route('/conductores', name: 'driver_main')]
     public function index(DriverRepository $driverRepository): Response{
         $drivers = $driverRepository->findAll();
@@ -33,7 +38,12 @@ class DriverController extends AbstractController
     {
         $driver = new Driver();
         $user = new User();
-        $driver->setUser($user);
+        $user->setDriver($driver);
+        $driver->getUser()->setPassword($this->passwordHasher->hashPassword($user, 'password'));
+        $driver->getUser()->setIsAdmin(0);
+        $driver->getUser()->setIsDriver(1);
+        $driver->getUser()->setIsGroupAdmin(0);
+        $driver->setDaysDriven(0);
         $driverRepository->add($driver);
         $userRepository->add($user);
         return $this->modificar($driver, $driverRepository, $request);
@@ -50,6 +60,7 @@ class DriverController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
+                $driver->getUser()->setUsername($driver->getName().'.'.$driver->getLastName());
                 $driverRepository->save();
                 if ($nuevo) {
                     $this->addFlash('success', 'Conductor creado con exito');
@@ -73,14 +84,14 @@ class DriverController extends AbstractController
         Driver $driver): Response
     {
         if ($request->request->has('confirmar')) {
-            try {
+            //try {
                 $driverRepository->remove($driver);
                 $driverRepository->save();
                 $this->addFlash('success', 'Conductor eliminado con éxito');
                 return $this->redirectToRoute('driver_main');
-            } catch (\Exception $e) {
-                $this->addFlash('error', 'No se ha podido eliminar el conductor');
-            }
+            //} catch (\Exception $e) {
+            //    $this->addFlash('error', 'No se ha podido eliminar el conductor');
+            //}
         }
         return $this->render('Users/eliminar.html.twig', [
             'driver' => $driver
