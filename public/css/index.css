@@ -52,6 +52,14 @@ CSS FOR CARD
     .logo{
         display: none;
     }
+    .container{
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: center;
+    }
+    .card{
+        width: 100%;
+    }
 }
 @media(max-width: 700px){
     .container{
@@ -258,8 +266,7 @@ CSS FOR LOGIN FORM
 
  */
 .logo{
-    padding: 5rem;
-    width: 25%;
+    width: 30%;
 }
 .logo img{
     height: 100%;
@@ -270,4 +277,12 @@ CSS FOR LOGIN FORM
     font-weight: bold;
     text-align: center;
     margin-bottom: 1rem;
+}
+.login_container{
+    height: 80vh;
+    display: flex;
+    align-items: center;
+    padding: 4rem;
+    justify-content: center;
+    gap: 10px;
 }
