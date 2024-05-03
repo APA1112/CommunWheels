@@ -10,7 +10,15 @@
             {#  <img src="{{ asset('images/LogoCommunWheelsWhite2.png') }}" alt="Logo"> #}
             <a href="{{ path('main') }}">CommunWheels</a>
         </li>
-        <li class="hideOnMobile"><a href="{{ path('user_panel') }}">{{ app.user }} <i class="ti ti-user-filled"></i></a></li>
+        <li class="hideOnMobile">
+            <a href="{{ path('user_panel') }}">
+                {% if app.user.driver is null %}
+                    {{ app.user }} <i class="ti ti-user-filled"></i>
+                {% else %}
+                    {{ app.user.driver }} <i class="ti ti-user-filled"></i>
+                {% endif %}
+            </a>
+        </li>
         <li class="hideOnMobile"><a href="{{ path('app_logout') }}">Log Out <i class="ti ti-logout"></i></a></li>
         <li class="menuButton"><a href="#"><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-menu-2"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 6l16 0" /><path d="M4 12l16 0" /><path d="M4 18l16 0" /></svg></a></li>
     </ul>

@@ -4,6 +4,11 @@
     <div class="container">
         {% if is_granted('ROLE_GROUP_ADMIN') %}
             <a href="{{ path('group_new') }}" class="primaryButton"><i class="ti ti-table-plus"></i>Nuevo grupo</a>
+            {% if app.request.attributes.get('_route')=='group_filter' %}
+                <a href="{{ path('group_main') }}" class="secondaryButton">Volver</a>
+                {% else %}
+                <a href="{{ path('group_filter') }}" class="secondaryButton">Ver mis grupos</a>
+            {% endif %}
         {% endif %}
         <div class="table_container">
             <table class="tabla">
@@ -20,9 +25,16 @@
                     <tr>
                         <td>
                             {% if is_granted('ROLE_GROUP_ADMIN') %}
-                                <a href="{{ path('group_mod', {'id':group.id}) }}">
-                                    {{ group.name }}
-                                </a>
+                                {% if app.request.attributes.get('_route')=='group_filter' %}
+                                    <a href="{{ path('timetable_main') }}">
+                                        {{ group.name }}
+                                    </a>
+                                {% else %}
+                                    <a href="{{ path('group_mod', {'id':group.id}) }}">
+                                        {{ group.name }}
+                                    </a>
+                                {% endif %}
+
                             {% else %}
                                 <a href="{{ path('timetable_main') }}">
                                     {{ group.name }}

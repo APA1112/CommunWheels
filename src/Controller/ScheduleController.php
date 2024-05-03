@@ -17,4 +17,9 @@ class ScheduleController extends AbstractController
             'schedules' => $schedules,
         ]);
     }
+
+    #[Route('/horario/crear', name: 'schedule_create')]
+    public function create():Response{
+        return $this->render('Schedule/modificar.html.twig');
+    }
 }

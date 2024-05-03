@@ -98,7 +98,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getDriver(): Driver
+    public function getDriver(): ?Driver
     {
         return $this->driver;
     }

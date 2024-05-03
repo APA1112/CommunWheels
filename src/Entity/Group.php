@@ -25,7 +25,7 @@ class Group
     #[ORM\Column(length: 255)]
     private ?string $destination = null;
 
-    #[ORM\ManyToMany(targetEntity: Driver::class, mappedBy: 'groupCollection')]
+    #[ORM\ManyToMany(targetEntity: Driver::class, inversedBy: 'groupCollection')]
     private Collection $drivers;
 
     #[ORM\OneToMany(mappedBy: 'band', targetEntity: NonSchoolDay::class, orphanRemoval: true)]

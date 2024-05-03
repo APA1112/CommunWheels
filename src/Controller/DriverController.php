@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Driver;
+use App\Entity\User;
 use App\Form\DriverType;
 use App\Repository\DriverRepository;
+use App\Repository\UserRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,10 +29,13 @@ class DriverController extends AbstractController
      * Preguntar si esta funcion tiene que ir en ScheduleController o puede ir en DriverController
      */
     #[Route('/conductores/nuevo', name: 'driver_new')]
-    public function nuevo(DriverRepository $driverRepository, Request $request): Response
+    public function nuevo(DriverRepository $driverRepository, Request $request, UserRepository $userRepository): Response
     {
         $driver = new Driver();
+        $user = new User();
+        $driver->setUser($user);
         $driverRepository->add($driver);
+        $userRepository->add($user);
         return $this->modificar($driver, $driverRepository, $request);
     }
 

@@ -18,6 +18,7 @@ class GroupType extends AbstractType
             ->add('name', TextType::class, [
                 'label' => 'Nombre',
                 'required' => true,
+                'disabled' => true
             ])
             ->add('origin', TextType::class, [
                 'label' => 'Origen',

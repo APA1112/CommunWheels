@@ -2,10 +2,12 @@
 
 {% block body %}
     <div class="container">
-        {% if schedules is null %}
-            <div class="form_container">
+        {% if schedules is empty %}
+            <div class="schedule_form_container">
                 <p>Todavia no has registrado tu horario. Para poder pertenecer a un grupo es necesario el horario</p>
+                <div class="button_container">
                 <a href="#" class="primaryButton"><i class="ti ti-table-plus"></i>Añadir horario</a>
+                </div>
             </div>
         {% else %}
         <div class="table_container">

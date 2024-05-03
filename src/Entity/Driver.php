@@ -33,7 +33,7 @@ class Driver
     #[ORM\Column(nullable: true)]
     private ?int $waitTime = null;
 
-    #[ORM\ManyToMany(targetEntity: Group::class, inversedBy: 'drivers')]
+    #[ORM\ManyToMany(targetEntity: Group::class, mappedBy: 'drivers')]
     private Collection $groupCollection;
 
     #[ORM\OneToMany(mappedBy: 'driver', targetEntity: Absence::class, orphanRemoval: true)]

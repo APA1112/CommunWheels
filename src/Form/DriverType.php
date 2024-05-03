@@ -30,17 +30,12 @@ class DriverType extends AbstractType
                 'required' => true,
             ])
             ->add('seats', NumberType::class, [
-                'label' => 'Asientos libres',
+                'label' => 'Asientos libres en el coche',
                 'required' => true,
             ])
             ->add('waitTime', NumberType::class, [
-                'label' => 'Margen horario',
+                'label' => 'Margen horario (número)',
                 'required' => true,
-            ])
-            ->add('groupCollection', EntityType::class, [
-                'label' => 'Grupos',
-                'class' => Group::class,
-                'multiple' => true,
             ])
         ;
     }

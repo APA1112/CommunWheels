@@ -21,7 +21,7 @@ class GroupController extends AbstractController
 
         $groups = [];
 
-        if ($user->isIsAdmin()) {
+        if ($user->isIsGroupAdmin()) {
             $groups = $groupRepository->groupsData();
         } else {
             $userId = $this->getUser()->getDriver();
@@ -31,6 +31,17 @@ class GroupController extends AbstractController
         return $this->render('Groups/main.html.twig', ['groups' => $groups]);
     }
 
+    #[Route('/grupos/filtrados', name: 'group_filter')]
+    public function filterIndex(GroupRepository $groupRepository):Response{
+        $userId = $this->getUser()->getDriver();
+        $groups = $groupRepository->findGroupsByDriverId($userId);
+
+        return $this->render('Groups/main.html.twig',
+            [
+                'groups' => $groups,
+                'userId' => $userId
+            ]);
+    }
     #[Route('/grupo/nuevo', name: 'group_new')]
     public function nuevo(GroupRepository $groupRepository, Request $request): Response
     {
@@ -50,6 +61,7 @@ class GroupController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
+                $group->setName($group->getOrigin() . '-' . $group->getDestination());
                 $groupRepository->save();
                 if ($nuevo) {
                     $this->addFlash('success', 'Grupo creado con exito');
