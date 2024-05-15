@@ -21,7 +21,7 @@ class GroupController extends AbstractController
 
         $groups = [];
 
-        if ($user->isIsGroupAdmin()) {
+        if ($user->isIsGroupAdmin() || $user->isIsAdmin()) {
             $groups = $groupRepository->groupsData();
         } else {
             $userId = $this->getUser()->getDriver();
