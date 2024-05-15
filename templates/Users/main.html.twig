@@ -1,5 +1,4 @@
 {% extends 'base.html.twig' %}
-
 {% block body %}
     <div class="container">
         <a href="{{ path('driver_new') }}" class="primaryButton"><i class="ti ti-table-plus"></i>Nuevo conductor</a>
@@ -15,7 +14,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for driver in drivers %}
+                {% for driver in pagination %}
                     <tr>
                         <td>
                             <a href="{{ path('driver_mod', {'id':driver.id}) }}">
@@ -30,6 +29,10 @@
                 {% endfor %}
                 </tbody>
             </table>
+            {# display navigation #}
+            <div class="navigation">
+                {{ knp_pagination_render(pagination) }}
+            </div>
         </div>
     </div>
 {% endblock %}

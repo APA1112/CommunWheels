@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Form\DriverType;
 use App\Repository\DriverRepository;
 use App\Repository\UserRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,11 +23,17 @@ class DriverController extends AbstractController
         $this->passwordHasher = $passwordHasher;
     }
     #[Route('/conductores', name: 'driver_main')]
-    public function index(DriverRepository $driverRepository): Response{
-        $drivers = $driverRepository->findAll();
-
+    public function index(DriverRepository $driverRepository, PaginatorInterface $paginator, Request $request): Response{
+        $drivers = $driverRepository->findAllDrivers();
+        $query = $driverRepository->getDriverPagination();
+        $pagination = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            10 /*limit per page*/
+        );
         return $this->render('Users/main.html.twig', [
             'drivers' => $drivers,
+            'pagination' => $pagination,
         ]);
     }
 

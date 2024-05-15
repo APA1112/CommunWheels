@@ -21,6 +21,21 @@ class DriverRepository extends ServiceEntityRepository
         parent::__construct($registry, Driver::class);
     }
 
+    public function getDriverPagination(){
+        return $this->createQueryBuilder('d')
+            ->select('d')
+            ->addSelect('u')
+            ->Join('d.user', 'u')
+            ->getQuery();
+    }
+    public function findAllDrivers(){
+        return $this->createQueryBuilder('d')
+            ->select('d')
+            ->addSelect('u')
+            ->Join('d.user', 'u')
+            ->getQuery()
+            ->getResult();
+    }
     public function findDriverById($id)
     {
         $qb = $this->createQueryBuilder('d');
