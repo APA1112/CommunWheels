@@ -1,0 +1,50 @@
+:root{
+    --text-color: hsl(190, 20%, 50%);
+    --hover-color: #CCDBDC;
+    --original-back-color: #263D42;
+    --back-color: hsla(192, 19%, 15%);
+    --back-color-blur: hsla(192, 19%, 15%, 0.25);
+    --primary-button: #63C7B2;
+    --primary-button-hover: hsla(168, 58%, 73%, 1);;
+    --secondary-button: #80CED7;
+    --secondary-button-hover: hsla(184, 50%, 80%, 1);;
+    --delete-button: #8E6C88;
+    --delete-button-hover: hsla(294, 33%, 70%, 1);
+}
+/* Personalizar el título de la alerta */
+.swal2-title {
+    color: var(--hover-color); /* Color del texto del título */
+    font-size: 24px; /* Tamaño del texto del título */
+    font-family: 'Arial', sans-serif; /* Fuente del texto del título */
+}
+
+/* Personalizar el texto del contenido de la alerta */
+.swal2-content {
+    color: var(--hover-color); /* Color del texto del contenido */
+    font-size: 18px; /* Tamaño del texto del contenido */
+    font-family: 'Arial', sans-serif; /* Fuente del texto del contenido */
+}
+
+/* Personalizar los botones */
+.swal2-confirm {
+    background-color: var(--primary-button); /* Color de fondo del botón de confirmación */
+    color: var(--hover-color); /* Color del texto del botón de confirmación */
+    font-size: 16px; /* Tamaño del texto del botón de confirmación */
+    border-radius: 5px; /* Bordes redondeados */
+    padding: 10px 20px; /* Espaciado interno del botón */
+}
+
+.swal2-cancel {
+    background-color: var(--delete-button); /* Color de fondo del botón de cancelación */
+    color: var(--hover-color); /* Color del texto del botón de cancelación */
+    font-size: 16px; /* Tamaño del texto del botón de cancelación */
+    border-radius: 5px; /* Bordes redondeados */
+    padding: 10px 20px; /* Espaciado interno del botón */
+}
+
+/* Personalizar el fondo del modal */
+.swal2-popup {
+    background-color: var(--back-color); /* Color de fondo del modal */
+    border: none; /* Borde del modal */
+    border-radius: 10px; /* Bordes redondeados del modal */
+}
