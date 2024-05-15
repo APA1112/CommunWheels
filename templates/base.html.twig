@@ -18,6 +18,7 @@
             {{ encore_entry_script_tags('app') }}
             <script type="text/javascript" src="{{ asset('js/sidebar.js') }}"></script>
             <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         {% endblock %}
     </head>
     <body>
@@ -26,16 +27,27 @@
                 {% include 'navbar.html.twig' %}
             {% endblock %}
         </header>
-        {% for mensaje in app.flashes('success') %}
-            <div style="border: 1px solid; background-color: darkseagreen">
-                {{ mensaje }}
-            </div>
-        {% endfor %}
-        {% for mensaje in app.flashes('error') %}
-            <div style="border: 1px solid; background-color: tomato">
-                {{ mensaje }}
-            </div>
-        {% endfor %}
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                {% for mensaje in app.flashes('success') %}
+                Swal.fire({
+                    title: 'Éxito',
+                    text: '{{ mensaje }}',
+                    icon: 'success',
+                    confirmButtonText: 'Ok'
+                });
+                {% endfor %}
+
+                {% for mensaje in app.flashes('error') %}
+                Swal.fire({
+                    title: 'Error',
+                    text: '{{ mensaje }}',
+                    icon: 'error',
+                    confirmButtonText: 'Ok'
+                });
+                {% endfor %}
+            });
+        </script>
         {% block body %}{% endblock %}
     </body>
 </html>
