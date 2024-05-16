@@ -1,7 +1,7 @@
 ## List To Do:
 
 - Validate all inputs in forms
-- Paginate users
+- Paginate users :white_check_mark:
 ___
 ## Templates To Do:
 
