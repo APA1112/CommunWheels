@@ -24,7 +24,7 @@
                 <tbody>
                 {% for schedule in schedules %}
                     <tr>
-                        <td><a href="#">{{ schedule.weekDay }}</a></td>
+                        <td><a href="{{ path('schedule_update', {'id':schedule.id}) }}">{{ schedule.weekDay }}</a></td>
                         <td>{{ schedule.entrySlot }}</td>
                         <td>{{ schedule.exitSlot }}</td>
                     </tr>

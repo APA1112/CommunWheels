@@ -27,6 +27,7 @@ class ScheduleController extends AbstractController
         $schedule->setDriver($this->getUser()->getDriver());
         return $this->modificar($schedule, $scheduleRepository, $request);
     }
+    #[Route('/horario/modificar/{id}', name: 'schedule_update')]
     public function modificar(Schedule $schedule, ScheduleRepository $scheduleRepository, Request $request):Response{
         $form = $this->createForm(ScheduleType::class, $schedule);
 
