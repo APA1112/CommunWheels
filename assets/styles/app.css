@@ -1,0 +1,310 @@
+:root{
+    --text-color: hsl(190, 20%, 50%);
+    --hover-color: #CCDBDC;
+    --original-back-color: #263D42;
+    --back-color: hsla(192, 19%, 15%);
+    --back-color-blur: hsla(192, 19%, 15%, 0.25);
+    --primary-button: #63C7B2;
+    --primary-button-hover: hsla(168, 58%, 73%, 1);;
+    --secondary-button: #80CED7;
+    --secondary-button-hover: hsla(184, 50%, 80%, 1);;
+    --delete-button: #8E6C88;
+    --delete-button-hover: hsla(294, 33%, 70%, 1);
+}
+body{
+    background-color: var(--original-back-color);
+    color: var(--text-color);
+}
+.container{
+    height: 80vh;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 4rem;
+    justify-content: space-between;
+    justify-content: center;
+    gap: 0 60px;
+}
+/**
+
+CSS FOR CARD
+
+ */
+.card{
+    height: auto;
+    min-width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #CCDBDC;
+    border-radius: 10px;
+    text-decoration: none;
+    color: var(--text-color);
+    font-size: xx-large;
+    text-align: center;
+
+}
+.card:hover{
+    background-color: var(--back-color);
+    cursor: pointer;
+    transform: scale(1.05);
+}
+@media(max-width: 1060px){
+    .logo{
+        display: none;
+    }
+    .container{
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: center;
+        gap: 10px;
+    }
+    .card{
+        width: 100%;
+        padding-top: 1rem;
+    }
+}
+@media(max-width: 700px){
+    .container{
+        flex-direction: column;
+        flex-wrap: nowrap;
+        gap: 10px;
+    }
+    .card{
+        width: 100%;
+        padding-top: 1rem;
+    }
+}
+/**
+
+CSS FOR TABLE AND TABLE CONTAINER
+
+ */
+.table_container{
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding-top: 1rem;
+}
+.table_container a{
+    text-decoration: none;
+    color: var(--text-color);
+}
+.table_container tr td:first-child:hover{
+    background-color: var(--hover-color);
+    color: var(--back-color);
+    cursor: pointer;
+}
+.tabla, thead, tbody, tr, th, td{
+    border: 1px solid var(--text-color);
+    padding: 1rem;
+    border-collapse: collapse;
+    text-align: center;
+}
+thead{
+    background-color: var(--back-color);
+}
+/**
+
+CSS FOR PRIMARY BUTTON
+
+ */
+.primaryButton{
+    border: 1px solid var(--text-color);
+    border-radius: 10px;
+    padding: 1rem;
+    background-color: var(--primary-button);
+    text-decoration: none;
+    font-size: large;
+    color: var(--original-back-color);
+}
+.primaryButton:hover{
+    background-color: var(--primary-button-hover);
+    cursor: pointer;
+    color: var(--back-color);
+}
+/**
+
+CSS FOR SECONDARY BUTTON
+
+ */
+.secondaryButton{
+    border: 1px solid var(--text-color);
+    border-radius: 10px;
+    padding: 1rem;
+    background-color: var(--secondary-button);
+    text-decoration: none;
+    font-size: large;
+    color: var(--original-back-color);
+}
+.secondaryButton:hover{
+    background-color: var(--secondary-button-hover);
+    cursor: pointer;
+    color: var(--back-color);
+}
+/**
+
+CSS FOR DELETE BUTTON
+
+ */
+.deleteButton{
+    border: 1px solid var(--text-color);
+    border-radius: 10px;
+    padding: 1rem;
+    background-color: var(--delete-button);
+    text-decoration: none;
+    font-size: large;
+    color: var(--original-back-color);
+}
+.deleteButton:hover{
+    background-color: var(--delete-button-hover);
+    cursor: pointer;
+    color: var(--back-color);
+}
+/**
+
+CSS FOR FORM
+
+ */
+.form_container{
+    background-color: var(--back-color);
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    padding: 2rem;
+    gap: 10px 20px;
+    width: 100%;
+}
+.form_container div{
+    margin-top: .5rem;
+}
+.form_container h2{
+    font-size: xx-large;
+    font-weight: bold;
+    text-align: center;
+}
+.form_container label{
+    font-weight: bold;
+    font-size: large;
+}
+.form_container input{
+    padding: .5rem;
+    width: auto;
+    border-radius: 5px;
+    min-width: 98.7%;
+}
+.form_container select{
+    width: auto;
+    border-radius: 5px;
+    padding: .5rem;
+    min-width: 100%;
+}
+.form_container .buttons{
+    margin-top: 2rem;
+    display: flex;
+    justify-content: space-between;
+}
+.form_container p{
+    font-size: x-large;
+}
+.form_container textarea{
+    height: calc(3 * 1.2rem);
+    width: 99.5%;
+    font-size: 1.2em;
+}
+/**
+
+    CSS FOR BUTTONS CONTAINER
+
+ */
+.button_container{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+/**
+
+CSS FOR LOGIN FORM
+
+ */
+.login_form_container{
+    background-color: var(--back-color);
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    padding: 2rem;
+    gap: 10px 20px;
+    width: 50%;
+}
+.login_form_container h2{
+    font-size: xx-large;
+    font-weight: bold;
+    text-align: center;
+}
+.login_form_container label{
+    font-weight: bold;
+    font-size: large;
+}
+.login_form_container input{
+    padding: .5rem;
+    width: auto;
+    border-radius: 5px;
+    min-width: 96%;
+    margin-top: 1rem;
+}
+.login_form_container .buttons{
+    margin-top: 2rem;
+    display: flex;
+    justify-content: space-between;
+}
+.login_form_container .buttons button{
+    width: 100%;
+}
+.login_form_container h3{
+    font-size: x-large;
+    font-weight: bold;
+    text-align: center;
+}
+/*
+
+    CSS LOGO
+
+ */
+.logo{
+    width: 30%;
+}
+.logo img{
+    height: 100%;
+    width: 100%;
+}
+.titulo{
+    font-size: x-large;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+.login_container{
+    height: 80vh;
+    display: flex;
+    align-items: center;
+    padding: 4rem;
+    justify-content: center;
+    gap: 10px;
+}
+
+.schedule_form_container{
+    display: flex;
+    flex-direction: column;
+    background-color: var(--back-color);
+    padding: 2rem;
+    border-radius: 5px;
+    width: 25%;
+    gap: 20px;
+}
+
+.pagination{
+    background-color: red;
+
+}
