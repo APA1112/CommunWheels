@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Driver;
 use App\Entity\Schedule;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -20,12 +21,25 @@ class ScheduleRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Schedule::class);
     }
-    public function findDriverSchedules($id){
+    public function findDriverSchedules(Driver $driver){
         return $this->createQueryBuilder('s')
             ->select('s')
-            ->where('s.driver = :id')
-            ->setParameter('id', $id)
+            ->where('s.driver = :driver')
+            ->setParameter('driver', $driver)
             ->getQuery()
             ->getResult();
+    }
+
+    public function save()
+    {
+        $this->getEntityManager()->flush();
+    }
+
+    public function remove(Schedule $schedule){
+        $this->getEntityManager()->remove($schedule);
+    }
+
+    public function add(Schedule $schedule){
+        $this->getEntityManager()->persist($schedule);
     }
 }

@@ -4,27 +4,10 @@
     <div class="container">
         <div class="form_container">
             <h2 class="titulo">Añadir horario</h2>
-            <label>
-                Lunes
-                <input type="range" min="1" max="6" step="1">
-            </label>
-            <label>
-                Martes
-                <input type="range" min="1" max="6" step="1">
-            </label>
-            <label>
-                Miércoles
-                <input type="range" min="1" max="6" step="1">
-            </label>
-            <label>
-                Jueves
-                <input type="range" min="1" max="6" step="1">
-            </label>
-            <label>
-                Viernes
-                <input type="range" min="1" max="6" step="1">
-            </label>
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
             <button type="submit" class="primaryButton">Guardar</button>
+            {{ form_end(form) }}
         </div>
     </div>
 {% endblock %}
