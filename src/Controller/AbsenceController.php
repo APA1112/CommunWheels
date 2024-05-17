@@ -8,6 +8,7 @@ use App\Repository\AbsenceRepository;
 use App\Repository\DriverRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -62,23 +63,18 @@ class AbsenceController extends AbstractController
         ]);
     }
     #[Route('/notificacion/eliminar/{id}', name: 'absence_delete')]
-    public function eliminar(
-        Request $request,
-        AbsenceRepository $absenceRepository,
-        Absence $absence): Response
+    public function eliminar(Request $request, Absence $absence): JsonResponse
     {
-        if ($request->request->has('confirmar')) {
-            try {
-                $absenceRepository->remove($absence);
-                $absenceRepository->save();
-                $this->addFlash('success', 'Notificación de ausencia eliminada con éxito');
-                return $this->redirectToRoute('notify_main');
-            } catch (\Exception $e) {
-                $this->addFlash('error', 'No se ha podido eliminar la notificacion de ausencia');
-            }
+        // Verifica que la solicitud es AJAX
+        if ($request->isXmlHttpRequest()) {
+            // Eliminar el grupo (adaptar según tu lógica de eliminación)
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($absence);
+            $entityManager->flush();
+
+            return new JsonResponse(['status' => 'Group deleted'], 200);
         }
-        return $this->render('Notify/eliminar.html.twig', [
-            'absence' => $absence
-        ]);
+
+        return new JsonResponse(['status' => 'Invalid request'], 400);
     }
 }

@@ -4,9 +4,9 @@
     <div class="container">
         <div class="form_container">
             {% if driver.id is null %}
-                <h2>Datos del nuevo usaurio</h2>
+                <h2>Datos del nuevo usuario</h2>
             {% else %}
-                <h2>Datos del usaurio</h2>
+                <h2>Datos del usuario</h2>
             {% endif %}
             {{ form_start(form) }}
             {{ form_widget(form) }}
@@ -42,7 +42,7 @@
                         success: function(response) {
                             Swal.fire(
                                 '¡Eliminado!',
-                                'El grupo ha sido eliminado.',
+                                'El usuario ha sido eliminado.',
                                 'success'
                             ).then(() => {
                                 window.location.href = '{{ path('driver_main') }}';
