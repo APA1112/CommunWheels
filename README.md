@@ -17,4 +17,6 @@ ___
 - Modify user :white_check_mark:
 - Delete user :white_check_mark:
 - Show timetable
-- Enter driver schedule
+- Enter driver schedule :white_check_mark:
+- Modify personal data
+- Generate timetable

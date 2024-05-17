@@ -21,11 +21,28 @@ class GroupRepository extends ServiceEntityRepository
         parent::__construct($registry, Group::class);
     }
 
+    public function getGroupPagination(){
+        return $this->createQueryBuilder('g')
+            ->orderBy('g.name', 'ASC')
+            ->select('g')
+            ->getQuery();
+    }
+
+    public function getDriversGroupPagination($driverId)
+    {
+        $qb = $this->createQueryBuilder('g');
+        $qb->innerJoin('g.drivers', 'd')
+            ->andWhere('d.id = :driverId')
+            ->setParameter('driverId', $driverId);
+
+        return $qb->getQuery();
+    }
     public function groupsData()
     {
         $qb = $this->createQueryBuilder('g');
         return $qb
             ->leftJoin('g.drivers', 'd')
+            ->addSelect('d')
             ->getQuery()
             ->getResult();
     }
@@ -36,6 +53,7 @@ class GroupRepository extends ServiceEntityRepository
         /*Preguntar para un join de tres tablas*/
         return $qb
             ->leftJoin('g.drivers', 'd')
+            ->addSelect('d')
             ->andWhere('g.id = :id')
             ->setParameter('id', $id)
             ->getQuery()

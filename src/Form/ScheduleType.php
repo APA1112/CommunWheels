@@ -2,15 +2,16 @@
 
 namespace App\Form;
 
-use App\Entity\Driver;
 use App\Entity\Schedule;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Validator\Constraints\LessThanOrEqual;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 class ScheduleType extends AbstractType
 {
@@ -33,17 +34,31 @@ class ScheduleType extends AbstractType
                     'Friday' => 5,
                 ],
                 'label' => 'Dia de la semana',
+                'disabled' => true
             ])
             ->add('entrySlot', IntegerType::class, [
                 'label' => 'Hora de entrada',
+                'constraints' => [
+                    new NotNull(),
+                    new Assert\Range([
+                        'min'=>0,
+                        'max'=>6,
+                        'minMessage'=>'La hora de entrada no puede ser menor a cero',
+                        'maxMessage'=>'La hora de entrada no puede ser mayor a seis',
+                        ]),
+                ]
             ])
             ->add('exitSlot', IntegerType::class, [
                 'label' => 'Hora de salida',
-            ])
-            ->add('driver', EntityType::class, [
-                'class' => Driver::class,
-                'label' => 'Driver',
-                'disabled' => true,
+                'constraints' => [
+                    new NotNull(),
+                    new Assert\Range([
+                        'min'=>0,
+                        'max'=>6,
+                        'minMessage'=>'La hora de salida no puede ser menor a cero',
+                        'maxMessage'=>'La hora de salida no puede ser mayor a seis',
+                    ]),
+                ]
             ])
         ;
     }

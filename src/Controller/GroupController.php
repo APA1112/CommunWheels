@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Group;
 use App\Form\GroupType;
 use App\Repository\GroupRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,11 +17,17 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class GroupController extends AbstractController
 {
     #[Route('/grupos', name: 'group_main')]
-    public function index(GroupRepository $groupRepository): Response{
+    public function index(GroupRepository $groupRepository, PaginatorInterface $paginator, Request $request): Response{
 
         $user = $this->getUser();
 
         $groups = [];
+        $query = $groupRepository->getGroupPagination();
+        $pagination = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            10 /*limit per page*/
+        );
 
         if ($user->isIsGroupAdmin() || $user->isIsAdmin()) {
             $groups = $groupRepository->groupsData();
@@ -29,18 +36,27 @@ class GroupController extends AbstractController
             $groups = $groupRepository->findGroupsByDriverId($userId);
         }
 
-        return $this->render('Groups/main.html.twig', ['groups' => $groups]);
+        return $this->render('Groups/main.html.twig', [
+            'groups' => $groups,
+            'pagination' => $pagination,
+        ]);
     }
 
     #[Route('/grupos/filtrados', name: 'group_filter')]
-    public function filterIndex(GroupRepository $groupRepository):Response{
-        $userId = $this->getUser()->getDriver();
-        $groups = $groupRepository->findGroupsByDriverId($userId);
+    public function filterIndex(GroupRepository $groupRepository, PaginatorInterface $paginator, Request $request):Response{
+
+        $groups = $groupRepository->findGroupsByDriverId($this->getUser()->getDriver());
+        $query = $groupRepository->getDriversGroupPagination($this->getUser()->getDriver());
+        $pagination = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            10 /*limit per page*/
+        );
 
         return $this->render('Groups/main.html.twig',
             [
                 'groups' => $groups,
-                'userId' => $userId
+                'pagination' => $pagination,
             ]);
     }
     #[Route('/grupo/nuevo', name: 'group_new')]
