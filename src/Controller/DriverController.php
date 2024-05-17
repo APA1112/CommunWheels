@@ -10,6 +10,7 @@ use App\Repository\UserRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -85,23 +86,18 @@ class DriverController extends AbstractController
         ]);
     }
     #[Route('/conductor/eliminar/{id}', name: 'driver_delete')]
-    public function eliminar(
-        Request $request,
-        DriverRepository $driverRepository,
-        Driver $driver): Response
+    public function eliminar(Request $request, Driver $driver): JsonResponse
     {
-        if ($request->request->has('confirmar')) {
-            //try {
-                $driverRepository->remove($driver);
-                $driverRepository->save();
-                $this->addFlash('success', 'Conductor eliminado con éxito');
-                return $this->redirectToRoute('driver_main');
-            //} catch (\Exception $e) {
-            //    $this->addFlash('error', 'No se ha podido eliminar el conductor');
-            //}
+        // Verifica que la solicitud es AJAX
+        if ($request->isXmlHttpRequest()) {
+            // Eliminar el grupo (adaptar según tu lógica de eliminación)
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($driver);
+            $entityManager->flush();
+
+            return new JsonResponse(['status' => 'Group deleted'], 200);
         }
-        return $this->render('Users/eliminar.html.twig', [
-            'driver' => $driver
-        ]);
+
+        return new JsonResponse(['status' => 'Invalid request'], 400);
     }
 }

@@ -4,16 +4,16 @@
     <div class="container">
         <div class="form_container">
             {% if driver.id is null %}
-                <h2>Datos del nuevo conductor</h2>
+                <h2>Datos del nuevo usaurio</h2>
             {% else %}
-                <h2>Datos del conductor {{ driver.name }} {{ driver.lastName }}</h2>
+                <h2>Datos del usaurio</h2>
             {% endif %}
             {{ form_start(form) }}
-                {{ form_widget(form) }}
+            {{ form_widget(form) }}
             <div class="buttons">
                 <button type="submit" class="primaryButton">Guardar</button>
                 {% if driver.id is not null %}
-                <a href="{{ path('driver_delete', {'id':driver.id}) }}" class="deleteButton">Borrar conductor</a>
+                    <button type="button" class="deleteButton" onclick="confirmDelete({{ driver.id }})">Borrar usuario</button>
                 {% endif %}
             </div>
             {{ form_end(form) }}
@@ -22,4 +22,43 @@
             <a href="{{ path('driver_main') }}" class="secondaryButton">Volver</a>
         </div>
     </div>
+
+    <script>
+        function confirmDelete(groupId) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "¡No podrás recuperar este usuario!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#8E6C88',
+                cancelButtonColor: '#80CED7',
+                confirmButtonText: 'Sí, eliminarlo',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '{{ path('driver_delete', {'id': 'ID_PLACEHOLDER'}) }}'.replace('ID_PLACEHOLDER', groupId),
+                        type: 'DELETE',
+                        success: function(response) {
+                            Swal.fire(
+                                '¡Eliminado!',
+                                'El grupo ha sido eliminado.',
+                                'success'
+                            ).then(() => {
+                                window.location.href = '{{ path('driver_main') }}';
+                            });
+                        },
+                        error: function(xhr) {
+                            Swal.fire(
+                                'Error',
+                                'Hubo un problema al eliminar el usuario.',
+                                'error'
+                            );
+                        }
+                    });
+                }
+            })
+        }
+    </script>
+
 {% endblock %}
