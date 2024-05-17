@@ -9,11 +9,11 @@
                 <h2>Datos del Grupo</h2>
             {% endif %}
             {{ form_start(form) }}
-                {{ form_widget(form) }}
+            {{ form_widget(form) }}
             <div class="buttons">
                 <button type="submit" class="primaryButton">Guardar</button>
                 {% if group.id is not null %}
-                <a href="{{ path('group_delete', {'id':group.id}) }}" class="deleteButton">Borrar grupo</a>
+                    <button type="button" class="deleteButton" onclick="confirmDelete({{ group.id }})">Borrar grupo</button>
                 {% endif %}
             </div>
             {{ form_end(form) }}
@@ -24,6 +24,42 @@
     </div>
 
     <script>
+        function confirmDelete(groupId) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "¡No podrás recuperar este grupo!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#8E6C88',
+                cancelButtonColor: '#80CED7',
+                confirmButtonText: 'Sí, eliminarlo',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '{{ path('group_delete', {'id': 'ID_PLACEHOLDER'}) }}'.replace('ID_PLACEHOLDER', groupId),
+                        type: 'DELETE',
+                        success: function(response) {
+                            Swal.fire(
+                                '¡Eliminado!',
+                                'El grupo ha sido eliminado.',
+                                'success'
+                            ).then(() => {
+                                window.location.href = '{{ path('group_main') }}';
+                            });
+                        },
+                        error: function(xhr) {
+                            Swal.fire(
+                                'Error',
+                                'Hubo un problema al eliminar el grupo.',
+                                'error'
+                            );
+                        }
+                    });
+                }
+            })
+        }
+
         $(document).ready(function() {
             $('.select2').select2();
         });

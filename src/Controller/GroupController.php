@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 #[IsGranted('ROLE_DRIVER')]
 class GroupController extends AbstractController
@@ -78,24 +79,19 @@ class GroupController extends AbstractController
             'group' => $group,
         ]);
     }
-    #[Route('/grupo/eliminar/{id}', name: 'group_delete')]
-    public function eliminar(
-        Request $request,
-        GroupRepository $groupRepository,
-        Group $group): Response
+    #[Route('/grupo/eliminar/{id}', name: 'group_delete', methods: 'delete')]
+    public function delete(Request $request, Group $group): JsonResponse
     {
-        if ($request->request->has('confirmar')) {
-            try {
-                $groupRepository->remove($group);
-                $groupRepository->save();
-                $this->addFlash('success', 'Grupo eliminado con éxito');
-                return $this->redirectToRoute('group_main');
-            } catch (\Exception $e) {
-                $this->addFlash('error', 'No se ha podido eliminar el grupo');
-            }
+        // Verifica que la solicitud es AJAX
+        if ($request->isXmlHttpRequest()) {
+            // Eliminar el grupo (adaptar según tu lógica de eliminación)
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($group);
+            $entityManager->flush();
+
+            return new JsonResponse(['status' => 'Group deleted'], 200);
         }
-        return $this->render('Groups/eliminar.html.twig', [
-            'group' => $group
-        ]);
+
+        return new JsonResponse(['status' => 'Invalid request'], 400);
     }
 }
