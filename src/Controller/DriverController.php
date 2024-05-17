@@ -68,7 +68,8 @@ class DriverController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                $driver->getUser()->setUsername($driver->getName().'.'.$driver->getLastName());
+                $username = $driver->getUser()->generateUsername($driver->getName(), $driver->getLastName());
+                $driver->getUser()->setUsername($username);
                 $driverRepository->save();
                 if ($nuevo) {
                     $this->addFlash('success', 'Conductor creado con exito');

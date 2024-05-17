@@ -14,7 +14,7 @@ class Schedule
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $weekDay = null;
+    private ?int $weekDay = null;
 
     #[ORM\Column]
     private ?int $entrySlot = null;

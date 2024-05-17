@@ -28,10 +28,13 @@ class GroupType extends AbstractType
                 'label' => 'Destino',
                 'required' => true,
             ])
-            ->add('drivers', Select2EntityType::class, [
+            ->add('drivers', EntityType::class, [
                 'label' => 'Conductores',
                 'class' => Driver::class,
                 'multiple' => true,
+                'attr' => [
+                    'class' => 'select2'
+                ]
             ])
         ;
     }

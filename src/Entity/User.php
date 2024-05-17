@@ -154,4 +154,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->getUsername();
     }
 
+    public function generateUsername($name, $lastname): string
+    {
+        $nombre = substr($name, 0, 3);
+        $apellidos = explode(' ', $lastname);
+        $primer_apellido = substr($apellidos[0], 0, 3);
+        $segundo_apellido = substr($apellidos[1], 0, 3);
+        $username = $nombre . '.' . $primer_apellido . $segundo_apellido;
+        return $username;
+    }
 }
