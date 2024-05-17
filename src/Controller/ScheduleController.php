@@ -42,6 +42,7 @@ class ScheduleController extends AbstractController
                 } else {
                     $this->addFlash('success', 'Cambios guardados con éxito');
                 }
+                return $this->redirectToRoute('schedule_main');
             } catch (\Exception $e){
                 $this->addFlash('error', 'No se han podido guardar los cambios');
             }

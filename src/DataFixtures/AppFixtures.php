@@ -13,31 +13,48 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 class AppFixtures extends Fixture
 {
     private UserPasswordHasherInterface $passwordHasher;
+
     public function __construct(UserPasswordHasherInterface $passwordHasher)
     {
         $this->passwordHasher = $passwordHasher;
     }
+
     public function load(ObjectManager $manager): void
     {
-        // $product = new Product();
-        // $manager->persist($product);
+        // Crear grupos
         GroupFactory::createMany(3);
-        DriverFactory::createMany(10, function () {
+
+        // Crear conductores primero
+        $drivers = DriverFactory::createMany(10, function () {
             return [
-                'groupCollection' => GroupFactory::randomRange(1, 1)
+                'groupCollection' => GroupFactory::randomRange(1, 1),
             ];
         });
 
-        UserFactory::createOne([
+        // Crear el usuario admin
+        $adminUser = UserFactory::createOne([
             'username' => 'admin',
             'password' => $this->passwordHasher->hashPassword(new User(), 'admin'),
             'isAdmin' => true,
         ]);
-        UserFactory::createMany(9, [
-            'password'=>$this->passwordHasher->hashPassword(new User(),'password'),
-            'isDriver'=> true,
-            'isAdmin' => false,
-        ]);
+
+        // Crear usuarios dependientes de los nombres de los conductores
+        foreach ($drivers as $driver) {
+            $firstName = $driver->getName();
+            $lastName = $driver->getLastName();
+            $user = new User();
+            $username = $user->generateUsername($firstName, $lastName);
+
+            UserFactory::createOne([
+                'username' => $username,
+                'password' => $this->passwordHasher->hashPassword(new User(), 'password'),
+                'isDriver' => true,
+                'isAdmin' => false,
+                'driver' => $driver,
+            ]);
+        }
+
+        // Persistir todas las entidades creadas
         $manager->flush();
     }
 }

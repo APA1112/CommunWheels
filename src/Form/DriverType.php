@@ -7,7 +7,7 @@ use App\Entity\Group;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -29,12 +29,12 @@ class DriverType extends AbstractType
                 'label' => 'Email',
                 'required' => true,
             ])
-            ->add('seats', NumberType::class, [
+            ->add('seats', IntegerType::class, [
                 'label' => 'Asientos libres en el coche',
                 'required' => true,
             ])
-            ->add('waitTime', NumberType::class, [
-                'label' => 'Margen horario (número)',
+            ->add('waitTime', IntegerType::class, [
+                'label' => 'Margen horario (número del 0 al 2)',
                 'required' => true,
             ])
         ;

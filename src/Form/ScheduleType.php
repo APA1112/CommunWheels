@@ -43,8 +43,7 @@ class ScheduleType extends AbstractType
             ->add('driver', EntityType::class, [
                 'class' => Driver::class,
                 'label' => 'Driver',
-                //'disabled' => true,
-                //'data' => $user, // Asigna el usuario actual al campo
+                'disabled' => true,
             ])
         ;
     }

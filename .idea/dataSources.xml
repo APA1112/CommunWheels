@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="communwheels-db@localhost" uuid="7dc5cadc-7f84-48d5-88c9-9914f1d16a1b">
+    <data-source source="LOCAL" name="commun_wheels" uuid="71cb82ad-c9b8-4d1d-8e52-2d760b56fb95">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://localhost:33063/communwheels-db</jdbc-url>
+      <jdbc-url>jdbc:mysql://localhost:33060/communwheels_db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

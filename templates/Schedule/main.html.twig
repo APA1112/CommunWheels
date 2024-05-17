@@ -10,6 +10,7 @@
                 </div>
             </div>
         {% else %}
+        <a href="{{ path('schedule_create') }}" class="primaryButton"><i class="ti ti-table-plus"></i>Modificar horario</a>
         <div class="table_container">
             <h2 class="titulo">Horario de {{ app.user.driver }}</h2>
             <table>

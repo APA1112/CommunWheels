@@ -154,13 +154,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->getUsername();
     }
 
+    private function replaceSpecialCharacter($string): string
+    {
+        $specialCharacter = array(
+            'á' => 'a', 'é' => 'e', 'í' => 'i', 'ó' => 'o', 'ú' => 'u',
+            'Á' => 'A', 'É' => 'E', 'Í' => 'I', 'Ó' => 'O', 'Ú' => 'U',
+            'ñ' => 'n', 'Ñ' => 'N',
+            'ä' => 'a', 'ë' => 'e', 'ï' => 'i', 'ö' => 'o', 'ü' => 'u',
+            'Ä' => 'A', 'Ë' => 'E', 'Ï' => 'I', 'Ö' => 'O', 'Ü' => 'U',
+            'ç' => 'c', 'Ç' => 'C'
+        );
+        return strtr($string, $specialCharacter);
+    }
+
     public function generateUsername($name, $lastname): string
     {
-        $nombre = substr($name, 0, 3);
-        $apellidos = explode(' ', $lastname);
-        $primer_apellido = substr($apellidos[0], 0, 3);
-        $segundo_apellido = substr($apellidos[1], 0, 3);
-        $username = $nombre . '.' . $primer_apellido . $segundo_apellido;
+        $name = $this->replaceSpecialCharacter($name);
+        $lastName = $this->replaceSpecialCharacter($lastname);
+
+        $nameLtrs = substr($name, 0, 3);
+        $lastNames = explode(' ', $lastName);
+        $firstLastName = substr($lastNames[0], 0, 3);
+        $secondLastName = substr($lastNames[1], 0, 3);
+        $username = $nameLtrs . '.' . $firstLastName . $secondLastName;
+
         return $username;
     }
 }

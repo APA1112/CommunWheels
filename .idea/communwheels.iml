@@ -101,5 +101,6 @@
     <orderEntry type="library" name="select2" level="application" />
     <orderEntry type="library" name="@tabler/icons-webfont" level="application" />
     <orderEntry type="library" name="sweetalert2" level="application" />
+    <orderEntry type="library" name="jquery" level="application" />
   </component>
 </module>

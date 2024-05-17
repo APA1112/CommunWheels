@@ -23,7 +23,7 @@ body{
     padding: 4rem;
     justify-content: space-between;
     justify-content: center;
-    gap: 0px 30px;
+    gap: 0 60px;
 }
 /**
 
@@ -43,6 +43,7 @@ CSS FOR CARD
     color: var(--text-color);
     font-size: xx-large;
     text-align: center;
+
 }
 .card:hover{
     background-color: var(--back-color);
