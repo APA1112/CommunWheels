@@ -14,7 +14,7 @@ class Trip
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $tripDate = null;
+    private ?\DateTime $tripDate = null;
 
     #[ORM\Column]
     private ?int $entrySlot = null;
@@ -31,12 +31,12 @@ class Trip
         return $this->id;
     }
 
-    public function getTripDate(): ?string
+    public function getTripDate(): ?\DateTime
     {
         return $this->tripDate;
     }
 
-    public function setTripDate(?string $tripDate): Trip
+    public function setTripDate(?\DateTime $tripDate): Trip
     {
         $this->tripDate = $tripDate;
         return $this;

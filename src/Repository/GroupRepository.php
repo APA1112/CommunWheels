@@ -70,6 +70,26 @@ class GroupRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    public function findGroupDrivers(int $groupId): array
+    {
+        return $this->createQueryBuilder('g')
+            ->leftJoin('g.drivers', 'd')
+            ->addSelect('d')
+            ->andWhere('g.id = :id')
+            ->setParameter('id', $groupId)
+            ->getQuery()
+            ->getResult();
+    }
+    public function findGroupTimeTables(int $groupId)
+    {
+        return $this->createQueryBuilder('g')
+            ->leftJoin('g.timeTables', 't')
+            ->addSelect('t')
+            ->andWhere('g.id = :id')
+            ->setParameter('id', $groupId)
+            ->getQuery()
+            ->getResult();
+    }
     public function save()
     {
         $this->getEntityManager()->flush();

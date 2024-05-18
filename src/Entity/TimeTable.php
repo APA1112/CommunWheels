@@ -19,7 +19,7 @@ class TimeTable
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $weekStartDate = null;
 
-    #[ORM\ManyToOne(inversedBy: 'timeTables')]
+    #[ORM\ManyToOne(targetEntity: Group::class, inversedBy: 'timeTables')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Group $band = null;
 

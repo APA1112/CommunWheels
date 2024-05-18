@@ -58,6 +58,18 @@ class DriverRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    public function findDriverAbsences(int $id)
+    {
+        $qb = $this->createQueryBuilder('d');
+
+        return $qb->where('d.id = :id')
+            ->setParameter('id', $id)
+            ->leftJoin('d.absences', 'a')
+            ->addSelect('a')
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
     public function save()
     {
         $this->getEntityManager()->flush();
