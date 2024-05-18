@@ -13,7 +13,7 @@ class MainController extends AbstractController
     public function index(Security $security): Response
     {
         if ($security->getUser()) {
-            return $this->render('Main/index.html.twig');
+            return $this->render('main/index.html.twig');
         }else{
             return $this->redirectToRoute('app_login');
         }

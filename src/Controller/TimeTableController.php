@@ -13,6 +13,6 @@ class TimeTableController extends AbstractController
     #[Route('/cuadrante', name: 'timetable_main')]
     public function index(): Response
     {
-        return $this->render('TimeTable/main.html.twig', []);
+        return $this->render('timeTable/main.html.twig', []);
     }
 }

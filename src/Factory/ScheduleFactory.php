@@ -62,7 +62,7 @@ final class ScheduleFactory extends ModelFactory
     protected function initialize(): self
     {
         return $this
-            // ->afterInstantiate(function(Schedule $schedule): void {})
+            // ->afterInstantiate(function(schedule $schedule): void {})
         ;
     }
 

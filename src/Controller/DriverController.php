@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[IsGranted('ROLE_GROUP_ADMIN')]
+#[IsGranted('ROLE_USER')]
 class DriverController extends AbstractController
 {
     public function __construct(UserPasswordHasherInterface $passwordHasher)
@@ -32,7 +32,7 @@ class DriverController extends AbstractController
             $request->query->getInt('page', 1), /*page number*/
             10 /*limit per page*/
         );
-        return $this->render('Users/main.html.twig', [
+        return $this->render('users/main.html.twig', [
             'drivers' => $drivers,
             'pagination' => $pagination,
         ]);
@@ -81,7 +81,7 @@ class DriverController extends AbstractController
                 $this->addFlash('error', 'No se han podido guardar los cambios');
             }
         }
-        return $this->render('Users/modificar.html.twig', [
+        return $this->render('users/modificar.html.twig', [
             'form' => $form->createView(),
             'driver' => $driver,
         ]);

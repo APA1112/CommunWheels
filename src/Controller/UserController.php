@@ -11,6 +11,6 @@ class UserController extends AbstractController
     #[Route('/user', name: 'user_panel')]
     public function panel():Response
     {
-        return $this->render('Users/panel.html.twig');
+        return $this->render('users/panel.html.twig');
     }
 }

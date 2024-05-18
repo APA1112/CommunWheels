@@ -15,7 +15,7 @@ class ScheduleController extends AbstractController
     #[Route('/horario', name: 'schedule_main')]
     public function index(ScheduleRepository $scheduleRepository): Response{
         $schedules = $scheduleRepository->findDriverSchedules($this->getUser()->getDriver());
-        return $this->render('Schedule/main.html.twig', [
+        return $this->render('schedule/main.html.twig', [
             'schedules' => $schedules,
         ]);
     }
@@ -48,7 +48,7 @@ class ScheduleController extends AbstractController
                 $this->addFlash('error', 'No se han podido guardar los cambios');
             }
         }
-        return $this->render('Schedule/modificar.html.twig', [
+        return $this->render('schedule/modificar.html.twig', [
             'form' => $form->createView(),
             'schedule' => $schedule
         ]);

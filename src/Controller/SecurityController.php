@@ -17,7 +17,7 @@ class SecurityController extends AbstractController
         //Obtenemos el ultimo nombre de usuario introducido
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('Security/login.html.twig', ['last_username'=>$lastUsername, 'error'=>$error]);
+        return $this->render('security/login.html.twig', ['last_username'=>$lastUsername, 'error'=>$error]);
     }
 
     #[Route(path: '/salir', name: 'app_logout')]

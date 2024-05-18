@@ -22,7 +22,7 @@ class AbsenceController extends AbstractController
         $userId = $this->getUser()->getDriver();
         $absences = $absenceRepository->findDriverAbsences($userId);
 
-        return $this->render('Notify/main.html.twig', [
+        return $this->render('notify/main.html.twig', [
             'absences' => $absences,
         ]);
     }
@@ -57,7 +57,7 @@ class AbsenceController extends AbstractController
                 $this->addFlash('error', 'No se han podido guardar los cambios');
             }
         }
-        return $this->render('Notify/modificar.html.twig', [
+        return $this->render('notify/modificar.html.twig', [
             'form' => $form->createView(),
             'absence' => $absence,
         ]);

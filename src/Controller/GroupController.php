@@ -36,7 +36,7 @@ class GroupController extends AbstractController
             $groups = $groupRepository->findGroupsByDriverId($userId);
         }
 
-        return $this->render('Groups/main.html.twig', [
+        return $this->render('groups/main.html.twig', [
             'groups' => $groups,
             'pagination' => $pagination,
         ]);
@@ -53,7 +53,7 @@ class GroupController extends AbstractController
             10 /*limit per page*/
         );
 
-        return $this->render('Groups/main.html.twig',
+        return $this->render('groups/main.html.twig',
             [
                 'groups' => $groups,
                 'pagination' => $pagination,
@@ -90,7 +90,7 @@ class GroupController extends AbstractController
                 $this->addFlash('error', 'No se han podido guardar los cambios');
             }
         }
-        return $this->render('Groups/modificar.html.twig', [
+        return $this->render('groups/modificar.html.twig', [
             'form' => $form->createView(),
             'group' => $group,
         ]);
