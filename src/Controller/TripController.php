@@ -50,11 +50,13 @@ class TripController extends AbstractController
         $absences = [];
         $waitTimes = [];
         $schedules = [];
+        $daysDriven = [];
 
         // Obtener absences y waitTimes para cada conductor
         foreach ($drivers as $driver) {
             $absences[$driver->getId()] = $driverRepository->getDriverAbsences($driver->getId())->getAbsences();
             $waitTimes[$driver->getId()] = $driver->getWaitTime();
+            $daysDriven[$driver->getId()] = $driver->getDaysDriven();
             $schedules[$driver->getId()] = $driverRepository->getDriverSchedule($driver->getId())->getSchedules();
         }
 
@@ -63,6 +65,7 @@ class TripController extends AbstractController
             'schedules' => $schedules,
             'absences' => $absences,
             'waitTimes' => $waitTimes,
+            'daysDriven' => $daysDriven,
             'timeTableId' => $timeTable->getId()
         ]);
     }

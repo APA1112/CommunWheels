@@ -13,6 +13,7 @@
                 <th>Conductor</th>
                 <th>Ausencias</th>
                 <th>Tiempo de Espera</th>
+                <th>Dias conducidos</th>
             </tr>
             </thead>
             <tbody>
@@ -30,6 +31,7 @@
                         </ul>
                     </td>
                     <td>{{ waitTimes[driver.id] }}</td>
+                    <td>{{ daysDriven[driver.id] }}</td>
                 </tr>
             {% endfor %}
             </tbody>
