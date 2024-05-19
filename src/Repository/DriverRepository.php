@@ -46,7 +46,7 @@ class DriverRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
-    public function findDriverSchedule(int $id)
+    public function getDriverSchedule(int $id)
     {
         $qb = $this->createQueryBuilder('d');
 
@@ -59,7 +59,7 @@ class DriverRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
-    public function findDriverAbsences(int $id)
+    public function getDriverAbsences(int $id)
     {
         $qb = $this->createQueryBuilder('d');
 

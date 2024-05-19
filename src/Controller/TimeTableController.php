@@ -32,10 +32,9 @@ class TimeTableController extends AbstractController
     {
         $timeTablesGroup = $timeTableRepository->findByGroup($group->getId());
 
-        //dd($timeTablesGroup);
-
         return $this->render('timeTable/modificar.html.twig', [
             'timeTablesGroup' => $timeTablesGroup,
+            'group' => $group->getId()
         ]);
     }
 }

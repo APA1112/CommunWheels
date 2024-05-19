@@ -29,4 +29,16 @@ class TimeTableRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+    public function findById($id){
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public function save()
+    {
+        $this->getEntityManager()->flush();
+    }
 }

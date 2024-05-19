@@ -15,7 +15,7 @@
                 <tbody>
                 {% for trip in trips %}
                     <tr>
-                        <td>{{ trip.tripDate }}</td>
+                        <td>{{ trip.tripDate | date('d-m-Y')}}</td>
                         <td>{{ trip.entrySlot }}</td>
                         <td>{{ trip.exitSlot }}</td>
                         <td>{{ trip.timeTable.id }}</td>
@@ -28,7 +28,7 @@
                 </tbody>
             </table>
             <div class="button_container">
-                <a href="{{ path('timetable_mod', {'id':group}) }}" class="primaryButton"><i class="ti ti-table-plus"></i>Volver</a>
+                <a href="{{ path('timetable_mod', {'id':group}) }}" class="secondaryButton"><i class="ti ti-table-plus"></i>Volver</a>
             </div>
         </div>
     </div>

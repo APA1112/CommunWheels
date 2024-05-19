@@ -38,9 +38,6 @@ class DriverController extends AbstractController
         ]);
     }
 
-    /**
-     * Preguntar si esta funcion tiene que ir en ScheduleController o puede ir en DriverController
-     */
     #[Route('/conductores/nuevo', name: 'driver_new')]
     public function nuevo(DriverRepository $driverRepository, Request $request, UserRepository $userRepository): Response
     {

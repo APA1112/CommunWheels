@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container">
+    <h1 class="titulo">Detalles del Cuadrante</h1>
+    <h2 class="titulo">Time Table ID: {{ timeTableId }}</h2>
+    <h2 class="titulo">Conductores</h2>
+    <div class="table_container">
+        <table class="tabla">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Conductor</th>
+                <th>Ausencias</th>
+                <th>Tiempo de Espera</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for driver in drivers %}
+                <tr>
+                    <td>{{ driver.id }}</td>
+                    <td>{{ driver }}</td>
+                    <td>
+                        <ul>
+                            {% for absence in absences[driver.id] %}
+                                <li>{{ absence.description }}</li>
+                            {% else %}
+                                <p>No hay ausencias</p>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                    <td>{{ waitTimes[driver.id] }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <div class="button_container">
+            <a href="{{ path('app_trip', {'id':timeTableId}) }}" class="secondaryButton"><i class="ti ti-table-plus"></i>Volver</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
