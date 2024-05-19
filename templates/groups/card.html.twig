@@ -1,4 +1,8 @@
-<a href="{{ path('group_main') }}" class="card">
+{% if is_granted('ROLE_GROUP_ADMIN') %}
+    <a href="{{ path('group_main') }}" class="card">
+{% else %}
+    <a href="{{ path('timetable_main') }}" class="card">
+{% endif %}
     <i class="ti ti-users-group" style='font-size: 8rem;'></i>
     <h3>Grupos</h3>
 </a>

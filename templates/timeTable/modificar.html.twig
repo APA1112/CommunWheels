@@ -2,11 +2,12 @@
 
 {% block body %}
     <div class="container">
-        <h2 class="titulo">Id Grupo {{ group }}</h2>
-        <div class="button_container">
-            <a href="{{ path('trip_new', {'id':group}) }}" class="primaryButton"><i class="ti ti-table-plus"></i>Generar Cuadrante</a>
-            <a href="{{ path('app_non_school_day', {'id':group}) }}" class="primaryButton"><i class="ti ti-table-plus"></i>Dias festivos</a>
-        </div>
+        {% if is_granted('ROLE_GROUP_ADMIN') %}
+            <div class="button_container">
+                <a href="{{ path('trip_new', {'id':group}) }}" class="primaryButton"><i class="ti ti-table-plus"></i>Generar Cuadrante</a>
+                <a href="{{ path('app_non_school_day', {'id':group}) }}" class="primaryButton"><i class="ti ti-table-plus"></i>Dias festivos</a>
+            </div>
+        {% endif %}
         <div class="table_container">
             <table class="tabla">
                 <thead>
@@ -23,7 +24,7 @@
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="2">No se encontraron registros</td>
+                        <td colspan="2">No se encontraron cuadrantes</td>
                     </tr>
                 {% endfor %}
                 </tbody>
