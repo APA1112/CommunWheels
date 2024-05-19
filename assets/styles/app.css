@@ -177,6 +177,13 @@ CSS FOR FORM
     gap: 10px 20px;
     width: 100%;
 }
+.inner{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 20px;
+}
 .form_container div{
     margin-top: .5rem;
 }
@@ -304,7 +311,6 @@ CSS FOR LOGIN FORM
     gap: 20px;
 }
 
-.pagination{
-    background-color: red;
-
+.active {
+    background-color: var(--hover-color);
 }

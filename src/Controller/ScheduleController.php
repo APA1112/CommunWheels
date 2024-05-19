@@ -28,29 +28,34 @@ class ScheduleController extends AbstractController
         return $this->modificar($schedule, $scheduleRepository, $request);
     }
     #[Route('/horario/modificar/{id}', name: 'schedule_update')]
-    public function modificar(Schedule $schedule, ScheduleRepository $scheduleRepository, Request $request):Response{
-        $form = $this->createForm(ScheduleType::class, $schedule);
+    public function modificar(ScheduleRepository $scheduleRepository, Request $request): Response
+    {
+        $schedules = $scheduleRepository->findDriverSchedules($this->getUser()->getDriver());
+
+        if (!$schedules) {
+            $this->addFlash('error', 'No se han encontrado horarios para el conductor especificado.');
+            return $this->redirectToRoute('schedule_main');
+        }
+
+        $form = $this->createForm(ScheduleType::class, $schedules[0]);
 
         $form->handleRequest($request);
 
-        $nuevo = $schedule->getId()===null;
-
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                $scheduleRepository->save();
-                if ($nuevo){
-                    $this->addFlash('success', 'Horario creado con éxito');
-                } else {
-                    $this->addFlash('success', 'Cambios guardados con éxito');
+                foreach ($schedules as $schedule) {
+                    $scheduleRepository->save($schedule);
                 }
+                $this->addFlash('success', 'Cambios guardados con éxito');
                 return $this->redirectToRoute('schedule_main');
-            } catch (\Exception $e){
+            } catch (\Exception $e) {
                 $this->addFlash('error', 'No se han podido guardar los cambios');
             }
         }
+        //dd($schedules);
         return $this->render('schedule/modificar.html.twig', [
             'form' => $form->createView(),
-            'schedule' => $schedule
+            'schedules' => $schedules
         ]);
     }
 }

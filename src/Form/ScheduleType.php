@@ -23,7 +23,6 @@ class ScheduleType extends AbstractType
     }
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $user = $this->security->getUser();
         $builder
             ->add('weekDay', ChoiceType::class, [
                 'choices' => [

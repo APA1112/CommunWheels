@@ -6,35 +6,52 @@
             <div class="schedule_form_container">
                 <p>Todavia no has registrado tu horario. Para poder viajar con un grupo es necesario el horario</p>
                 <div class="button_container">
-                <a href="{{ path('schedule_create') }}" class="primaryButton"><i class="ti ti-table-plus"></i>Añadir horario</a>
+                    <a href="{{ path('schedule_create') }}" class="primaryButton"><i class="ti ti-table-plus"></i>Añadir horario</a>
                 </div>
             </div>
         {% else %}
-        <div class="table_container">
-            {% set weekdays = {1: 'Lunes', 2: 'Martes', 3: 'Miércoles', 4: 'Jueves', 5: 'Viernes'} %}
-            <h2 class="titulo">Horario de {{ app.user.driver }}</h2>
-            <table>
-                <thead>
+            <div class="form_container">
+                <h2 class="titulo">Horario de {{ app.user.driver }} ID: {{ app.user.driver.id }}</h2>
+                {% set weekdays = {1: 'Lunes', 2: 'Martes', 3: 'Miércoles', 4: 'Jueves', 5: 'Viernes'} %}
+                <table>
+                    <thead>
                     <tr>
-                        <th>Dia</th>
-                        <th>Entrada</th>
-                        <th>Salida</th>
+                        <th>Hora</th>
+                        {% for i in 1..5 %}
+                            <th>{{ weekdays[i] }}</th>
+                        {% endfor %}
                     </tr>
-                </thead>
-                <tbody>
-                {% for schedule in schedules %}
-                    <tr>
-                        <td><a href="{{ path('schedule_update', {'id':schedule.id}) }}">{{ weekdays[schedule.weekDay] }}</a></td>
-                        <td>{{ schedule.entrySlot }}</td>
-                        <td>{{ schedule.exitSlot }}</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-            <div class="button_container">
-                <a href="{{ path('user_panel') }}" class="secondaryButton">Volver</a>
+                    </thead>
+                    <tbody>
+                    {% set hourIntervals = {
+                        1: '8:15 - 9:15',
+                        2: '9:15 - 10:15',
+                        3: '10:15 - 11:15',
+                        4: '11:45 - 12:45',
+                        5: '12:45 - 13:45',
+                        6: '13:45 - 14:45'
+                    } %}
+                    {% for hour in 1..6 %}
+                        <tr>
+                            <td>{{ hourIntervals[hour] }}</td>
+                            {% for day in 1..5 %}
+                                {% set isWithinSchedule = false %}
+                                {% for schedule in schedules %}
+                                    {% if schedule.weekDay == day and hour >= schedule.entrySlot and hour <= schedule.exitSlot %}
+                                        {% set isWithinSchedule = true %}
+                                    {% endif %}
+                                {% endfor %}
+                                <td class="{% if isWithinSchedule %}active{% endif %}"></td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <div class="button_container">
+                    <a href="{{ path('schedule_update', {'id':app.user.driver.id}) }}" class="primaryButton"><i class="ti ti-edit"></i>Modificar</a>
+                    <a href="{{ path('user_panel') }}" class="secondaryButton"><i class="ti ti-arrow-left"></i>Volver</a>
+                </div>
             </div>
-        </div>
         {% endif %}
     </div>
 {% endblock %}

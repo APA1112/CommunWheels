@@ -3,12 +3,16 @@
 {% block body %}
     <div class="container">
         <div class="form_container">
-            <h2 class="titulo">Añadir horario</h2>
+            {% if schedules is empty %}
+                <h2 class="titulo">Añadir horario</h2>
+            {% else %}
+                <h2 class="titulo">Modificar horario</h2>
+            {% endif %}
             {{ form_start(form) }}
             {{ form_widget(form) }}
             <div class="button_container">
                 <button type="submit" class="primaryButton">Guardar</button>
-                <a href="{{ path('schedule_main') }}" class="secondaryButton">Volver</a>
+                <a href="{{ path('schedule_main') }}" class="secondaryButton"><i class="ti ti-arrow-left"></i>Volver</a>
             </div>
             {{ form_end(form) }}
         </div>

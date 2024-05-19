@@ -21,3 +21,4 @@ ___
 - Modify personal data
 - Generate timetable
 - Restrict access with roles in all controllers
+- NonSchoolDay insert, update and delete with screens
