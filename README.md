@@ -20,3 +20,4 @@ ___
 - Enter driver schedule :white_check_mark:
 - Modify personal data
 - Generate timetable
+- Restrict access with roles in all controllers

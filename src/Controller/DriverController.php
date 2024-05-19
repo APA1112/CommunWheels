@@ -16,13 +16,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[IsGranted('ROLE_USER')]
+#[IsGranted('ROLE_DRIVER')]
 class DriverController extends AbstractController
 {
     public function __construct(UserPasswordHasherInterface $passwordHasher)
     {
         $this->passwordHasher = $passwordHasher;
     }
+    #[IsGranted('ROLE_GROUP_ADMIN')]
     #[Route('/conductores', name: 'driver_main')]
     public function index(DriverRepository $driverRepository, PaginatorInterface $paginator, Request $request): Response{
         $drivers = $driverRepository->findAllDrivers();
@@ -37,7 +38,7 @@ class DriverController extends AbstractController
             'pagination' => $pagination,
         ]);
     }
-
+    #[IsGranted('ROLE_GROUP_ADMIN')]
     #[Route('/conductores/nuevo', name: 'driver_new')]
     public function nuevo(DriverRepository $driverRepository, Request $request, UserRepository $userRepository): Response
     {
@@ -53,7 +54,7 @@ class DriverController extends AbstractController
         $userRepository->add($user);
         return $this->modificar($driver, $driverRepository, $request);
     }
-
+    
     #[Route('/conductor/modificar/{id}', name: 'driver_mod')]
     public function modificar(Driver $driver, DriverRepository $driverRepository, Request $request):Response
     {
@@ -83,6 +84,7 @@ class DriverController extends AbstractController
             'driver' => $driver,
         ]);
     }
+    #[IsGranted('ROLE_GROUP_ADMIN')]
     #[Route('/conductor/eliminar/{id}', name: 'driver_delete')]
     public function eliminar(Request $request, Driver $driver): JsonResponse
     {
