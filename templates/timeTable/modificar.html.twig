@@ -9,14 +9,20 @@
             <table class="tabla">
                 <thead>
                 <tr>
+                    <th>Grupo</th>
                     <th>Fecha</th>
-                    <th>Id grupo</th>
                 </tr>
                 </thead>
                 <tbody>
-                {% for group in timeTablesGroup %}
-                    <h2 class="titulo">{{ group.id }}</h2>
-                    <h2 class="titulo">{{ group }}</h2>
+                {% for timeTable in timeTablesGroup %}
+                    <tr>
+                        <td><a href="{{ path('app_trip', {'id':timeTable.id}) }}">{{ timeTable.band.name }}</a></td>
+                        <td>{{ timeTable.weekStartDate|date('d-m-Y') }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="2">No se encontraron registros</td>
+                    </tr>
                 {% endfor %}
                 </tbody>
             </table>

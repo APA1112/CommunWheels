@@ -80,16 +80,6 @@ class GroupRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-    public function findGroupTimeTables(int $groupId)
-    {
-        return $this->createQueryBuilder('g')
-            ->leftJoin('g.timeTables', 't')
-            ->addSelect('t')
-            ->andWhere('g.id = :id')
-            ->setParameter('id', $groupId)
-            ->getQuery()
-            ->getResult();
-    }
     public function save()
     {
         $this->getEntityManager()->flush();

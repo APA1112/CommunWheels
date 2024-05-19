@@ -6,6 +6,7 @@ use App\Entity\Group;
 use App\Entity\Trip;
 use App\Repository\DriverRepository;
 use App\Repository\GroupRepository;
+use App\Repository\TimeTableRepository;
 use App\Repository\TripRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,65 +28,14 @@ class TimeTableController extends AbstractController
     }
 
     #[Route('/cuadrante/mod/{id}', name: 'timetable_mod')]
-    public function modificar(Group $group, GroupRepository $groupRepository, Request $request):Response
+    public function modificar(Group $group, TimeTableRepository $timeTableRepository, Request $request):Response
     {
-        $timeTablesGroup = $groupRepository->findGroupTimeTables($group->getId());
+        $timeTablesGroup = $timeTableRepository->findByGroup($group->getId());
 
         //dd($timeTablesGroup);
 
         return $this->render('timeTable/modificar.html.twig', [
             'timeTablesGroup' => $timeTablesGroup,
         ]);
-    }
-    public function new(
-        int $groupId,
-        DriverRepository $driverRepository,
-        GroupRepository $groupRepository,
-        TripRepository $tripRepository,
-        Request $request
-    ): Response {
-        // Getting the group by ID
-        $group = $groupRepository->find($groupId);
-        if (!$group) {
-            return new Response("Group not found", 404);
-        }
-
-        // Getting group drivers
-        $groupDrivers = $groupRepository->findGroupDrivers($group->getId());
-
-        // Filter drivers who have absences
-        $availableDrivers = array_filter($groupDrivers, function ($driver) {
-            // Checking for driver absences
-            foreach ($driver->getAbsences() as $absence) {
-                if ($absence->getAbsenceDate() === (new \DateTime())->format('Y-m-d')) {
-                    return false;
-                }
-            }
-            return true;
-        });
-
-        // Selecting driver
-        $selectDriver = null;
-        foreach ($availableDrivers as $driver) {
-            if ($selectDriver === null || $driver->getDaysDriven() < $selectDriver->getDaysDriven()) {
-                $selectDriver = $driver;
-            }
-        }
-
-        // Generating Trip
-        if ($selectDriver !== null) {
-            $trip = new Trip();
-            $trip->setTripDate(new \DateTime());
-            $trip->setEntrySlot($selectDriver->getEntrySlot());
-            $trip->setExitSlot($selectDriver->getExitSlot());
-            $trip->setTimeTable($group->getTimeTables()); // Assuming you need to set the TimeTable
-
-            // Persisting the trip in the database
-            $tripRepository->save();
-
-            return new Response("Trip created successfully", 201);
-        }
-
-        return new Response("No available driver found", 400);
     }
 }

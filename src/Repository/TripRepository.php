@@ -21,6 +21,14 @@ class TripRepository extends ServiceEntityRepository
         parent::__construct($registry, Trip::class);
     }
 
+    public function findByTimeTable($timeTableId){
+        return $this->createQueryBuilder('t')
+            ->select('t')
+            ->where('t.timeTable = :timeTableId')
+            ->setParameter('timeTableId', $timeTableId)
+            ->getQuery()
+            ->getResult();
+    }
     public function save()
     {
         $this->getEntityManager()->flush();

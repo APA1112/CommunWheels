@@ -20,4 +20,13 @@ class TimeTableRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, TimeTable::class);
     }
+    public function findByGroup($groupId): array
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.band = :groupId')
+            ->setParameter('groupId', $groupId)
+            ->orderBy('t.weekStartDate', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 }
