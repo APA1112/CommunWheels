@@ -18,7 +18,7 @@
                 <tbody>
                 {% for driver in pagination %}
                     <tr>
-                        <td>
+                        <td class="link_td">
                             <a href="{{ path('driver_mod', {'id':driver.id}) }}">
                                 {{ driver.name}} {{ driver.lastName }}
                             </a>

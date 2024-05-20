@@ -14,13 +14,19 @@
                 <tr>
                     <th>Grupo</th>
                     <th>Fecha</th>
+                    <th>Estado</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for timeTable in timeTablesGroup %}
                     <tr>
-                        <td><a href="{{ path('app_trip', {'id':timeTable.id}) }}">{{ timeTable.band.name }}</a></td>
+                        {% if timeTable.active %}
+                            <td class="link_td"><a href="{{ path('app_trip', {'id':timeTable.id}) }}">{{ timeTable.band.name }}</a></td>
+                        {% else %}
+                            <td>{{ timeTable.band.name }}</td>
+                        {% endif %}
                         <td>{{ timeTable.weekStartDate|date('d-m-Y') }}</td>
+                        <td>{{ timeTable.active ? 'Activo':'Inactivo' }}</td>
                     </tr>
                 {% else %}
                     <tr>

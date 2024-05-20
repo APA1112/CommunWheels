@@ -48,7 +48,7 @@ class AppFixtures extends Fixture
 
             UserFactory::createOne([
                 'username' => $username,
-                'password' => $this->passwordHasher->hashPassword(new User(), 'password'),
+                'password' => $this->passwordHasher->hashPassword(new User(), 'cambiame'),
                 'isDriver' => true,
                 'isAdmin' => false,
                 'driver' => $driver,

@@ -45,7 +45,7 @@ class DriverController extends AbstractController
         $driver = new Driver();
         $user = new User();
         $user->setDriver($driver);
-        $driver->getUser()->setPassword($this->passwordHasher->hashPassword($user, 'password'));
+        $driver->getUser()->setPassword($this->passwordHasher->hashPassword($user, 'cambiame'));
         $driver->getUser()->setIsAdmin(0);
         $driver->getUser()->setIsDriver(1);
         $driver->setDaysDriven(0);

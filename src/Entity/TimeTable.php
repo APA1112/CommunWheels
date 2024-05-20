@@ -92,4 +92,16 @@ class TimeTable
 
         return $this;
     }
+
+    public function getActive(): ?bool
+    {
+        return $this->active;
+    }
+
+    public function setActive(?bool $active): TimeTable
+    {
+        $this->active = $active;
+        return $this;
+    }
+
 }

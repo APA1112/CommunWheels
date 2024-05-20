@@ -16,7 +16,7 @@
                 <tbody>
                 {% for absence in absences %}
                     <tr>
-                        <td>
+                        <td class="link_td">
                             <a href="{{ path('mod_absence', {'id':absence.id}) }}">
                                 {{ absence.absenceDate | date('Y-m-d') }}
                             </a>

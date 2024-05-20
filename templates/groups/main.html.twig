@@ -20,7 +20,7 @@
                 <tbody>
                 {% for group in groups %}
                     <tr>
-                        <td>
+                        <td class="link_td">
                             {% if is_granted('ROLE_GROUP_ADMIN') %}
                                 {% if app.request.attributes.get('_route')=='group_filter' %}
                                     <a href="{{ path('timetable_main') }}">

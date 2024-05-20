@@ -92,7 +92,7 @@ CSS FOR TABLE AND TABLE CONTAINER
     text-decoration: none;
     color: var(--text-color);
 }
-.table_container tr td:first-child:hover{
+.link_td:hover{
     background-color: var(--hover-color);
     color: var(--back-color);
     cursor: pointer;
