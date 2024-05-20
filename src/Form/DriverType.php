@@ -17,6 +17,7 @@ use Symfony\Component\Security\Core\Security;
 class DriverType extends AbstractType
 {
     private $security;
+    public $data = false;
 
     public function __construct(Security $security)
     {
@@ -24,33 +25,40 @@ class DriverType extends AbstractType
     }
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $driver = $options['data'];
+
+        $user = $driver->getUser();
+
+        $this->data = $user->isIsGroupAdmin();
+
         $builder
             ->add('name', TextType::class, [
-                'label' => 'Nombre',
-                'required' => true,
+                'label'         => 'Nombre',
+                'required'      => true,
             ])
             ->add('lastName', TextType::class, [
-                'label' => 'Apellidos',
-                'required' => true,
+                'label'         => 'Apellidos',
+                'required'      => true,
             ])
             ->add('email', EmailType::class, [
-                'label' => 'Email',
-                'required' => true,
+                'label'         => 'Email',
+                'required'      => true,
             ])
             ->add('seats', IntegerType::class, [
-                'label' => 'Asientos libres en el coche',
-                'required' => true,
+                'label'         => 'Asientos libres en el coche',
+                'required'      => true,
             ])
             ->add('waitTime', IntegerType::class, [
-                'label' => 'Margen horario (número del 0 al 2)',
-                'required' => true,
+                'label'         => 'Margen horario (número del 0 al 2)',
+                'required'      => true,
             ]);
-        // Verificar si el usuario tiene el rol de 'group_admin'
+
             if ($this->security->isGranted('ROLE_GROUP_ADMIN')) {
                 $builder->add('isAdmin', CheckboxType::class, [
-                    'label' => 'Es Administrador',
-                    'mapped' => false,
-                    'required' => false
+                    'label'     => 'Es Administrador',
+                    'data'      => $this->data,
+                    'mapped'    => false,
+                    'required'  => false
                 ]);
             }
         ;
@@ -59,7 +67,7 @@ class DriverType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Driver::class,
+            'data_class'        => Driver::class,
         ]);
     }
 }

@@ -48,7 +48,6 @@ class DriverController extends AbstractController
         $driver->getUser()->setPassword($this->passwordHasher->hashPassword($user, 'password'));
         $driver->getUser()->setIsAdmin(0);
         $driver->getUser()->setIsDriver(1);
-        $driver->getUser()->setIsGroupAdmin(0);
         $driver->setDaysDriven(0);
         $driverRepository->add($driver);
         $userRepository->add($user);
@@ -68,6 +67,7 @@ class DriverController extends AbstractController
             try {
                 $username = $driver->getUser()->generateUsername($driver->getName(), $driver->getLastName());
                 $driver->getUser()->setUsername($username);
+                $driver->getUser()->setIsGroupAdmin($form->get('isAdmin')->getData());
                 $driverRepository->save();
                 if ($nuevo) {
                     $this->addFlash('success', 'Conductor creado con exito');

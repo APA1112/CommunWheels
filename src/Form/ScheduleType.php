@@ -35,29 +35,27 @@ class ScheduleType extends AbstractType
                 'label' => 'Dia de la semana',
                 'disabled' => true
             ])
-            ->add('entrySlot', IntegerType::class, [
+            ->add('entrySlot', ChoiceType::class, [
                 'label' => 'Hora de entrada',
-                'constraints' => [
-                    new NotNull(),
-                    new Assert\Range([
-                        'min'=>0,
-                        'max'=>6,
-                        'minMessage'=>'La hora de entrada no puede ser menor a cero',
-                        'maxMessage'=>'La hora de entrada no puede ser mayor a seis',
-                        ]),
-                ]
+                'choices' => [
+                    '8:15'   => 1,
+                    '9:15'  => 2,
+                    '10:15' => 3,
+                    '11:45' => 4,
+                    '12:45' => 5,
+                    '13:45' => 6,
+                ],
             ])
-            ->add('exitSlot', IntegerType::class, [
+            ->add('exitSlot', ChoiceType::class, [
                 'label' => 'Hora de salida',
-                'constraints' => [
-                    new NotNull(),
-                    new Assert\Range([
-                        'min'=>0,
-                        'max'=>6,
-                        'minMessage'=>'La hora de salida no puede ser menor a cero',
-                        'maxMessage'=>'La hora de salida no puede ser mayor a seis',
-                    ]),
-                ]
+                'choices' => [
+                    '9:15'   => 1,
+                    '10:15'  => 2,
+                    '11:15' => 3,
+                    '12:45' => 4,
+                    '13:45' => 5,
+                    '14:45' => 6,
+                ],
             ])
         ;
     }
