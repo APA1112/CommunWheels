@@ -21,7 +21,7 @@ body{
     flex-wrap: wrap;
     align-items: center;
     padding: 4rem;
-    justify-content: space-between;
+    justify-content: space-around;
     justify-content: center;
     gap: 0 60px;
 }
@@ -82,7 +82,7 @@ CSS FOR TABLE AND TABLE CONTAINER
 
  */
 .table_container{
-    height: 80vh;
+    height: 80%;
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -230,6 +230,8 @@ CSS FOR FORM
     display: flex;
     justify-content: space-between;
     width: 100%;
+    box-sizing: border-box;
+    align-items: flex-start;
 }
 /**
 

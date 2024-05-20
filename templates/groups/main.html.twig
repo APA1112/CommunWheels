@@ -3,7 +3,9 @@
 {% block body %}
     <div class="container">
         {% if is_granted('ROLE_GROUP_ADMIN') %}
+            <div class="button_container">
             <a href="{{ path('group_new') }}" class="primaryButton"><i class="ti ti-table-plus"></i>Nuevo grupo</a>
+            </div>
         {% endif %}
         <div class="table_container">
             <table class="tabla">

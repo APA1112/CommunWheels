@@ -1,7 +1,9 @@
 {% extends 'base.html.twig' %}
 {% block body %}
     <div class="container">
-        <a href="{{ path('driver_new') }}" class="primaryButton"><i class="ti ti-table-plus"></i>Nuevo conductor</a>
+        <div class="button_container">
+            <a href="{{ path('driver_new') }}" class="primaryButton"><i class="ti ti-table-plus"></i>Nuevo conductor</a>
+        </div>
         <div class="table_container">
             <table class="tabla">
                 <thead>

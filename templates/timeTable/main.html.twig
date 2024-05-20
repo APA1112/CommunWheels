@@ -3,11 +3,13 @@
 {% block body %}
     <div class="container">
         {% if is_granted('ROLE_GROUP_ADMIN') %}
+            <div class="button_container">
             {% if app.request.attributes.get('_route')=='timetable_main' %}
                 <a href="{{ path('timeTable_filter') }}" class="primaryButton">Ver mis cuadrantes</a>
             {% else %}
                 <a href="{{ path('timetable_main') }}" class="primaryButton">Volver</a>
             {% endif %}
+            </div>
         {% endif %}
             <div class="table_container">
                 <table class="tabla">

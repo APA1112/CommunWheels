@@ -5,13 +5,13 @@
 {% block body %}
     <div class="container">
         <h2 class="titulo">Días festivos</h2>
+        <div class="button_container">
+            <a href="{{ path('timetable_mod', {'id':group}) }}" class="secondaryButton"><i class="ti ti-arrow-left"></i>Volver</a>
+        </div>
         <div class="table_container">
             <table class="tabla">
 
             </table>
-            <div class="button_container">
-                <a href="{{ path('timetable_mod', {'id':group}) }}" class="secondaryButton"><i class="ti ti-table-plus"></i>Volver</a>
-            </div>
         </div>
     </div>
 {% endblock %}
