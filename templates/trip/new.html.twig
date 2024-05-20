@@ -3,7 +3,7 @@
 {% block body %}
 <div class="container">
     <h1 class="titulo">Detalles del Cuadrante</h1>
-    <h2 class="titulo">Cuadrante del grupo con ID: {{ timeTableId }}</h2>
+    <h2 class="titulo">Cuadrante del grupo con ID: {{ group.id }}</h2>
     <h2 class="titulo">Conductores</h2>
     <div class="table_container">
         <table class="tabla">
@@ -37,7 +37,7 @@
             </tbody>
         </table>
         <div class="button_container">
-            <a href="{{ path('app_trip', {'id':timeTableId}) }}" class="secondaryButton"><i class="ti ti-table-plus"></i>Volver</a>
+            <a href="{{ path('timetable_mod', {'id':group.id}) }}" class="secondaryButton"><i class="ti ti-arrow-left"></i>Volver</a>
         </div>
     </div>
 </div>

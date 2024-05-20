@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[IsGranted('ROLE_DRIVER')]
 class TimeTableController extends AbstractController
 {
-    #[Route('/cuadrante', name: 'timetable_main')]
+    #[Route('/cuadrantes', name: 'timetable_main')]
     public function index(GroupRepository $groupRepository): Response
     {
         $user = $this->getUser();
@@ -53,14 +53,14 @@ class TimeTableController extends AbstractController
                 'pagination' => $pagination,
             ]);
     }
-    #[Route('/cuadrante/mod/{id}', name: 'timetable_mod')]
-    public function modificar(Group $group, TimeTableRepository $timeTableRepository, Request $request):Response
+    #[Route('/cuadrante/modificar/{id}', name: 'timetable_mod')]
+    public function modificar(Group $group, TimeTableRepository $timeTableRepository):Response
     {
-        $timeTablesGroup = $timeTableRepository->findByGroup($group->getId());
+        $timeTablesGroup = $timeTableRepository->findByGroup($group);
 
         return $this->render('timeTable/modificar.html.twig', [
             'timeTablesGroup' => $timeTablesGroup,
-            'group' => $group->getId()
+            'group' => $group
         ]);
     }
 }

@@ -14,11 +14,11 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TripController extends AbstractController
 {
-    #[Route('/cuadrante/{id}', name: 'app_trip')]
+    #[Route('/cuadrante/viajes/{id}', name: 'app_trip')]
     public function index(TimeTable $timeTable, TripRepository $tripRepository): Response
     {
         $trips = $tripRepository->findByTimeTable($timeTable);
-        $groupId = $timeTable->getBand();
+        $groupId = $timeTable->getBand()->getId();
 
         return $this->render('trip/index.html.twig', [
             'trips' => $trips,
@@ -27,7 +27,7 @@ class TripController extends AbstractController
         ]);
     }
 
-    #[Route('/cuadrante/nuevo/{id}', name: 'trip_new')]
+    #[Route('/viaje/nuevo/{id}', name: 'trip_new')]
     public function newTrip(DriverRepository $driverRepository, TimeTableRepository $timeTableRepository, Group $group): Response
     {
         $timeTable = $timeTableRepository->findByGroup($group);
@@ -63,7 +63,7 @@ class TripController extends AbstractController
             'absences' => $absences,
             'waitTimes' => $waitTimes,
             'daysDriven' => $daysDriven,
-            'timeTableId' => $timeTable[0]->getBand()
+            'group' => $timeTable[0]->getBand()
         ]);
     }
 }
