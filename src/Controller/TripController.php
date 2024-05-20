@@ -17,8 +17,8 @@ class TripController extends AbstractController
     #[Route('/cuadrante/{id}', name: 'app_trip')]
     public function index(TimeTable $timeTable, TripRepository $tripRepository): Response
     {
-        $trips = $tripRepository->findByTimeTable($timeTable->getId());
-        $groupId = $timeTable->getBand()->getId();
+        $trips = $tripRepository->findByTimeTable($timeTable);
+        $groupId = $timeTable->getBand();
 
         return $this->render('trip/index.html.twig', [
             'trips' => $trips,
@@ -28,23 +28,20 @@ class TripController extends AbstractController
     }
 
     #[Route('/cuadrante/nuevo/{id}', name: 'trip_new')]
-    public function new(TimeTable $timeTable, DriverRepository $driverRepository, TimeTableRepository $timeTableRepository, Group $group): Response
+    public function newTrip(DriverRepository $driverRepository, TimeTableRepository $timeTableRepository, Group $group): Response
     {
-        //$timeTable = $timeTableRepository->findByGroup($group->getId());
+        $timeTable = $timeTableRepository->findByGroup($group);
+        //dd($timeTable);
 
-        if ($group->getId()) {
-            throw $this->createNotFoundException('No se han encontrado cuadrantes');
-        } else {
-            // Create a new TimeTable
-            $timeTable = new TimeTable();
-            // Set any required fields here. For example:
-            $timeTable->setBand($group->getId());
-            $timeTable->setWeekStartDate(new \DateTime('now'));
-            // Save the new TimeTable
-            $timeTableRepository->save();
-        }
+        // Create a new TimeTable
+        //$timeTable = new TimeTable();
+        // Set any required fields here. For example:
+        //$timeTable->setBand($group);
+        //$timeTable->setWeekStartDate(new \DateTime('now'));
+        // Save the new TimeTable
+        //$timeTableRepository->save();
 
-        $drivers = $timeTable->getBand()->getDrivers();
+        $drivers = $timeTable[0]->getBand()->getDrivers();
 
         // Inicializar arrays para absences y waitTimes
         $absences = [];
@@ -59,14 +56,14 @@ class TripController extends AbstractController
             $daysDriven[$driver->getId()] = $driver->getDaysDriven();
             $schedules[$driver->getId()] = $driverRepository->getDriverSchedule($driver->getId())->getSchedules();
         }
-
+        //dd($absences);
         return $this->render('trip/new.html.twig', [
             'drivers' => $drivers,
             'schedules' => $schedules,
             'absences' => $absences,
             'waitTimes' => $waitTimes,
             'daysDriven' => $daysDriven,
-            'timeTableId' => $timeTable->getId()
+            'timeTableId' => $timeTable[0]->getBand()
         ]);
     }
 }
