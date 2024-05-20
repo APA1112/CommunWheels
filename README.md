@@ -1,7 +1,9 @@
 ## List To Do:
 
 - Validate all inputs in forms
-- Paginate users :white_check_mark:
+- Change password
+- Pagination :white_check_mark:
+- Generate timetable
 ___
 ## Templates To Do:
 
@@ -19,6 +21,5 @@ ___
 - Show timetable
 - Enter driver schedule :white_check_mark:
 - Modify personal data
-- Generate timetable
 - Restrict access with roles in all controllers
 - NonSchoolDay insert, update and delete with screens
