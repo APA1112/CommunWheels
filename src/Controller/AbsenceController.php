@@ -12,10 +12,17 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 #[IsGranted('ROLE_DRIVER')]
 class AbsenceController extends AbstractController
 {
+    private $security;
+
+    public function __construct(Security $security)
+    {
+        $this->security = $security;
+    }
     #[Route('/notificaciones', name: 'notify_main')]
     public function index(AbsenceRepository $absenceRepository, DriverRepository $driverRepository, Request $request): Response
     {
@@ -41,6 +48,10 @@ class AbsenceController extends AbstractController
         $form = $this->createForm(AbsenceType::class, $absence);
 
         $form->handleRequest($request);
+
+        $driver = $this->security->getUser()->getDriver();
+
+        $absence->setDriver($driver);
 
         $nuevo = $absence->getId()===null;
 

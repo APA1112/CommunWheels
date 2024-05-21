@@ -38,6 +38,7 @@ class ScheduleType extends AbstractType
             ->add('entrySlot', ChoiceType::class, [
                 'label' => 'Hora de entrada',
                 'choices' => [
+                    'No voy'   => 0,
                     '8:15'   => 1,
                     '9:15'  => 2,
                     '10:15' => 3,
@@ -49,6 +50,7 @@ class ScheduleType extends AbstractType
             ->add('exitSlot', ChoiceType::class, [
                 'label' => 'Hora de salida',
                 'choices' => [
+                    'No voy'   => 0,
                     '9:15'   => 1,
                     '10:15'  => 2,
                     '11:15' => 3,

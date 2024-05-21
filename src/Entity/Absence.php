@@ -15,7 +15,7 @@ class Absence
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $absenceDate = null;
+    private ?\DateTime $absenceDate = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: false)]
     private ?string $description = null;
