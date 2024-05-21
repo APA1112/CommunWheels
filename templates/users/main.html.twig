@@ -4,37 +4,81 @@
         <div class="button_container">
             <a href="{{ path('driver_new') }}" class="primaryButton"><i class="ti ti-table-plus"></i>Nuevo conductor</a>
         </div>
-        <div class="table_container">
-            <table class="tabla">
-                <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Email</th>
-                    <th>Asientos</th>
-                    <th>Dias conducidos</th>
-                    <th>Tiempo de espera</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for driver in pagination %}
-                    <tr>
-                        <td class="link_td">
-                            <a href="{{ path('driver_mod', {'id':driver.id}) }}">
-                                {{ driver.name}} {{ driver.lastName }}
-                            </a>
-                        </td>
-                        <td>{{ driver.email }}</td>
-                        <td>{{ driver.seats }}</td>
-                        <td>{{ driver.daysDriven }}</td>
-                        <td>{{ driver.waitTime }}</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-            {# display navigation #}
-            <div class="paginator">
-                {{ knp_pagination_render(pagination) }}
-            </div>
+        <div class="card_container">
+            {% for driver in pagination %}
+                <div class="expandable-container">
+                    <div class="expandable">
+                        <span class="title">{{ driver.name }} {{ driver.lastName }}</span>
+                        <div class="icons">
+                            <a href="{{ path('driver_mod', {'id':driver.id}) }}" class="btn edit"><i class="ti ti-edit" style="font-size: 1.5rem"></i></a>
+                            <a href="#" class="btn delete" onclick="confirmDelete({{ driver.id }})"><i class="ti ti-trash" style="font-size: 1.5rem"></i></a>
+                            <span class="icon"><i class="ti ti-caret-down-filled" style="font-size: 1.5rem"></i></span>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="card-grid">
+                            <div class="expanded_card">
+                                <p class="label">Email:</p>
+                                <p class="value">{{ driver.email }}</p>
+                            </div>
+                            <div class="expanded_card">
+                                <p class="label">Asientos libres:</p>
+                                <p class="value">{{ driver.seats }}</p>
+                            </div>
+                            <div class="expanded_card">
+                                <p class="label">Días conduciendo:</p>
+                                <p class="value">{{ driver.daysDriven }}</p>
+                            </div>
+                            <div class="expanded_card">
+                                <p class="label">Tiempo de espera:</p>
+                                <p class="value">{{ driver.waitTime }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        {# display navigation #}
+        <div class="paginator">
+            {{ knp_pagination_render(pagination) }}
         </div>
     </div>
+
+    <script>
+        function confirmDelete(groupId) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "¡No podrás recuperar este usuario!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#8E6C88',
+                cancelButtonColor: '#80CED7',
+                confirmButtonText: 'Sí, eliminarlo',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '{{ path('driver_delete', {'id': 'ID_PLACEHOLDER'}) }}'.replace('ID_PLACEHOLDER', groupId),
+                        type: 'DELETE',
+                        success: function(response) {
+                            Swal.fire(
+                                '¡Eliminado!',
+                                'El usuario ha sido eliminado.',
+                                'success'
+                            ).then(() => {
+                                window.location.href = '{{ path('driver_main') }}';
+                            });
+                        },
+                        error: function(xhr) {
+                            Swal.fire(
+                                'Error',
+                                'Hubo un problema al eliminar el usuario.',
+                                'error'
+                            );
+                        }
+                    });
+                }
+            })
+        }
+    </script>
 {% endblock %}

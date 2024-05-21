@@ -1,14 +1,20 @@
 document.addEventListener("DOMContentLoaded", main);
 
 function main(){
-    const sidebar = document.querySelector('.sidebar')
-    const openSidebar = document.querySelector('.navBar li:last-child a')
-    const closeSidebar = document.querySelector('li:first-child a')
+    const sidebar = document.querySelector('.sidebar');
+    const openSidebar = document.querySelector('.navbar .menuButton a');
+    const closeSidebar = document.querySelector('.sidebar li:first-child a');
 
-    openSidebar.addEventListener('click', function () {
-        sidebar.style.display = 'flex'
-    })
-    closeSidebar.addEventListener('click', function () {
-        sidebar.style.display = 'none'
-    })
+    // Asegurarse de que el sidebar esté oculto al cargar la página
+    sidebar.style.display = 'none';
+
+    openSidebar.addEventListener('click', function (event) {
+        event.preventDefault();
+        sidebar.style.display = 'flex';
+    });
+
+    closeSidebar.addEventListener('click', function (event) {
+        event.preventDefault();
+        sidebar.style.display = 'none';
+    });
 }

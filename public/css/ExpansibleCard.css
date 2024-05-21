@@ -1,0 +1,110 @@
+:root {
+    --back-color: hsla(192, 19%, 15%);
+    --light-back-color: hsla(192, 19%, 25%); /* Una tonalidad más clara */
+    --card-background: hsla(192, 19%, 20%);
+    --card-border: hsla(192, 19%, 30%);
+}
+.card_container {
+    margin: 0 auto; /* Centrar el contenedor */
+    width: 100%; /* Puedes ajustar el ancho máximo del contenedor */
+}
+
+.expandable-container {
+    margin-bottom: 10px; /* Espacio entre los contenedores de elementos */
+}
+
+.expandable {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    background-color: var(--back-color);
+    padding: 15px;
+    width: 100%;
+    box-sizing: border-box;
+    cursor: pointer;
+    border-radius: 10px; /* Borde redondeado completo */
+}
+
+.expandable.expanded {
+    border-radius: 10px 10px 0 0; /* Borde redondeado superior cuando está expandido */
+}
+
+.expandable .icons {
+    display: flex;
+    align-items: center;
+}
+
+.expandable .icons a{
+    text-decoration: none;
+}
+
+.expandable .btn {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    margin-right: 10px;
+    font-size: 16px;
+    padding: 5px;
+    transition: color 0.3s;
+}
+
+.expandable .btn:hover {
+    color: #ccc;
+}
+
+.expandable .icon {
+    transition: transform 0.3s;
+}
+
+.content {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease, opacity 0.5s ease, padding 0.5s ease;
+    background-color: var(--light-back-color);
+    color: white;
+    padding: 0 15px; /* Quitar padding superior cuando está colapsado */
+    box-sizing: border-box;
+    border-radius: 0 0 10px 10px; /* Borde redondeado inferior */
+}
+
+.content.expanded {
+    max-height: 500px; /* Ajusta esta altura según la cantidad de contenido */
+    opacity: 1;
+    padding: 15px; /* Añadir padding cuando está expandido */
+    border-radius: 0 0 10px 10px; /* Mantener borde redondeado inferior */
+}
+
+.expandable.expanded + .content {
+    border-radius: 0 0 10px 10px; /* Quitar borde redondeado superior del contenido expandido */
+}
+
+.expandable.expanded .icon {
+    transform: rotate(180deg);
+}
+
+.card-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.expanded_card {
+    background-color: var(--card-background);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    padding: 10px;
+    flex: 1 1 calc(50% - 10px); /* Dos columnas */
+    box-sizing: border-box;
+}
+
+.expanded_card .label {
+    font-weight: bold;
+}
+
+.expanded_card .value {
+    margin: 0;
+}

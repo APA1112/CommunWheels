@@ -12,9 +12,6 @@
             {{ form_row(form) }}
             <div class="buttons">
                 <button type="submit" class="primaryButton">Guardar</button>
-                {% if driver.id is not null %}
-                    <button type="button" class="deleteButton" onclick="confirmDelete({{ driver.id }})">Borrar usuario</button>
-                {% endif %}
             </div>
             {{ form_end(form) }}
         </div>
