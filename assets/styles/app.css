@@ -14,6 +14,7 @@
 body{
     background-color: var(--original-back-color);
     color: var(--text-color);
+    font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif; /* Fuente similar a MUI */
 }
 .container{
     height: 80vh;
@@ -313,6 +314,72 @@ CSS FOR LOGIN FORM
     gap: 20px;
 }
 
-.active {
+.active_hour {
     background-color: var(--hover-color);
+}
+
+/* Archivo styles.css */
+
+/* Estilo general para el contenedor del paginador */
+.paginator {
+    display: flex;
+    justify-content: center; /* Centra el paginador horizontalmente */
+    margin-top: 20px;
+}
+
+/* Estilo para la lista de paginación */
+.paginator ul.pagination {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+/* Estilo para cada enlace de paginación */
+.paginator ul.pagination li {
+    margin: 0 4px; /* Espaciado entre los elementos */
+}
+
+.paginator ul.pagination li a {
+    color: rgba(0, 0, 0, 0.87); /* Color del texto similar a MUI */
+    text-decoration: none; /* Sin subrayado */
+    padding: 6px 16px; /* Espaciado interno similar a MUI */
+    margin: 0; /* Sin espaciado externo */
+    border: 1px solid rgba(0, 0, 0, 0.23); /* Borde similar a MUI */
+    border-radius: 16px; /* Bordes redondeados */
+    transition: background-color 0.3s, color 0.3s; /* Transición para los cambios */
+    font-size: 0.875rem; /* Tamaño de fuente similar a MUI */
+}
+
+/* Estilo para el enlace de paginación activo */
+.paginator ul.pagination li.active a {
+    background-color: rgba(0, 0, 0, 0.08); /* Fondo gris claro */
+    color: rgba(0, 0, 0, 0.87); /* Texto en color oscuro */
+    border: 1px solid rgba(0, 0, 0, 0.23); /* Borde similar */
+}
+
+/* Estilo para el hover de los enlaces */
+.paginator ul.pagination li a:hover {
+    background-color: rgba(0, 0, 0, 0.08); /* Fondo gris claro al pasar el ratón */
+    color: rgba(0, 0, 0, 0.87); /* Texto oscuro */
+}
+
+/* Estilo adicional para el estado deshabilitado */
+.paginator ul.pagination li.disabled a {
+    color: rgba(0, 0, 0, 0.38); /* Color de texto deshabilitado */
+    background-color: transparent; /* Fondo transparente */
+    border-color: rgba(0, 0, 0, 0.23); /* Borde deshabilitado */
+    cursor: not-allowed; /* Cursor no permitido */
+}
+
+/* Media query para mejorar la responsividad */
+@media (max-width: 768px) {
+    .paginator ul.pagination {
+        flex-wrap: wrap;
+    }
+
+    .paginator ul.pagination li a {
+        padding: 4px 12px; /* Ajuste del espaciado interno para pantallas pequeñas */
+        margin: 2px; /* Ajuste del espaciado externo para pantallas pequeñas */
+    }
 }
