@@ -12,9 +12,6 @@
             {{ form_widget(form) }}
             <div class="buttons">
                 <button type="submit" class="primaryButton">Guardar</button>
-                {% if absence.id is not null %}
-                    <button type="button" class="deleteButton" onclick="confirmDelete({{ absence.id }})">Borrar notificación</button>
-                {% endif %}
             </div>
             {{ form_end(form) }}
         </div>

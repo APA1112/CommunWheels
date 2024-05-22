@@ -12,9 +12,6 @@
             {{ form_widget(form) }}
             <div class="buttons">
                 <button type="submit" class="primaryButton">Guardar</button>
-                {% if group.id is not null %}
-                    <button type="button" class="deleteButton" onclick="confirmDelete({{ group.id }})">Borrar grupo</button>
-                {% endif %}
             </div>
             {{ form_end(form) }}
         </div>
