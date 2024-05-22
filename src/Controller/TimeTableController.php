@@ -18,42 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[IsGranted('ROLE_DRIVER')]
 class TimeTableController extends AbstractController
 {
-    #[Route('/cuadrantes', name: 'timetable_main')]
-    public function index(GroupRepository $groupRepository): Response
-    {
-        $user = $this->getUser();
-
-        if ($user->isIsGroupAdmin() || $user->isIsAdmin()) {
-            $groups = $groupRepository->groupsData();
-        } else {
-            $userId = $this->getUser()->getDriver();
-            $groups = $groupRepository->findGroupsByDriverId($userId);
-        }
-
-        return $this->render('timeTable/main.html.twig', [
-            'groups' => $groups,
-        ]);
-    }
-
-    #[IsGranted('ROLE_GROUP_ADMIN')]
-    #[Route('/cuadrantes/filtrados', name: 'timeTable_filter')]
-    public function filterIndex(GroupRepository $groupRepository, PaginatorInterface $paginator, Request $request):Response{
-
-        $groups = $groupRepository->findGroupsByDriverId($this->getUser()->getDriver());
-        $query = $groupRepository->getDriversGroupPagination($this->getUser()->getDriver());
-        $pagination = $paginator->paginate(
-            $query, /* query NOT result */
-            $request->query->getInt('page', 1), /*page number*/
-            10 /*limit per page*/
-        );
-
-        return $this->render('timeTable/main.html.twig',
-            [
-                'groups' => $groups,
-                'pagination' => $pagination,
-            ]);
-    }
-    #[Route('/cuadrante/modificar/{id}', name: 'timetable_mod')]
+    #[Route('/cuadrantes/{id}', name: 'timetable_main')]
     public function modificar(Group $group, TimeTableRepository $timeTableRepository):Response
     {
         $timeTablesGroup = $timeTableRepository->findByGroup($group);

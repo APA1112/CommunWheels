@@ -4,7 +4,6 @@
     <div class="container">
         {% if is_granted('ROLE_GROUP_ADMIN') %}
             {% include 'users/card.html.twig' %}
-            {% include 'timeTable/card.html.twig' %}
         {% endif %}
         {% include 'groups/card.html.twig' %}
         {% include 'notify/card.html.twig' %}

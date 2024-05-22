@@ -4,11 +4,12 @@
     <div class="container">
         {% if is_granted('ROLE_GROUP_ADMIN') %}
             <div class="button_container">
-                <a href="{{ path('trip_new', {'id':group.id}) }}" class="primaryButton"><i class="ti ti-table-plus"></i>Generar Cuadrante</a>
-                <a href="{{ path('app_non_school_day', {'id':group.id}) }}" class="primaryButton"><i class="ti ti-table-plus"></i>Dias festivos</a>
+                <a href="{{ path('trip_new', {'id':group.id}) }}" class="primaryButton"><i class="ti ti-plus"></i>Generar Cuadrante</a>
+                <a href="{{ path('app_non_school_day', {'id':group.id}) }}" class="primaryButton">Días festivos</a>
             </div>
         {% endif %}
         <div class="table_container">
+            <h2 class="titulo">Cuadrantes del grupo {{ group.name }}</h2>
             <table class="tabla">
                 <thead>
                 <tr>
@@ -30,14 +31,14 @@
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="2">No se encontraron cuadrantes</td>
+                        <td colspan="3">No se encontraron cuadrantes</td>
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
         </div>
         <div class="button_container">
-            <a href="{{ path('timetable_main') }}" class="secondaryButton"><i class="ti ti-arrow-left"></i>Volver</a>
+            <a href="{{ path('group_main') }}" class="secondaryButton"><i class="ti ti-arrow-left"></i>Volver</a>
         </div>
     </div>
 {% endblock %}

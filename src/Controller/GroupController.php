@@ -96,14 +96,15 @@ class GroupController extends AbstractController
         ]);
     }
     #[Route('/grupo/eliminar/{id}', name: 'group_delete', methods: 'delete')]
-    public function delete(Request $request, Group $group): JsonResponse
+    public function delete(Request $request, Group $group, GroupRepository $groupRepository): JsonResponse
     {
         // Verifica que la solicitud es AJAX
         if ($request->isXmlHttpRequest()) {
-            // Eliminar el grupo (adaptar según tu lógica de eliminación)
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($group);
-            $entityManager->flush();
+
+            //$entityManager = $this->getDoctrine()->getManager();
+            //$entityManager->remove($group);
+            //$entityManager->flush();
+            $groupRepository->remove($group);
 
             return new JsonResponse(['status' => 'Group deleted'], 200);
         }

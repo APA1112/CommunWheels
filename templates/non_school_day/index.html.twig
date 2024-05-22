@@ -4,17 +4,17 @@
 
 {% block body %}
     <div class="container">
-        <h2 class="titulo">Días festivos del grupo {{ group.name }}</h2>
         <div class="button_container">
-            <a href="#" class="primaryButton"><i class="ti ti-plus"></i>Añadir día festivo</a>
+            <a href="{{ path('nonschoolday_new') }}" class="primaryButton"><i class="ti ti-plus"></i>Añadir día festivo</a>
         </div>
         <div class="card_container">
+            <h2 class="titulo">Días festivos del grupo {{ group.name }}</h2>
             {% for nonSchoolDay in nonSchoolDays %}
                 <div class="expandable-container">
                     <div class="expandable">
                         <span class="title">{{ nonSchoolDay.description }}</span>
                         <div class="icons">
-                            <a href="{{ path('driver_mod', {'id':nonSchoolDay.id}) }}" class="btn edit"><i class="ti ti-edit" style="font-size: 1.5rem"></i></a>
+                            <a href="{{ path('nonschoolday_edit', {'id':nonSchoolDay.id}) }}" class="btn edit"><i class="ti ti-edit" style="font-size: 1.5rem"></i></a>
                             <a href="#" class="btn delete" onclick="confirmDelete({{ nonSchoolDay.id }})"><i class="ti ti-trash" style="font-size: 1.5rem"></i></a>
                             <span class="icon"><i class="ti ti-caret-down-filled" style="font-size: 1.5rem"></i></span>
                         </div>
@@ -35,7 +35,7 @@
             {% endfor %}
         </div>
         <div class="button_container">
-            <a href="{{ path('timetable_mod', {'id':group.id}) }}" class="secondaryButton"><i class="ti ti-arrow-left"></i>Volver</a>
+            <a href="{{ path('group_main') }}" class="secondaryButton"><i class="ti ti-arrow-left"></i>Volver</a>
         </div>
     </div>
 
@@ -53,7 +53,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: '{{ path('driver_delete', {'id': 'ID_PLACEHOLDER'}) }}'.replace('ID_PLACEHOLDER', id),
+                        url: '{{ path('nonschoolday_delete', {'id': 'ID_PLACEHOLDER'}) }}'.replace('ID_PLACEHOLDER', id),
                         type: 'DELETE',
                         success: function(response) {
                             Swal.fire(
@@ -61,7 +61,7 @@
                                 'El dia festivo ha sido eliminado.',
                                 'success'
                             ).then(() => {
-                                window.location.href = '{{ path('driver_main') }}';
+                                window.location.href = '{{ path('app_non_school_day', {'id':group.id}) }}';
                             });
                         },
                         error: function(xhr) {

@@ -4,7 +4,7 @@
     <div class="container">
         {% if is_granted('ROLE_GROUP_ADMIN') %}
             <div class="button_container">
-            <a href="{{ path('group_new') }}" class="primaryButton"><i class="ti ti-table-plus"></i>Nuevo grupo</a>
+            <a href="{{ path('group_new') }}" class="primaryButton"><i class="ti ti-plus"></i>Nuevo grupo</a>
             </div>
         {% endif %}
         <div class="card_container">
@@ -28,6 +28,14 @@
                                 <p class="label">Destino:</p>
                                 <p class="value">{{ group.destination }}</p>
                             </div>
+                            <div class="expanded_card">
+                                <a href="{{ path('timetable_main', {'id':group.id}) }}" class="secondaryButton">Ver cuadrantes</a>
+                            </div>
+                            {% if is_granted('ROLE_GROUP_ADMIN') %}
+                            <div class="expanded_card">
+                                <a href="{{ path('app_non_school_day', {'id':group.id}) }}" class="secondaryButton">Días festivos</a>
+                            </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

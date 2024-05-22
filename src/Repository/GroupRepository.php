@@ -87,6 +87,7 @@ class GroupRepository extends ServiceEntityRepository
 
     public function remove(Group $group){
         $this->getEntityManager()->remove($group);
+        $this->getEntityManager()->flush();
     }
 
     public function add(Group $group){

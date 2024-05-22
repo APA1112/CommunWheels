@@ -96,13 +96,14 @@
     background-color: var(--card-background);
     border: 1px solid var(--card-border);
     border-radius: 8px;
-    padding: 10px;
+    padding: 1.4rem;
     flex: 1 1 calc(50% - 10px); /* Dos columnas */
     box-sizing: border-box;
 }
 
 .expanded_card .label {
     font-weight: bold;
+    font-size: large;
 }
 
 .expanded_card .value {

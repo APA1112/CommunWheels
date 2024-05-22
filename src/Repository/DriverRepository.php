@@ -80,6 +80,7 @@ class DriverRepository extends ServiceEntityRepository
             $this->getEntityManager()->remove($driver->getUser());
         }
         $this->getEntityManager()->remove($driver);
+        $this->getEntityManager()->flush();
     }
 
     public function add(Driver $driver){

@@ -86,14 +86,11 @@ class DriverController extends AbstractController
     }
     #[IsGranted('ROLE_GROUP_ADMIN')]
     #[Route('/conductor/eliminar/{id}', name: 'driver_delete')]
-    public function eliminar(Request $request, Driver $driver): JsonResponse
+    public function eliminar(Request $request, Driver $driver, DriverRepository $driverRepository): JsonResponse
     {
         // Verifica que la solicitud es AJAX
         if ($request->isXmlHttpRequest()) {
-            // Eliminar el grupo (adaptar según tu lógica de eliminación)
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($driver);
-            $entityManager->flush();
+            $driverRepository->remove($driver);
 
             return new JsonResponse(['status' => 'Group deleted'], 200);
         }

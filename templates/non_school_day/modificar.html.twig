@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="form_container">
+            {% if nonSchoolDay.id is null %}
+                <h2>Datos del nuevo día festivo</h2>
+            {% else %}
+                <h2>Datos de día festivo</h2>
+            {% endif %}
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <div class="buttons">
+                <button type="submit" class="primaryButton">Guardar</button>
+            </div>
+            {{ form_end(form) }}
+        </div>
+        <div class="button_container">
+            <a href="{{ path('app_non_school_day', {'id':group.id}) }}" class="secondaryButton"><i class="ti ti-arrow-left"></i>Volver</a>
+        </div>
+    </div>
+{% endblock %}
