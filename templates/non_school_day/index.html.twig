@@ -4,15 +4,76 @@
 
 {% block body %}
     <div class="container">
-        <h2 class="titulo">Días festivos</h2>
+        <h2 class="titulo">Días festivos del grupo {{ group.name }}</h2>
         <div class="button_container">
-            <a href="{{ path('timetable_mod', {'id':group}) }}" class="secondaryButton"><i class="ti ti-arrow-left"></i>Volver</a>
+            <a href="#" class="primaryButton"><i class="ti ti-plus"></i>Añadir día festivo</a>
         </div>
-        <div class="table_container">
-            <table class="tabla">
-                <thead></thead>
-                <tbody></tbody>
-            </table>
+        <div class="card_container">
+            {% for nonSchoolDay in nonSchoolDays %}
+                <div class="expandable-container">
+                    <div class="expandable">
+                        <span class="title">{{ nonSchoolDay.description }}</span>
+                        <div class="icons">
+                            <a href="{{ path('driver_mod', {'id':nonSchoolDay.id}) }}" class="btn edit"><i class="ti ti-edit" style="font-size: 1.5rem"></i></a>
+                            <a href="#" class="btn delete" onclick="confirmDelete({{ nonSchoolDay.id }})"><i class="ti ti-trash" style="font-size: 1.5rem"></i></a>
+                            <span class="icon"><i class="ti ti-caret-down-filled" style="font-size: 1.5rem"></i></span>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="card-grid">
+                            <div class="expanded_card">
+                                <p class="label">Fecha:</p>
+                                <p class="value">{{ nonSchoolDay.dayDate | date('d-m-Y') }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="expandable-container">
+                    <h2 class="titulo">No hay días festivos</h2>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="button_container">
+            <a href="{{ path('timetable_mod', {'id':group.id}) }}" class="secondaryButton"><i class="ti ti-arrow-left"></i>Volver</a>
         </div>
     </div>
+
+    <script>
+        function confirmDelete(id) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "¡No podrás recuperar este dia festivo!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#8E6C88',
+                cancelButtonColor: '#80CED7',
+                confirmButtonText: 'Sí, eliminarlo',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '{{ path('driver_delete', {'id': 'ID_PLACEHOLDER'}) }}'.replace('ID_PLACEHOLDER', id),
+                        type: 'DELETE',
+                        success: function(response) {
+                            Swal.fire(
+                                '¡Eliminado!',
+                                'El dia festivo ha sido eliminado.',
+                                'success'
+                            ).then(() => {
+                                window.location.href = '{{ path('driver_main') }}';
+                            });
+                        },
+                        error: function(xhr) {
+                            Swal.fire(
+                                'Error',
+                                'Hubo un problema al eliminar el dia festivo.',
+                                'error'
+                            );
+                        }
+                    });
+                }
+            })
+        }
+    </script>
 {% endblock %}

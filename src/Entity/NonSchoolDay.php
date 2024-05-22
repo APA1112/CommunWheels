@@ -14,6 +14,9 @@ class NonSchoolDay
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\Column]
+    private ?string $description = null;
+
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $dayDate = null;
 
@@ -49,4 +52,16 @@ class NonSchoolDay
 
         return $this;
     }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): NonSchoolDay
+    {
+        $this->description = $description;
+        return $this;
+    }
+
 }
