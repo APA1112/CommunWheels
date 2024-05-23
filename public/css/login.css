@@ -1,0 +1,122 @@
+:root {
+    --back-color: hsla(192, 19%, 15%);
+    --back-color-blur: hsla(192, 19%, 15%, 0.25);
+    --original-back-color: #263D42;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--original-back-color);
+}
+
+.background-highlight {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(270deg, var(--back-color), var(--back-color-blur));
+    background-size: 400% 400%;
+    animation: gradientAnimation 15s ease infinite;
+}
+
+@keyframes gradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.login-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    text-align: center;
+    transform-origin: center;
+    animation: grow 2s ease-out;
+}
+
+@keyframes grow {
+    0% {
+        transform: scaleY(0);
+    }
+    100% {
+        transform: scaleY(1);
+    }
+}
+
+.login-container h1 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.placeholder-image {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 20px;
+    border-radius: 10px;
+}
+
+.login-container input[type="text"],
+.login-container input[type="password"] {
+    width: calc(100% - 40px); /* Ajuste de ancho para incluir márgenes */
+    padding: 10px;
+    margin: 10px auto; /* Ajuste de margen para centrar */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box; /* Para incluir padding y borde en el ancho total */
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5); /* Sombreado interno */
+    display: block; /* Para asegurar que el contenedor del password no afecte el tamaño */
+}
+
+.password-container {
+    position: relative;
+    width: calc(100% - 40px);
+    margin: 10px auto; /* Ajuste de margen para centrar */
+}
+
+.password-container input[type="password"] {
+    width: 100%; /* Asegurar que el input de contraseña ocupe todo el contenedor */
+}
+
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: #333;
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-container input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: calc(100% - 40px); /* Ajuste de ancho para incluir márgenes */
+    margin: 10px auto; /* Ajuste de margen para centrar */
+    box-sizing: border-box; /* Para incluir padding y borde en el ancho total */
+    display: block; /* Para asegurar que se mantenga centrado */
+}
+
+.login-container input[type="submit"]:hover {
+    background-color: #45a049;
+}

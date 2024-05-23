@@ -5,9 +5,9 @@
     --back-color: hsla(192, 19%, 15%);
     --back-color-blur: hsla(192, 19%, 15%, 0.25);
     --primary-button: #63C7B2;
-    --primary-button-hover: hsla(168, 58%, 73%, 1);;
+    --primary-button-hover: hsla(168, 58%, 73%, 1);
     --secondary-button: #80CED7;
-    --secondary-button-hover: hsla(184, 50%, 80%, 1);;
+    --secondary-button-hover: hsla(184, 50%, 80%, 1);
     --delete-button: #8E6C88;
     --delete-button-hover: hsla(294, 33%, 70%, 1);
 }
@@ -234,76 +234,12 @@ CSS FOR FORM
     box-sizing: border-box;
     align-items: flex-start;
 }
-/**
-
-CSS FOR LOGIN FORM
-
- */
-.login_form_container{
-    background-color: var(--back-color);
-    display: flex;
-    flex-direction: column;
-    border-radius: 10px;
-    padding: 2rem;
-    gap: 10px 20px;
-    width: 50%;
-}
-.login_form_container h2{
-    font-size: xx-large;
-    font-weight: bold;
-    text-align: center;
-}
-.login_form_container label{
-    font-weight: bold;
-    font-size: large;
-}
-.login_form_container input{
-    padding: .5rem;
-    width: auto;
-    border-radius: 5px;
-    min-width: 96%;
-    margin-top: 1rem;
-}
-.login_form_container .buttons{
-    margin-top: 2rem;
-    display: flex;
-    justify-content: space-between;
-}
-.login_form_container .buttons button{
-    width: 100%;
-}
-.login_form_container h3{
-    font-size: x-large;
-    font-weight: bold;
-    text-align: center;
-}
-/*
-
-    CSS LOGO
-
- */
-.logo{
-    width: 30%;
-}
-.logo img{
-    height: 100%;
-    width: 100%;
-}
 .titulo{
     font-size: x-large;
     font-weight: bold;
     text-align: center;
     margin-bottom: 1rem;
 }
-.login_container{
-    height: 80vh;
-    display: flex;
-    align-items: center;
-    padding: 4rem;
-    justify-content: center;
-    gap: 10px;
-}
-
 .schedule_form_container{
     display: flex;
     flex-direction: column;
