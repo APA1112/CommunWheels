@@ -97,8 +97,14 @@
     border: 1px solid var(--card-border);
     border-radius: 8px;
     padding: 1.4rem;
-    flex: 1 1 calc(50% - 10px); /* Dos columnas */
+    flex: 1 1 calc(25% - 10px); /* Dos columnas */
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
 }
 
 .expanded_card .label {

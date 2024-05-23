@@ -1,20 +1,23 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css" />
     <link href="{{ asset('css/login.css')}}" type="text/css" rel="stylesheet">
 {% endblock %}
 
 {% block body %}
     <div class="background-highlight">
         <div class="login-container">
-            <img src="{{ asset('images/LogoCommunWheelsWhite2.png') }}" alt="Logo" class="placeholder-image">
+            <div class="placeholder-image">
+                <img src="{{ asset('images/LogoCommunWheels.png') }}" alt="Logo" >
+            </div>
             <h1>Iniciar sesión</h1>
             {% if error %}
                 <h2 style="color: red">{{ error.message }}</h2>
             {% endif %}
             <form method="post">
                 <label for="username">Usuario:</label>
-                <input type="text" id="username" name="_username" required>
+                <input type="text" id="username" name="_username" required value="{{ last_username }}">
                 <label for="password">Contraseña:</label>
                 <div class="password-container">
                     <input type="password" id="password" name="_password" required {% if error %}autofocus{% endif %}>

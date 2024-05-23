@@ -21,7 +21,7 @@ body {
     align-items: center;
     width: 100%;
     height: 100%;
-    background: linear-gradient(270deg, var(--back-color), var(--back-color-blur));
+    background: linear-gradient(270deg, var(--back-color), var(--original-back-color));
     background-size: 400% 400%;
     animation: gradientAnimation 15s ease infinite;
 }
@@ -33,7 +33,7 @@ body {
 }
 
 .login-container {
-    background-color: #fff;
+    background-color: #CCDBDC;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
@@ -58,15 +58,20 @@ body {
 }
 
 .placeholder-image {
-    width: 100px;
-    height: 100px;
+    width: 50%;
+    height: 50%;
+    background-color: #CCDBDC;
     margin: 0 auto 20px;
     border-radius: 10px;
+}
+.placeholder-image img{
+    height: 150%;
+    width: 100%;
 }
 
 .login-container input[type="text"],
 .login-container input[type="password"] {
-    width: calc(100% - 40px); /* Ajuste de ancho para incluir márgenes */
+    width: 100%; /* Ajuste de ancho para incluir márgenes */
     padding: 10px;
     margin: 10px auto; /* Ajuste de margen para centrar */
     border: 1px solid #ccc;
@@ -78,7 +83,7 @@ body {
 
 .password-container {
     position: relative;
-    width: calc(100% - 40px);
+    width: 100%;
     margin: 10px auto; /* Ajuste de margen para centrar */
 }
 
