@@ -5,7 +5,6 @@
         {% if is_granted('ROLE_GROUP_ADMIN') %}
             <div class="button_container">
                 <a href="{{ path('trip_new', {'id':group.id}) }}" class="primaryButton"><i class="ti ti-plus"></i>Generar Cuadrante</a>
-                <a href="{{ path('app_non_school_day', {'id':group.id}) }}" class="primaryButton">Días festivos</a>
             </div>
         {% endif %}
         <div class="table_container">

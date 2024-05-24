@@ -4,8 +4,8 @@
     --original-back-color: #263D42;
     --back-color: hsla(192, 19%, 15%);
     --back-color-blur: hsla(192, 19%, 15%, 0.25);
-    --primary-button: #63C7B2;
-    --primary-button-hover: hsla(168, 58%, 73%, 1);
+        --primary-button: #63C7B2;
+        --primary-button-hover: hsla(168, 58%, 73%, 1);
     --secondary-button: #80CED7;
     --secondary-button-hover: hsla(184, 50%, 80%, 1);
     --delete-button: #8E6C88;
@@ -177,6 +177,7 @@ CSS FOR FORM
     padding: 2rem;
     gap: 10px 20px;
     width: 100%;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
 .inner{
     display: flex;
@@ -248,13 +249,12 @@ CSS FOR FORM
     border-radius: 5px;
     width: 25%;
     gap: 20px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
 
 .active_hour {
     background-color: var(--hover-color);
 }
-
-/* Archivo styles.css */
 
 /* Estilo general para el contenedor del paginador */
 .paginator {

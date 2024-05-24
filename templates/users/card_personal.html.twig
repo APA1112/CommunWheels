@@ -1,5 +1,4 @@
-<a href="{{ path('driver_mod', {'id':app.user.driver.id}) }}" class="card">
+<a href="{{ path('driver_mod', {'id': app.user.driver.id, 'redirect': app.request.uri}) }}" class="card">
     <i class="ti ti-id" style='font-size: 8rem;'></i>
     <h3>Datos personales</h3>
 </a>
-

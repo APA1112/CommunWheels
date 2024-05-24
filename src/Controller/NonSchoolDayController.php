@@ -14,6 +14,15 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class NonSchoolDayController extends AbstractController
 {
+
+    #[Route('/nonschoolday/nuevo', name: 'nonschoolday_new')]
+    public function nuevo(NonSchoolDayRepository $nonSchoolDayRepository, Request $request): Response
+    {
+        $nonSchoolDay = new NonSchoolDay();
+        $nonSchoolDayRepository->add($nonSchoolDay);
+        return $this->modificar($nonSchoolDay, $request, $nonSchoolDayRepository);
+    }
+
     #[Route('/nonschoolday/{id}', name: 'app_non_school_day')]
     public function index(Group $group, NonSchoolDayRepository $nonSchoolDayRepository): Response
     {
@@ -24,15 +33,6 @@ class NonSchoolDayController extends AbstractController
             'nonSchoolDays'=>$nonSchoolDays,
         ]);
     }
-
-    #[Route('/nonschoolday/nuevo', name: 'nonschoolday_new')]
-    public function nuevo(NonSchoolDayRepository $nonSchoolDayRepository, Request $request): Response
-    {
-        $nonSchoolDay = new NonSchoolDay();
-        $nonSchoolDayRepository->add($nonSchoolDay);
-        return $this->modificar($nonSchoolDay, $request, $nonSchoolDayRepository);
-    }
-
     #[Route('/nonschoolday/modificar/{id}', name: 'nonschoolday_edit')]
     public function modificar(NonSchoolDay $nonSchoolDay, Request $request, NonSchoolDayRepository $nonSchoolDayRepository) : Response {
 

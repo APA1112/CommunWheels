@@ -2,6 +2,8 @@
     --back-color: hsla(192, 19%, 15%);
     --back-color-blur: hsla(192, 19%, 15%, 0.25);
     --original-back-color: #263D42;
+    --primary-button: #63C7B2;
+    --primary-button-hover: hsla(168, 58%, 73%, 1);
 }
 
 body {
@@ -109,19 +111,17 @@ body {
     justify-content: center;
 }
 
-.login-container input[type="submit"] {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    width: calc(100% - 40px); /* Ajuste de ancho para incluir márgenes */
-    margin: 10px auto; /* Ajuste de margen para centrar */
-    box-sizing: border-box; /* Para incluir padding y borde en el ancho total */
-    display: block; /* Para asegurar que se mantenga centrado */
+.primaryButton{
+    border: 1px solid var(--text-color);
+    border-radius: 10px;
+    padding: 1rem;
+    background-color: var(--primary-button);
+    text-decoration: none;
+    font-size: large;
+    color: var(--original-back-color);
 }
-
-.login-container input[type="submit"]:hover {
-    background-color: #45a049;
+.primaryButton:hover{
+    background-color: var(--primary-button-hover);
+    cursor: pointer;
+    color: var(--back-color);
 }

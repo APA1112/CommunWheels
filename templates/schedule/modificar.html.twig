@@ -1,13 +1,14 @@
+{% form_theme form 'bootstrap_5_horizontal_layout.html.twig' %}
 {% extends 'base.html.twig' %}
 
 {% block body %}
     <div class="container">
         <div class="form_container">
-            {% if schedules is empty %}
+            {# if schedule is empty %}
                 <h2 class="titulo">Añadir horario</h2>
             {% else %}
                 <h2 class="titulo">Modificar horario</h2>
-            {% endif %}
+            {% endif #}
             {{ form_start(form) }}
             {{ form_widget(form) }}
             <div class="button_container">

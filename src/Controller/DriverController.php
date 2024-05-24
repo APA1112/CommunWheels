@@ -74,7 +74,8 @@ class DriverController extends AbstractController
                 } else {
                     $this->addFlash('success', 'Cambios guardados con exito');
                 }
-                return $this->redirectToRoute('driver_main');
+
+                return $this->redirect($request->request->get('redirect') ?? $this->generateUrl('driver_main'));
             } catch (\Exception $e) {
                 $this->addFlash('error', 'No se han podido guardar los cambios');
             }

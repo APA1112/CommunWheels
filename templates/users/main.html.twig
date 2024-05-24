@@ -10,7 +10,9 @@
                     <div class="expandable">
                         <span class="title">{{ driver.name }} {{ driver.lastName }}</span>
                         <div class="icons">
-                            <a href="{{ path('driver_mod', {'id':driver.id}) }}" class="btn edit"><i class="ti ti-edit" style="font-size: 1.5rem"></i></a>
+                            <a href="{{ path('driver_mod', {'id': driver.id, 'redirect': app.request.uri}) }}" class="btn edit">
+                                <i class="ti ti-edit" style="font-size: 1.5rem"></i>
+                            </a>
                             <a href="#" class="btn delete" onclick="confirmDelete({{ driver.id }})"><i class="ti ti-trash" style="font-size: 1.5rem"></i></a>
                             <span class="icon"><i class="ti ti-caret-down-filled" style="font-size: 1.5rem"></i></span>
                         </div>

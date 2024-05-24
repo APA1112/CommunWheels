@@ -62,9 +62,7 @@ body {
     box-shadow: -10px 0 10px rgba(0, 0, 0, 0.1);
     display: none; /* Asegurarse de que esté oculto por defecto */
     flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start; /* Asegura que los elementos se alineen al inicio del contenedor */
-    padding-top: 20px; /* Añade espacio en la parte superior */
+
 }
 
 .sidebar li {
@@ -73,7 +71,6 @@ body {
 
 .sidebar a {
     width: 100%;
-    padding: 15px 20px; /* Espaciado para los enlaces del sidebar */
 }
 
 /* Estilos del botón del menú */

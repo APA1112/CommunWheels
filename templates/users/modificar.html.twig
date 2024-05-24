@@ -10,13 +10,14 @@
             {% endif %}
             {{ form_start(form) }}
             {{ form_row(form) }}
+            <input type="hidden" name="redirect" value="{{ app.request.get('redirect') }}">
             <div class="buttons">
                 <button type="submit" class="primaryButton">Guardar</button>
             </div>
             {{ form_end(form) }}
         </div>
         <div class="button_container">
-            <a href="{{ path('driver_main') }}" class="secondaryButton"><i class="ti ti-arrow-left"></i>Volver</a>
+            <a href="{{ app.request.get('redirect') ? app.request.get('redirect') : path('driver_main') }}" class="secondaryButton"><i class="ti ti-arrow-left"></i>Volver</a>
         </div>
     </div>
 

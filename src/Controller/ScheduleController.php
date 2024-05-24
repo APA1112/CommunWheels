@@ -2,14 +2,19 @@
 
 namespace App\Controller;
 
+use App\Entity\Driver;
 use App\Entity\Schedule;
 use App\Form\ScheduleType;
+use App\Form\WeekScheduleModel;
+use App\Form\WeekScheduleType;
 use App\Repository\ScheduleRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[IsGranted('ROLE_DRIVER')]
 class ScheduleController extends AbstractController
 {
     #[Route('/horario', name: 'schedule_main')]
@@ -28,24 +33,18 @@ class ScheduleController extends AbstractController
         return $this->modificar($schedule, $scheduleRepository, $request);
     }
     #[Route('/horario/modificar/{id}', name: 'schedule_update')]
-    public function modificar(ScheduleRepository $scheduleRepository, Request $request): Response
+    public function modificar(Driver $driver, ScheduleRepository $scheduleRepository, Request $request): Response
     {
-        $schedules = $scheduleRepository->findDriverSchedules($this->getUser()->getDriver());
+        $week = new WeekScheduleModel();
+        $week->schedules = $scheduleRepository->findDriverSchedules($driver);
 
-        if (!$schedules) {
-            $this->addFlash('error', 'No se han encontrado horarios para el conductor especificado.');
-            return $this->redirectToRoute('schedule_main');
-        }
-
-        $form = $this->createForm(ScheduleType::class, $schedules[0]);
+        $form = $this->createForm(WeekScheduleType::class, $week);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                foreach ($schedules as $schedule) {
-                    $scheduleRepository->save($schedule);
-                }
+                $scheduleRepository->save();
                 $this->addFlash('success', 'Cambios guardados con éxito');
                 return $this->redirectToRoute('schedule_main');
             } catch (\Exception $e) {
@@ -55,7 +54,7 @@ class ScheduleController extends AbstractController
         //dd($schedules);
         return $this->render('schedule/modificar.html.twig', [
             'form' => $form->createView(),
-            'schedules' => $schedules
+            //'schedule' => $week
         ]);
     }
 }
