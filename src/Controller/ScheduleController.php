@@ -26,11 +26,21 @@ class ScheduleController extends AbstractController
     }
 
     #[Route('/horario/crear', name: 'schedule_create')]
-    public function create(ScheduleRepository $scheduleRepository, Request $request):Response{
-        $schedule = new Schedule();
-        $scheduleRepository->add($schedule);
+    public function create(ScheduleRepository $scheduleRepository, Request $request): Response
+    {
         $driver = $this->getUser()->getDriver();
-        $schedule->setDriver($driver);
+
+        for ($i = 1; $i <= 5; $i++) {
+            $schedule = new Schedule();
+            $schedule->setDriver($driver);
+            $schedule->setWeekDay($i);
+            $schedule->setEntrySlot(0);
+            $schedule->setExitSlot(0);
+            $scheduleRepository->add($schedule);
+        }
+
+        //$scheduleRepository->save();
+
         return $this->modificar($driver, $scheduleRepository, $request);
     }
     #[Route('/horario/modificar/{id}', name: 'schedule_update')]
@@ -52,7 +62,7 @@ class ScheduleController extends AbstractController
                 $this->addFlash('error', 'No se han podido guardar los cambios');
             }
         }
-        //dd($schedules);
+
         return $this->render('schedule/modificar.html.twig', [
             'form' => $form->createView(),
         ]);

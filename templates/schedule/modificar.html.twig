@@ -3,12 +3,8 @@
 
 {% block body %}
     <div class="container">
+        <h2 class="titulo">Horario de {{ app.user.driver }}</h2>
         <div class="form_container">
-            {# if schedule is empty %}
-                <h2 class="titulo">Añadir horario</h2>
-            {% else %}
-                <h2 class="titulo">Modificar horario</h2>
-            {% endif #}
             {{ form_start(form) }}
             {{ form_widget(form) }}
             <div class="button_container">
