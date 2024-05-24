@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Absence;
+use App\Entity\Driver;
 use App\Form\AbsenceType;
 use App\Repository\AbsenceRepository;
 use App\Repository\DriverRepository;
@@ -34,10 +35,11 @@ class AbsenceController extends AbstractController
         ]);
     }
 
-    #[Route('/notificacion/nueva', name: 'new_absence')]
-    public function new(AbsenceRepository $absenceRepository, Request $request): Response
+    #[Route('/notificacion/nueva/{id}', name: 'new_absence')]
+    public function new(Driver $driver,AbsenceRepository $absenceRepository, Request $request): Response
     {
         $absence = new Absence();
+        $absence->setDriver($driver);
         $absenceRepository->add($absence);
         return $this->modificar($absence, $absenceRepository, $request);
     }

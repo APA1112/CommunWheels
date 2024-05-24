@@ -15,10 +15,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class NonSchoolDayController extends AbstractController
 {
 
-    #[Route('/nonschoolday/nuevo', name: 'nonschoolday_new')]
-    public function nuevo(NonSchoolDayRepository $nonSchoolDayRepository, Request $request): Response
+    #[Route('/nonschoolday/nuevo/{id}', name: 'nonschoolday_new')]
+    public function nuevo(Group $group, NonSchoolDayRepository $nonSchoolDayRepository, Request $request): Response
     {
         $nonSchoolDay = new NonSchoolDay();
+        $nonSchoolDay->setBand($group);
         $nonSchoolDayRepository->add($nonSchoolDay);
         return $this->modificar($nonSchoolDay, $request, $nonSchoolDayRepository);
     }
@@ -35,6 +36,7 @@ class NonSchoolDayController extends AbstractController
     }
     #[Route('/nonschoolday/modificar/{id}', name: 'nonschoolday_edit')]
     public function modificar(NonSchoolDay $nonSchoolDay, Request $request, NonSchoolDayRepository $nonSchoolDayRepository) : Response {
+        $group = $nonSchoolDay->getBand();
 
         $form = $this->createForm(NonSchoolDayType::class, $nonSchoolDay);
 
@@ -50,14 +52,15 @@ class NonSchoolDayController extends AbstractController
                 } else {
                     $this->addFlash('success', 'Cambios guardados con éxito');
                 }
-                return $this->redirectToRoute('app_non_school_day');
+                return $this->redirectToRoute('app_non_school_day', ['id'=>$group->getId()]);
             } catch (\Exception $e){
-                $this->addFlash('error', 'No se han podido guardar los cambios');
+                $this->addFlash('error', 'No se han podido guardar los cambios' . $e->getMessage());
             }
         }
         return $this->render('non_school_day/modificar.html.twig', [
             'form' => $form->createView(),
             'nonSchoolDay' => $nonSchoolDay,
+            'group' => $group
         ]);
     }
 

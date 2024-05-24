@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Absence;
+use App\Entity\Driver;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -14,17 +16,16 @@ class AbsenceType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('driver', EntityType::class, [
+                'class' => Driver::class,
+                'disabled' => true
+            ])
+            ->add('description', TextareaType::class, [
+                'label' => 'Descripcion',
+            ])
             ->add('absenceDate', DateType::class, [
                 'label' => 'Fecha',
                 'widget' => 'single_text',
-            ])
-            /**
-             * Como puedo hacer que sea el conductor asociado
-             * al usuario actual el que aparece en este campo
-             */
-            ->add('driver')
-            ->add('description', TextareaType::class, [
-                'label' => 'Descripcion',
             ])
         ;
     }

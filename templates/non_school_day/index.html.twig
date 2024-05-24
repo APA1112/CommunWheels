@@ -1,11 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello NonSchoolDayController!{% endblock %}
-
 {% block body %}
     <div class="container">
         <div class="button_container">
-            <a href="{{ path('nonschoolday_new') }}" class="primaryButton"><i class="ti ti-plus"></i>Añadir día festivo</a>
+            <a href="{{ path('nonschoolday_new', {'id':group.id}) }}" class="primaryButton"><i class="ti ti-plus"></i>Añadir día festivo</a>
         </div>
         <div class="card_container">
             <h2 class="titulo">Días festivos del grupo {{ group.name }}</h2>
