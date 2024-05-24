@@ -29,8 +29,9 @@ class ScheduleController extends AbstractController
     public function create(ScheduleRepository $scheduleRepository, Request $request):Response{
         $schedule = new Schedule();
         $scheduleRepository->add($schedule);
-        $schedule->setDriver($this->getUser()->getDriver());
-        return $this->modificar($schedule, $scheduleRepository, $request);
+        $driver = $this->getUser()->getDriver();
+        $schedule->setDriver($driver);
+        return $this->modificar($driver, $scheduleRepository, $request);
     }
     #[Route('/horario/modificar/{id}', name: 'schedule_update')]
     public function modificar(Driver $driver, ScheduleRepository $scheduleRepository, Request $request): Response
@@ -54,7 +55,6 @@ class ScheduleController extends AbstractController
         //dd($schedules);
         return $this->render('schedule/modificar.html.twig', [
             'form' => $form->createView(),
-            //'schedule' => $week
         ]);
     }
 }
