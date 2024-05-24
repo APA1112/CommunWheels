@@ -1,44 +1,16 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<div class="container">
-    <h1 class="titulo">Detalles del Cuadrante</h1>
-    <h2 class="titulo">Cuadrante del grupo con ID: {{ group.id }}</h2>
-    <h2 class="titulo">Conductores</h2>
-    <div class="table_container">
-        <table class="tabla">
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Conductor</th>
-                <th>Ausencias</th>
-                <th>Tiempo de Espera</th>
-                <th>Dias conducidos</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for driver in drivers %}
-                <tr>
-                    <td>{{ driver.id }}</td>
-                    <td>{{ driver }}</td>
-                    <td>
-                        <ul>
-                            {% for absence in absences[driver.id] %}
-                                <li>{{ absence.description }}</li>
-                            {% else %}
-                                <p>No hay ausencias</p>
-                            {% endfor %}
-                        </ul>
-                    </td>
-                    <td>{{ waitTimes[driver.id] }}</td>
-                    <td>{{ daysDriven[driver.id] }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+    <div class="container">
+        <h1 class="titulo">Detalles del cuadrante</h1>
+        <h2 class="titulo">Cuadrante del grupo con ID: {{ group.id }}</h2>
+        <div class="form_container">
+            <h2>{{ timeTable.band.name }}</h2>
+            <h2>{{ timeTable.weekStartDate | date('d/m/y') }}</h2>
+        </div>
+        <div class="button_container">
+            <a href="{{ path('timetable_main', {'id':group.id}) }}" class="secondaryButton"><i
+                        class="ti ti-arrow-left"></i>Volver</a>
+        </div>
     </div>
-    <div class="button_container">
-        <a href="{{ path('timetable_main', {'id':group.id}) }}" class="secondaryButton"><i class="ti ti-arrow-left"></i>Volver</a>
-    </div>
-</div>
 {% endblock %}

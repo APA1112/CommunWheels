@@ -28,42 +28,36 @@ class TripController extends AbstractController
     }
 
     #[Route('/viaje/nuevo/{id}', name: 'trip_new')]
-    public function newTrip(DriverRepository $driverRepository, TimeTableRepository $timeTableRepository, Group $group): Response
+    public function newTrip(
+        Group               $group,
+        DriverRepository    $driverRepository,
+        TripRepository      $tripRepository,
+        TimeTableRepository $timeTableRepository
+    )
     {
-        $timeTable = $timeTableRepository->findByGroup($group);
-        //dd($timeTable);
-
-        // Create a new TimeTable
-        //$timeTable = new TimeTable();
+        $timeTable = new TimeTable();
         // Set any required fields here. For example:
-        //$timeTable->setBand($group);
-        //$timeTable->setWeekStartDate(new \DateTime('now'));
-        // Save the new TimeTable
-        //$timeTableRepository->save();
-
-        $drivers = $timeTable[0]->getBand()->getDrivers();
-
-        // Inicializar arrays para absences y waitTimes
-        $absences = [];
-        $waitTimes = [];
-        $schedules = [];
-        $daysDriven = [];
-
-        // Obtener absences y waitTimes para cada conductor
-        foreach ($drivers as $driver) {
-            $absences[$driver->getId()] = $driverRepository->getDriverAbsences($driver->getId())->getAbsences();
-            $waitTimes[$driver->getId()] = $driver->getWaitTime();
-            $daysDriven[$driver->getId()] = $driver->getDaysDriven();
-            $schedules[$driver->getId()] = $driverRepository->getDriverSchedule($driver->getId())->getSchedules();
+        $timeTable->setBand($group);
+        // Cogemos la representación numerica del dia de la semana en el que se generan los trips
+        $today = new \DateTime();
+        $todayDayOfWeek = $today->format('N');
+        // Calcula los días hasta el próximo lunes
+        $daysToNextMonday = 8 - $todayDayOfWeek;
+        if ($daysToNextMonday > 7) {
+            $daysToNextMonday -= 7;
         }
-        //dd($absences);
+        $nextMonday = (clone $today)->add(new \DateInterval('P' . $daysToNextMonday . 'D'));
+
+        $weekStartDate = $nextMonday;
+
+        $timeTable->setWeekStartDate($weekStartDate);
+        $timeTable->setActive(1);
+
+        $timeTableRepository->save();
+
         return $this->render('trip/new.html.twig', [
-            'drivers' => $drivers,
-            'schedules' => $schedules,
-            'absences' => $absences,
-            'waitTimes' => $waitTimes,
-            'daysDriven' => $daysDriven,
-            'group' => $timeTable[0]->getBand()
+            'timeTable' => $timeTable,
+            'group' => $group,
         ]);
     }
 }
