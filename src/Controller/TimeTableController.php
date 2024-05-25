@@ -5,8 +5,11 @@ namespace App\Controller;
 use App\Entity\Group;
 use App\Entity\TimeTable;
 use App\Entity\Trip;
+use App\Repository\AbsenceRepository;
 use App\Repository\DriverRepository;
 use App\Repository\GroupRepository;
+use App\Repository\NonSchoolDayRepository;
+use App\Repository\ScheduleRepository;
 use App\Repository\TimeTableRepository;
 use App\Repository\TripRepository;
 use Knp\Component\Pager\PaginatorInterface;
@@ -51,12 +54,14 @@ class TimeTableController extends AbstractController
 
     #[Route('/cuadrante/nuevo/{id}', name: 'timeTable_new')]
     public function newT(
-        Group               $group,
-        GroupRepository     $groupRepository,
-        DriverRepository    $driverRepository,
-        TripRepository      $tripRepository,
-        TimeTableRepository $timeTableRepository,
-        ValidatorInterface  $validator
+        Group                  $group,
+        AbsenceRepository      $absenceRepository,
+        ScheduleRepository     $scheduleRepository,
+        NonSchoolDayRepository $nonSchoolDayRepository,
+        DriverRepository       $driverRepository,
+        TripRepository         $tripRepository,
+        TimeTableRepository    $timeTableRepository,
+        ValidatorInterface     $validator
     )
     {
         // Cogemos la representación numerica del dia de la semana en el que se generan los trips
@@ -98,23 +103,58 @@ class TimeTableController extends AbstractController
         $tripDriver = null;
 
         foreach ($drivers as $driver) {
-
             if ($tripDriver === null || $driver->getDaysDriven() < $tripDriver->getDaysDriven()) {
                 $tripDriver = $driver;
             }
         }
 
-        $driverSchedules = $tripDriver->getSchedules();
+        $driverSchedules = $scheduleRepository->findDriverSchedules($tripDriver);
+        $driverAbsences = $absenceRepository->findDriverAbsences($tripDriver);
+        $groupNonSchoolDays = $nonSchoolDayRepository->findByGroup($group);
+        $groupNonSchoolDaysDates = [];
+        $driverAbsencesDates = [];
 
+        foreach ($groupNonSchoolDays as $groupNonSchoolDay) {
+            $groupNonSchoolDaysDates[] = $groupNonSchoolDay->getDayDate();
+        }
+
+        foreach ($driverAbsences as $driverAbsence) {
+            $driverAbsencesDates[] = $driverAbsence->getAbsenceDate();
+        }
+
+        //dd($driverAbsencesDates);
         for ($i = 0; $i < 5; $i++) {
             $trip = new Trip();
             $trip->setTripDate($weekStartDate);
             $trip->setTimeTable($timeTable);
-            $trip->setEntrySlot(1);
-            $trip->setExitSlot(3);
             $trip->setDriver($tripDriver);
+
+            // Convertir weekStartDate a una cadena de formato 'Y-m-d' para comparar
+            $formattedWeekStartDate = $weekStartDate->format('Y-m-d');
+
+            // Convertir las fechas en $groupNonSchoolDaysDates a cadenas de formato 'Y-m-d'
+            $formatedDriverAbsencesDates = array_map(function($date) {
+                return $date->format('Y-m-d');
+            }, $driverAbsencesDates);
+
+            // Convertir las fechas en $driverAbsences a cadenas de formato 'Y-m-d'
+            $formattedGroupNonSchoolDaysDates = array_map(function($date) {
+                return $date->format('Y-m-d');
+            }, $groupNonSchoolDaysDates);
+
+            if (!in_array($formattedWeekStartDate, $formattedGroupNonSchoolDaysDates)) {
+                $trip->setEntrySlot($driverSchedules[$i]->getEntrySlot());
+                $trip->setExitSlot($driverSchedules[$i]->getExitSlot());
+            } else {
+                $trip->setEntrySlot(0);
+                $trip->setExitSlot(0);
+            }
+
             $tripRepository->add($trip);
+            $weekStartDate->modify('+1 day');
         }
+
+
         return $this->render('trip/new.html.twig', [
             'timeTable' => $timeTable,
             'group' => $group,
