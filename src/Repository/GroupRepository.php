@@ -70,13 +70,13 @@ class GroupRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function findGroupDrivers(int $groupId): array
+    public function findGroupDrivers(Group $group): array
     {
         return $this->createQueryBuilder('g')
             ->leftJoin('g.drivers', 'd')
             ->addSelect('d')
             ->andWhere('g.id = :id')
-            ->setParameter('id', $groupId)
+            ->setParameter('id', $group->getId())
             ->getQuery()
             ->getResult();
     }

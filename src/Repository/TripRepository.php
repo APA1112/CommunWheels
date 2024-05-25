@@ -33,4 +33,9 @@ class TripRepository extends ServiceEntityRepository
     {
         $this->getEntityManager()->flush();
     }
+
+    public function add(Trip $trip){
+        $this->getEntityManager()->persist($trip);
+        $this->getEntityManager()->flush();
+    }
 }

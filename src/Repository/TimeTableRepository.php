@@ -31,11 +31,30 @@ class TimeTableRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+    public function getTimeTablePagination($group)
+    {
+        return $this->createQueryBuilder('t')
+            ->leftJoin('t.trips', 'tr')
+            ->addSelect('tr')
+            ->where('t.band = :group')
+            ->setParameter('group', $group)
+            ->orderBy('t.weekStartDate', 'DESC')
+            ->getQuery();
+    }
 
     public function findById($id){
         return $this->createQueryBuilder('t')
             ->andWhere('t.id = :id')
             ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public function findByWeekStartDate(\DateTime $weekStartDate): ?TimeTable
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.weekStartDate = :weekStartDate')
+            ->setParameter('weekStartDate', $weekStartDate->format('Y-m-d'))
             ->getQuery()
             ->getOneOrNullResult();
     }

@@ -1,5 +1,7 @@
 <?php
 
+// src/Entity/Trip.php
+
 namespace App\Entity;
 
 use App\Repository\TripRepository;
@@ -26,6 +28,10 @@ class Trip
     #[ORM\ManyToOne(inversedBy: 'trips')]
     #[ORM\JoinColumn(nullable: false)]
     private ?TimeTable $timeTable = null;
+
+    #[ORM\ManyToOne(inversedBy: 'trips')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Driver $driver = null;
 
     public function getId(): ?int
     {
@@ -73,8 +79,18 @@ class Trip
     public function setTimeTable(?TimeTable $timeTable): static
     {
         $this->timeTable = $timeTable;
-
         return $this;
     }
 
+    public function getDriver(): ?Driver
+    {
+        return $this->driver;
+    }
+
+    public function setDriver(?Driver $driver): static
+    {
+        $this->driver = $driver;
+        return $this;
+    }
 }
+

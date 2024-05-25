@@ -16,20 +16,112 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[IsGranted('ROLE_DRIVER')]
 class TimeTableController extends AbstractController
 {
     #[Route('/cuadrantes/{id}', name: 'timetable_main')]
-    public function modificar(Group $group, TimeTableRepository $timeTableRepository):Response
+    public function modificar(Group $group, TimeTableRepository $timeTableRepository, PaginatorInterface $paginator, Request $request): Response
     {
         $timeTablesGroup = $timeTableRepository->findByGroup($group);
+        $query = $timeTableRepository->getTimeTablePagination($group);
+        $pagination = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            10
+        );
 
         return $this->render('timeTable/modificar.html.twig', [
             'timeTablesGroup' => $timeTablesGroup,
+            'pagination' => $pagination,
             'group' => $group
         ]);
     }
+
+    #[Route('cuadrante/{id}', name: 'see_timetable')]
+    public function moreInfo(TimeTable $timeTable): Response
+    {
+        $group = $timeTable->getBand();
+        return $this->render('trip/new.html.twig', [
+            'timeTable' => $timeTable,
+            'group' => $group,
+        ]);
+    }
+
+    #[Route('/cuadrante/nuevo/{id}', name: 'timeTable_new')]
+    public function newT(
+        Group               $group,
+        GroupRepository     $groupRepository,
+        DriverRepository    $driverRepository,
+        TripRepository      $tripRepository,
+        TimeTableRepository $timeTableRepository,
+        ValidatorInterface  $validator
+    )
+    {
+        // Cogemos la representación numerica del dia de la semana en el que se generan los trips
+        $today = new \DateTime();
+        $todayDayOfWeek = $today->format('N');
+        // Calcula los días hasta el próximo lunes
+        $daysToNextMonday = 8 - $todayDayOfWeek;
+        if ($daysToNextMonday > 7) {
+            $daysToNextMonday -= 7;
+        }
+        $nextMonday = (clone $today)->add(new \DateInterval('P' . $daysToNextMonday . 'D'));
+
+        $weekStartDate = $nextMonday;
+        // Vemos si ya existe un timeTable con la misma fecha
+        $existingTimeTable = $timeTableRepository->findByWeekStartDate($weekStartDate);
+        if ($existingTimeTable) {
+            $this->addFlash('error', 'Ya existe un cuadrante para esta semana.');
+            return $this->redirectToRoute('timetable_main', ['id' => $group->getId()]);
+        }
+
+        $timeTable = new TimeTable();
+        // Set any required fields here. For example:
+        $timeTable->setBand($group);
+
+        $timeTable->setWeekStartDate($weekStartDate);
+        $timeTable->setActive(1);
+
+        $errors = $validator->validate($timeTable);
+
+        if (count($errors) > 0) {
+            $this->addFlash('error', 'Ha habido un error creando el cuadrante.');
+            return $this->redirectToRoute('timetable_main', ['id' => $group->getId()]);
+        }
+
+        $timeTableRepository->add($timeTable);
+
+        $drivers = $driverRepository->findDriversByGroup($group);
+
+        $tripDriver = null;
+
+        foreach ($drivers as $driver) {
+
+            if ($tripDriver === null || $driver->getDaysDriven() < $tripDriver->getDaysDriven()) {
+                $tripDriver = $driver;
+            }
+        }
+
+        $driverSchedules = $tripDriver->getSchedules();
+
+        for ($i = 0; $i < 5; $i++) {
+            $trip = new Trip();
+            $trip->setTripDate($weekStartDate);
+            $trip->setTimeTable($timeTable);
+            $trip->setEntrySlot(1);
+            $trip->setExitSlot(3);
+            $trip->setDriver($tripDriver);
+            $tripRepository->add($trip);
+        }
+        return $this->render('trip/new.html.twig', [
+            'timeTable' => $timeTable,
+            'group' => $group,
+            'success' => true,
+        ]);
+    }
+
     #[IsGranted('ROLE_GROUP_ADMIN')]
     #[Route('/cuadrante/eliminar/{id}', name: 'timetable_delete')]
     public function eliminar(Request $request, TimeTable $timeTable, TimeTableRepository $timeTableRepository): JsonResponse

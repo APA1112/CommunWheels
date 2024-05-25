@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Driver;
+use App\Entity\Group;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -69,6 +70,16 @@ class DriverRepository extends ServiceEntityRepository
             ->addSelect('a')
             ->getQuery()
             ->getOneOrNullResult();
+    }
+    public function findDriversByGroup(Group $group): array
+    {
+        $qb = $this->createQueryBuilder('d')
+            ->innerJoin('d.groupCollection', 'g')
+            ->where('g = :group')
+            ->setParameter('group', $group)
+            ->getQuery();
+
+        return $qb->getResult();
     }
     public function save()
     {
