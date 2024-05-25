@@ -13,4 +13,16 @@
                         class="ti ti-arrow-left"></i>Volver</a>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            {% if success is defined and success %}
+            Swal.fire({
+                title: '¡Cuadrante creado con éxito!',
+                text: 'El nuevo cuadrante ha sido creado exitosamente.',
+                icon: 'success',
+                confirmButtonText: 'Aceptar'
+            });
+            {% endif %}
+        });
+    </script>
 {% endblock %}

@@ -20,15 +20,18 @@ class TimeTableRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, TimeTable::class);
     }
-    public function findByGroup($groupId): array
+    public function findByGroup($group): array
     {
         return $this->createQueryBuilder('t')
-            ->andWhere('t.band = :groupId')
-            ->setParameter('groupId', $groupId)
+            ->leftJoin('t.trips', 'tr')
+            ->addSelect('tr')
+            ->where('t.band = :group')
+            ->setParameter('group', $group)
             ->orderBy('t.weekStartDate', 'DESC')
             ->getQuery()
             ->getResult();
     }
+
     public function findById($id){
         return $this->createQueryBuilder('t')
             ->andWhere('t.id = :id')
@@ -40,5 +43,24 @@ class TimeTableRepository extends ServiceEntityRepository
     public function save()
     {
         $this->getEntityManager()->flush();
+    }
+    public function add(TimeTable $timeTable){
+        $this->getEntityManager()->persist($timeTable);
+        $this->getEntityManager()->flush();
+    }
+    public function remove(TimeTable $timeTable){
+        $entityManager = $this->getEntityManager();
+
+        // Verificar y eliminar los trips asociados, si existen
+        $trips = $timeTable->getTrips();
+        if ($trips) {
+            foreach ($trips as $trip) {
+                $entityManager->remove($trip);
+            }
+        }
+
+        // Eliminar el TimeTable
+        $entityManager->remove($timeTable);
+        $entityManager->flush();
     }
 }

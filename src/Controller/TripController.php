@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class TripController extends AbstractController
 {
@@ -32,7 +33,8 @@ class TripController extends AbstractController
         Group               $group,
         DriverRepository    $driverRepository,
         TripRepository      $tripRepository,
-        TimeTableRepository $timeTableRepository
+        TimeTableRepository $timeTableRepository,
+        ValidatorInterface  $validator
     )
     {
         $timeTable = new TimeTable();
@@ -53,11 +55,18 @@ class TripController extends AbstractController
         $timeTable->setWeekStartDate($weekStartDate);
         $timeTable->setActive(1);
 
-        $timeTableRepository->save();
+        $errors = $validator->validate($timeTable);
+
+        if (count($errors) > 0) {
+            dd($errors);
+        }
+
+        $timeTableRepository->add($timeTable);
 
         return $this->render('trip/new.html.twig', [
             'timeTable' => $timeTable,
             'group' => $group,
+            'success' => true,
         ]);
     }
 }
