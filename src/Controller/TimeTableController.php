@@ -108,8 +108,8 @@ class TimeTableController extends AbstractController
             }
         }
 
-        $driverSchedules = $scheduleRepository->findDriverSchedules($tripDriver);
-        $driverAbsences = $absenceRepository->findDriverAbsences($tripDriver);
+        $tripDriverSchedules = $scheduleRepository->findDriverSchedules($tripDriver);
+        $tripDriverAbsences = $absenceRepository->findDriverAbsences($tripDriver);
         $groupNonSchoolDays = $nonSchoolDayRepository->findByGroup($group);
         $groupNonSchoolDaysDates = [];
         $driverAbsencesDates = [];
@@ -118,11 +118,10 @@ class TimeTableController extends AbstractController
             $groupNonSchoolDaysDates[] = $groupNonSchoolDay->getDayDate();
         }
 
-        foreach ($driverAbsences as $driverAbsence) {
+        foreach ($tripDriverAbsences as $driverAbsence) {
             $driverAbsencesDates[] = $driverAbsence->getAbsenceDate();
         }
 
-        //dd($driverAbsencesDates);
         for ($i = 0; $i < 5; $i++) {
             $trip = new Trip();
             $trip->setTripDate($weekStartDate);
@@ -133,18 +132,23 @@ class TimeTableController extends AbstractController
             $formattedWeekStartDate = $weekStartDate->format('Y-m-d');
 
             // Convertir las fechas en $groupNonSchoolDaysDates a cadenas de formato 'Y-m-d'
-            $formatedDriverAbsencesDates = array_map(function($date) {
+            $formatedDriverAbsencesDates = array_map(function ($date) {
                 return $date->format('Y-m-d');
             }, $driverAbsencesDates);
 
             // Convertir las fechas en $driverAbsences a cadenas de formato 'Y-m-d'
-            $formattedGroupNonSchoolDaysDates = array_map(function($date) {
+            $formattedGroupNonSchoolDaysDates = array_map(function ($date) {
                 return $date->format('Y-m-d');
             }, $groupNonSchoolDaysDates);
 
             if (!in_array($formattedWeekStartDate, $formattedGroupNonSchoolDaysDates)) {
-                $trip->setEntrySlot($driverSchedules[$i]->getEntrySlot());
-                $trip->setExitSlot($driverSchedules[$i]->getExitSlot());
+                if (!in_array($formattedWeekStartDate, $formatedDriverAbsencesDates)) {
+                    $trip->setEntrySlot($tripDriverSchedules[$i]->getEntrySlot());
+                    $trip->setExitSlot($tripDriverSchedules[$i]->getExitSlot());
+                }else{
+                    $trip->setEntrySlot(0);
+                    $trip->setExitSlot(0);
+                }
             } else {
                 $trip->setEntrySlot(0);
                 $trip->setExitSlot(0);
