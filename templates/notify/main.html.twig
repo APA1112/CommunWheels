@@ -3,30 +3,35 @@
 {% block body %}
     <div class="container">
         <div class="button_container">
-            <a href="{{ path('new_absence', {'id':app.user.driver.id}) }}" class="primaryButton"><i class="ti ti-plus"></i>Nuevo ausencia</a>
+            <a href="{{ path('new_absence', {'id':app.user.driver.id}) }}" class="primaryButton"><i
+                        class="ti ti-plus"></i>Nuevo
+                ausencia</a>
         </div>
         <div class="card_container">
             {% for absence in absences %}
             <div class="expandable-container">
-                    <div class="expandable">
-                        <span class="title">{{ absence.description }}</span>
-                        <div class="icons">
-                            <a href="{{ path('mod_absence', {'id':absence.id}) }}" class="btn edit"><i class="ti ti-edit" style="font-size: 1.5rem"></i></a>
-                            <a href="#" class="btn delete" onclick="confirmDelete({{ absence.id }})"><i class="ti ti-trash" style="font-size: 1.5rem"></i></a>
-                            <span class="icon"><i class="ti ti-caret-down-filled" style="font-size: 1.5rem"></i></span>
+                <div class="expandable">
+                    <span class="title">{{ absence.description }}</span>
+                    <div class="icons">
+                        <a href="{{ path('mod_absence', {'id':absence.id}) }}" class="btn edit"><i class="ti ti-edit"
+                                                                                                   style="font-size: 1.5rem"></i></a>
+                        <a href="#" class="btn delete" onclick="confirmDelete({{ absence.id }})"><i class="ti ti-trash"
+                                                                                                    style="font-size: 1.5rem"></i></a>
+                        <span class="icon"><i class="ti ti-caret-down-filled" style="font-size: 1.5rem"></i></span>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="card-grid">
+                        <div class="expanded_card">
+                            <p class="label">Fecha:</p>
+                            <p class="value">{{ absence.absenceDate | date('Y-m-d') }}</p>
                         </div>
                     </div>
-                    <div class="content">
-                        <div class="card-grid">
-                            <div class="expanded_card">
-                                <p class="label">Fecha:</p>
-                                <p class="value">{{ absence.absenceDate | date('Y-m-d') }}</p>
-                            </div>
-                        </div>
-                    </div>
-            {% else %}
-                <h2 class="titulo">No hay notificaciones</h2>
-            {% endfor %}
+                </div>
+                {% else %}
+                    <h2 class="titulo">No hay notificaciones</h2>
+                {% endfor %}
+            </div>
         </div>
     </div>
 
@@ -46,7 +51,7 @@
                     $.ajax({
                         url: '{{ path('absence_delete', {'id': 'ID_PLACEHOLDER'}) }}'.replace('ID_PLACEHOLDER', id),
                         type: 'DELETE',
-                        success: function(response) {
+                        success: function (response) {
                             Swal.fire(
                                 '¡Eliminado!',
                                 'La notificacion de ausencia ha sido eliminado.',
@@ -55,7 +60,7 @@
                                 window.location.href = '{{ path('notify_main') }}';
                             });
                         },
-                        error: function(xhr) {
+                        error: function (xhr) {
                             Swal.fire(
                                 'Error',
                                 'Hubo un problema al eliminar la notificación de ausencia.',

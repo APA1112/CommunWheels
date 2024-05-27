@@ -5,6 +5,11 @@
         {% if is_granted('ROLE_GROUP_ADMIN') %}
             <div class="button_container">
             <a href="{{ path('group_new') }}" class="primaryButton"><i class="ti ti-plus"></i>Nuevo grupo</a>
+                {% if app.request.attributes.get('_route')=='group_filter' %}
+                    <a href="{{ path('group_main') }}" class="secondaryButton"><i class="ti ti-arrow-left"></i>Volver</a>
+                {% else %}
+                    <a href="{{ path('group_filter') }}" class="secondaryButton">Ver mis grupos</a>
+                {% endif %}
             </div>
         {% endif %}
         <div class="card_container">

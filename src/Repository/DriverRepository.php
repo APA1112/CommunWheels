@@ -80,6 +80,18 @@ class DriverRepository extends ServiceEntityRepository
 
         return $qb->getResult();
     }
+    public function findDriversByGroupOrderedByDaysDriven(Group $group): array
+    {
+        $qb = $this->createQueryBuilder('d')
+            ->innerJoin('d.groupCollection', 'g')
+            ->where('g = :group')
+            ->setParameter('group', $group)
+            ->orderBy('d.daysDriven', 'ASC')
+            ->getQuery();
+
+        return $qb->getResult();
+    }
+
     public function save()
     {
         $this->getEntityManager()->flush();

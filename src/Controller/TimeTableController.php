@@ -95,21 +95,12 @@ class TimeTableController extends AbstractController
             $this->addFlash('error', 'Ha habido un error creando el cuadrante.');
             return $this->redirectToRoute('timetable_main', ['id' => $group->getId()]);
         }
-
         $timeTableRepository->add($timeTable);
 
-        $drivers = $driverRepository->findDriversByGroup($group);
+        $drivers = $driverRepository->findDriversByGroupOrderedByDaysDriven($group);
 
-        $tripDriver = null;
-
-        foreach ($drivers as $driver) {
-            if ($tripDriver === null || $driver->getDaysDriven() < $tripDriver->getDaysDriven()) {
-                $tripDriver = $driver;
-            }
-        }
-
-        $tripDriverSchedules = $scheduleRepository->findDriverSchedules($tripDriver);
-        $tripDriverAbsences = $absenceRepository->findDriverAbsences($tripDriver);
+        $tripDriverSchedules = $scheduleRepository->findDriverSchedules($drivers[0]);
+        $tripDriverAbsences = $absenceRepository->findDriverAbsences($drivers[0]);
         $groupNonSchoolDays = $nonSchoolDayRepository->findByGroup($group);
         $groupNonSchoolDaysDates = [];
         $driverAbsencesDates = [];
@@ -122,41 +113,59 @@ class TimeTableController extends AbstractController
             $driverAbsencesDates[] = $driverAbsence->getAbsenceDate();
         }
 
+        // Preformatear las fechas fuera del bucle
+        $formattedDriverAbsencesDates = array_map(function ($date) {
+            return $date->format('Y-m-d');
+        }, $driverAbsencesDates);
+
+        $formattedGroupNonSchoolDaysDates = array_map(function ($date) {
+            return $date->format('Y-m-d');
+        }, $groupNonSchoolDaysDates);
+
         for ($i = 0; $i < 5; $i++) {
             $trip = new Trip();
             $trip->setTripDate($weekStartDate);
             $trip->setTimeTable($timeTable);
-            $trip->setDriver($tripDriver);
 
             // Convertir weekStartDate a una cadena de formato 'Y-m-d' para comparar
             $formattedWeekStartDate = $weekStartDate->format('Y-m-d');
 
-            // Convertir las fechas en $groupNonSchoolDaysDates a cadenas de formato 'Y-m-d'
-            $formatedDriverAbsencesDates = array_map(function ($date) {
-                return $date->format('Y-m-d');
-            }, $driverAbsencesDates);
+            // Verificar si la fecha no es un día no escolar ni una ausencia del conductor
+            $isNonSchoolDay = in_array($formattedWeekStartDate, $formattedGroupNonSchoolDaysDates);
+            $isDriverAbsent = in_array($formattedWeekStartDate, $formattedDriverAbsencesDates);
+            $driverAvailable = $tripDriverSchedules[$i]->getEntrySlot() != 0;
 
-            // Convertir las fechas en $driverAbsences a cadenas de formato 'Y-m-d'
-            $formattedGroupNonSchoolDaysDates = array_map(function ($date) {
-                return $date->format('Y-m-d');
-            }, $groupNonSchoolDaysDates);
-
-            if (!in_array($formattedWeekStartDate, $formattedGroupNonSchoolDaysDates)) {
-                if (!in_array($formattedWeekStartDate, $formatedDriverAbsencesDates)) {
-                    $trip->setEntrySlot($tripDriverSchedules[$i]->getEntrySlot());
-                    $trip->setExitSlot($tripDriverSchedules[$i]->getExitSlot());
-                }else{
-                    $trip->setEntrySlot(0);
-                    $trip->setExitSlot(0);
+            if (!$isNonSchoolDay) {
+                if (!$isDriverAbsent && $driverAvailable) {
+                    $driver = $drivers[0];
+                    $entrySlot = $tripDriverSchedules[$i]->getEntrySlot();
+                    $exitSlot = $tripDriverSchedules[$i]->getExitSlot();
+                } else {
+                    // Encontrar el primer conductor disponible
+                    foreach ($drivers as $driver) {
+                        if ($driver !== $drivers[0]) {
+                            $entrySlot = $driver->getSchedules()[$i]->getEntrySlot();
+                            $exitSlot = $driver->getSchedules()[$i]->getExitSlot();
+                            if ($entrySlot != 0) {
+                                break;
+                            }
+                        }
+                    }
                 }
             } else {
-                $trip->setEntrySlot(0);
-                $trip->setExitSlot(0);
+                $driver = $drivers[0];
+                $entrySlot = 0;
+                $exitSlot = 0;
             }
+
+            $trip->setDriver($driver);
+            $trip->setEntrySlot($entrySlot);
+            $trip->setExitSlot($exitSlot);
 
             $tripRepository->add($trip);
             $weekStartDate->modify('+1 day');
         }
+
 
 
         return $this->render('trip/new.html.twig', [
