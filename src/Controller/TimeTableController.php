@@ -53,7 +53,7 @@ class TimeTableController extends AbstractController
     }
 
     #[Route('/cuadrante/nuevo/{id}', name: 'timeTable_new')]
-    public function newT(
+    public function newTrip(
         Group                  $group,
         AbsenceRepository      $absenceRepository,
         ScheduleRepository     $scheduleRepository,
@@ -113,7 +113,7 @@ class TimeTableController extends AbstractController
             $driverAbsencesDates[] = $driverAbsence->getAbsenceDate();
         }
 
-        // Preformatear las fechas fuera del bucle
+        // Preformatear las fechas
         $formattedDriverAbsencesDates = array_map(function ($date) {
             return $date->format('Y-m-d');
         }, $driverAbsencesDates);
@@ -130,7 +130,7 @@ class TimeTableController extends AbstractController
             // Convertir weekStartDate a una cadena de formato 'Y-m-d' para comparar
             $formattedWeekStartDate = $weekStartDate->format('Y-m-d');
 
-            // Verificar si la fecha no es un día no escolar ni una ausencia del conductor
+// Verificar si la fecha no es un día no escolar ni una ausencia del conductor
             $isNonSchoolDay = in_array($formattedWeekStartDate, $formattedGroupNonSchoolDaysDates);
             $isDriverAbsent = in_array($formattedWeekStartDate, $formattedDriverAbsencesDates);
             $driverAvailable = $tripDriverSchedules[$i]->getEntrySlot() != 0;
@@ -144,9 +144,12 @@ class TimeTableController extends AbstractController
                     // Encontrar el primer conductor disponible
                     foreach ($drivers as $driver) {
                         if ($driver !== $drivers[0]) {
-                            $entrySlot = $driver->getSchedules()[$i]->getEntrySlot();
-                            $exitSlot = $driver->getSchedules()[$i]->getExitSlot();
-                            if ($entrySlot != 0) {
+                            $driverSchedule = $driver->getSchedules()[$i];
+                            $entrySlot = $driverSchedule->getEntrySlot();
+                            $exitSlot = $driverSchedule->getExitSlot();
+                            // Verificar que el conductor esté disponible
+                            $isDriverAvailable = !in_array($formattedWeekStartDate, $driver->getAbsencesDates());
+                            if ($entrySlot != 0 && $isDriverAvailable) {
                                 break;
                             }
                         }
@@ -157,6 +160,7 @@ class TimeTableController extends AbstractController
                 $entrySlot = 0;
                 $exitSlot = 0;
             }
+
 
             $trip->setDriver($driver);
             $trip->setEntrySlot($entrySlot);
