@@ -4,6 +4,7 @@
 - Change password
 - Pagination :white_check_mark:
 - Generate timetable
+- Send email to new user, to group members when generating timetable and to group admin when inserting an absence 
 ___
 ## Templates To Do:
 
@@ -20,6 +21,6 @@ ___
 - Delete user :white_check_mark:
 - Show timetable
 - Enter driver schedule :white_check_mark:
-- Modify personal data
+- Modify personal data :white_check_mark:
 - Restrict access with roles in all controllers
-- NonSchoolDay insert, update and delete with screens
+- NonSchoolDay insert, update and delete with screens :white_check_mark:
