@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Group;
 use App\Entity\TimeTable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -20,6 +21,7 @@ class TimeTableRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, TimeTable::class);
     }
+
     public function findByGroup($group): array
     {
         return $this->createQueryBuilder('t')
@@ -31,6 +33,7 @@ class TimeTableRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
     public function getTimeTablePagination($group)
     {
         return $this->createQueryBuilder('t')
@@ -42,7 +45,8 @@ class TimeTableRepository extends ServiceEntityRepository
             ->getQuery();
     }
 
-    public function findById($id){
+    public function findById($id)
+    {
         return $this->createQueryBuilder('t')
             ->andWhere('t.id = :id')
             ->setParameter('id', $id)
@@ -50,12 +54,16 @@ class TimeTableRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
-    public function findByWeekStartDate(\DateTime $weekStartDate): ?TimeTable
+    public function findByWeekStartDate(\DateTime $weekStartDate, Group $group = null): ?TimeTable
     {
-        return $this->createQueryBuilder('t')
+        $qb = $this->createQueryBuilder('t')
             ->andWhere('t.weekStartDate = :weekStartDate')
-            ->setParameter('weekStartDate', $weekStartDate->format('Y-m-d'))
-            ->getQuery()
+            ->setParameter('weekStartDate', $weekStartDate->format('Y-m-d'));
+        if ($group !== null){
+            $qb->andWhere('t.band = :group')
+                ->setParameter('group', $group);
+        }
+        return $qb->getQuery()
             ->getOneOrNullResult();
     }
 
@@ -63,11 +71,15 @@ class TimeTableRepository extends ServiceEntityRepository
     {
         $this->getEntityManager()->flush();
     }
-    public function add(TimeTable $timeTable){
+
+    public function add(TimeTable $timeTable)
+    {
         $this->getEntityManager()->persist($timeTable);
         $this->getEntityManager()->flush();
     }
-    public function remove(TimeTable $timeTable){
+
+    public function remove(TimeTable $timeTable)
+    {
         $entityManager = $this->getEntityManager();
 
         // Verificar y eliminar los trips asociados, si existen

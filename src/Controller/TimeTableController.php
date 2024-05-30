@@ -53,6 +53,7 @@ class TimeTableController extends AbstractController
         $group = $timeTable->getBand();
         return $this->render('trip/new.html.twig', [
             'timeTable' => $timeTable,
+            'trips' => $timeTable->getTrips(),
             'group' => $group,
         ]);
     }
@@ -69,6 +70,7 @@ class TimeTableController extends AbstractController
         ValidatorInterface     $validator
     )
     {
+        $trips = [];
         // Cogemos la representación numerica del dia de la semana en el que se generan los trips
         $today = new \DateTime();
         $todayDayOfWeek = $today->format('N');
@@ -81,9 +83,16 @@ class TimeTableController extends AbstractController
 
         $weekStartDate = $nextMonday;
         // Vemos si ya existe un timeTable con la misma fecha
-        $existingTimeTable = $timeTableRepository->findByWeekStartDate($weekStartDate);
+        $existingTimeTable = $timeTableRepository->findByWeekStartDate($weekStartDate, $group);
         if ($existingTimeTable) {
             $this->addFlash('error', 'Ya existe un cuadrante para esta semana.');
+            return $this->redirectToRoute('timetable_main', ['id' => $group->getId()]);
+        }
+
+        $drivers = $driverRepository->findDriversByGroupOrderedByDaysDriven($group);
+
+        if (empty($drivers)) {
+            $this->addFlash('error', 'No puedes generar un cuadrante para un grupo sin conductores.');
             return $this->redirectToRoute('timetable_main', ['id' => $group->getId()]);
         }
 
@@ -99,8 +108,6 @@ class TimeTableController extends AbstractController
             return $this->redirectToRoute('timetable_main', ['id' => $group->getId()]);
         }
         $timeTableRepository->add($timeTable);
-
-        $drivers = $driverRepository->findDriversByGroupOrderedByDaysDriven($group);
 
         $tripDriverSchedules = $scheduleRepository->findDriverSchedules($drivers[0]);
         $tripDriverAbsences = $absenceRepository->findDriverAbsences($drivers[0]);
@@ -168,6 +175,7 @@ class TimeTableController extends AbstractController
             $trip->setExitSlot($exitSlot);
 
             $tripRepository->add($trip);
+            $trips[] = $trip;
             $weekStartDate->modify('+1 day');
         }
         /*
@@ -185,8 +193,10 @@ class TimeTableController extends AbstractController
             $this->mailer->send($email);
         }
         */
+
         return $this->render('trip/new.html.twig', [
             'timeTable' => $timeTable,
+            'trips' => $trips,
             'group' => $group,
             'success' => true,
         ]);
