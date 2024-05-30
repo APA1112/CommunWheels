@@ -60,13 +60,15 @@ class DriverController extends AbstractController
         $userRepository->add($user);
 
         // Enviar correo al nuevo conductor
-        $email = (new Email())
-            ->from('commun.wheels@gmail.com')
-            ->to($driver->getEmail())
-            ->subject('Bienvenido a CommunWheels conductor')
-            ->html('<p>Tu cuenta de conductor ha sido creada.</p><p>Usuario: ' . $driver->getUser()->getUsername() . '</p><p>Contraseña: ' . $plainPassword . '</p><p>Recuerda que debes cambiar tu contraseña en el área de datos personales</p>');
+        if ($driver->getEmail()) {
+            $email = (new Email())
+                ->from('commun.wheels@gmail.com')
+                ->to($driver->getEmail())
+                ->subject('Bienvenido a CommunWheels ' . $driver->getName())
+                ->html('<p>Tu cuenta de conductor ha sido creada con las siguientes credenciales.</p><p>Usuario: ' . $user->getUsername() . '</p><p>Contraseña: ' . $plainPassword . '</p><p>Recuerda que debes cambiar tu contraseña en panel de usuario</p>');
 
-        $this->mailer->send($email);
+            $this->mailer->send($email);
+        }
 
         return $this->modificar($driver, $driverRepository, $request);
     }

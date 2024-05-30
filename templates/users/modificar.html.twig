@@ -12,13 +12,19 @@
             {{ form_row(form) }}
             <input type="hidden" name="redirect" value="{{ app.request.get('redirect') }}">
             <div class="buttons">
-                <button type="submit" class="primaryButton">Guardar</button>
-                <a href="{{ path('app_change_user_password', {'id':driver.id}) }}" class="secondaryButton">Cambiar contraseña</a>
+                {% if driver.id is null %}
+                    <button type="submit" class="primaryButton">Guardar</button>
+                {% else %}
+                    <button type="submit" class="primaryButton">Guardar</button>
+                    <a href="{{ path('app_change_user_password', {'id':driver.id}) }}" class="secondaryButton">Cambiar
+                        contraseña</a>
+                {% endif %}
             </div>
             {{ form_end(form) }}
         </div>
         <div class="button_container">
-            <a href="{{ app.request.get('redirect') ? app.request.get('redirect') : path('driver_main') }}" class="secondaryButton"><i class="ti ti-arrow-left"></i>Volver</a>
+            <a href="{{ app.request.get('redirect') ? app.request.get('redirect') : path('driver_main') }}"
+               class="secondaryButton"><i class="ti ti-arrow-left"></i>Volver</a>
         </div>
     </div>
 
@@ -38,7 +44,7 @@
                     $.ajax({
                         url: '{{ path('driver_delete', {'id': 'ID_PLACEHOLDER'}) }}'.replace('ID_PLACEHOLDER', groupId),
                         type: 'DELETE',
-                        success: function(response) {
+                        success: function (response) {
                             Swal.fire(
                                 '¡Eliminado!',
                                 'El usuario ha sido eliminado.',
@@ -47,7 +53,7 @@
                                 window.location.href = '{{ path('driver_main') }}';
                             });
                         },
-                        error: function(xhr) {
+                        error: function (xhr) {
                             Swal.fire(
                                 'Error',
                                 'Hubo un problema al eliminar el usuario.',
