@@ -29,7 +29,8 @@ class DriverController extends AbstractController
 
     #[IsGranted('ROLE_GROUP_ADMIN')]
     #[Route('/conductores', name: 'driver_main')]
-    public function index(DriverRepository $driverRepository, PaginatorInterface $paginator, Request $request): Response{
+    public function index(DriverRepository $driverRepository, PaginatorInterface $paginator, Request $request): Response
+    {
         $drivers = $driverRepository->findAllDrivers();
         $query = $driverRepository->getDriverPagination();
         $pagination = $paginator->paginate(
@@ -60,15 +61,18 @@ class DriverController extends AbstractController
         $userRepository->add($user);
 
         // Enviar correo al nuevo conductor
-        if ($driver->getEmail()) {
-            $email = (new Email())
-                ->from('commun.wheels@gmail.com')
-                ->to($driver->getEmail())
-                ->subject('Bienvenido a CommunWheels ' . $driver->getName())
-                ->html('<p>Tu cuenta de conductor ha sido creada con las siguientes credenciales.</p><p>Usuario: ' . $user->getUsername() . '</p><p>Contraseña: ' . $plainPassword . '</p><p>Recuerda que debes cambiar tu contraseña en panel de usuario</p>');
+        $email = (new Email())
+            ->from('commun.wheels@gmail.com')
+            ->to($driver->getEmail())
+            ->subject('Bienvenido a CommunWheels ' . $driver->getName())
+            ->html('
+                    <p>Tu cuenta de conductor ha sido creada con las siguientes credenciales.</p>
+                    <p>Usuario: ' . $user->getUsername() . '</p>
+                    <p>Contraseña: ' . $plainPassword . '</p>
+                    <p>Recuerda que debes cambiar tu contraseña en panel de usuario.</p>
+');
 
-            $this->mailer->send($email);
-        }
+        $this->mailer->send($email);
 
         return $this->modificar($driver, $driverRepository, $request);
     }
