@@ -147,9 +147,7 @@ class TimeTableController extends AbstractController
                             $driverSchedule = $driver->getSchedules()[$i];
                             $entrySlot = $driverSchedule->getEntrySlot();
                             $exitSlot = $driverSchedule->getExitSlot();
-                            // Verificar que el conductor esté disponible
-                            $isDriverAvailable = !in_array($formattedWeekStartDate, $driver->getAbsencesDates());
-                            if ($entrySlot != 0 && $isDriverAvailable) {
+                            if ($entrySlot != 0) {
                                 break;
                             }
                         }

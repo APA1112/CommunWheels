@@ -13,16 +13,20 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[IsGranted('ROLE_DRIVER')]
 class DriverController extends AbstractController
 {
-    public function __construct(UserPasswordHasherInterface $passwordHasher)
+    public function __construct(UserPasswordHasherInterface $passwordHasher, MailerInterface $mailer)
     {
         $this->passwordHasher = $passwordHasher;
+        $this->mailer = $mailer;
     }
+
     #[IsGranted('ROLE_GROUP_ADMIN')]
     #[Route('/conductores', name: 'driver_main')]
     public function index(DriverRepository $driverRepository, PaginatorInterface $paginator, Request $request): Response{
@@ -38,6 +42,7 @@ class DriverController extends AbstractController
             'pagination' => $pagination,
         ]);
     }
+
     #[IsGranted('ROLE_GROUP_ADMIN')]
     #[Route('/conductores/nuevo', name: 'driver_new')]
     public function nuevo(DriverRepository $driverRepository, Request $request, UserRepository $userRepository): Response
@@ -45,23 +50,35 @@ class DriverController extends AbstractController
         $driver = new Driver();
         $user = new User();
         $user->setDriver($driver);
-        $driver->getUser()->setPassword($this->passwordHasher->hashPassword($user, 'cambiame'));
+        $plainPassword = 'cambiame';
+        $hashedPassword = $this->passwordHasher->hashPassword($user, $plainPassword);
+        $driver->getUser()->setPassword($hashedPassword);
         $driver->getUser()->setIsAdmin(0);
         $driver->getUser()->setIsDriver(1);
         $driver->setDaysDriven(0);
         $driverRepository->add($driver);
         $userRepository->add($user);
+        // Enviar correo al nuevo conductor
+        /*
+        $email = (new Email())
+            ->from('commun.wheels@gmail.com')
+            ->to($driver->getEmail())
+            ->subject('Bienvenido a CommunWheels conductor')
+            ->html('<p>Tu cuenta de conductor ha sido creada.</p><p>Usuario: ' . $driver->getUser()->getUsername() . '</p><p>Contraseña: ' . $plainPassword . '</p><p>Recuerda que debes cambiar tu contraseña en el área de datos personales</p>');
+
+        $this->mailer->send($email);
+        */
         return $this->modificar($driver, $driverRepository, $request);
     }
-    
+
     #[Route('/conductor/modificar/{id}', name: 'driver_mod')]
-    public function modificar(Driver $driver, DriverRepository $driverRepository, Request $request):Response
+    public function modificar(Driver $driver, DriverRepository $driverRepository, Request $request): Response
     {
         $form = $this->createForm(DriverType::class, $driver);
 
         $form->handleRequest($request);
 
-        $nuevo = $driver->getId()===null;
+        $nuevo = $driver->getId() === null;
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
@@ -85,6 +102,7 @@ class DriverController extends AbstractController
             'driver' => $driver,
         ]);
     }
+
     #[IsGranted('ROLE_GROUP_ADMIN')]
     #[Route('/conductor/eliminar/{id}', name: 'driver_delete')]
     public function eliminar(Request $request, Driver $driver, DriverRepository $driverRepository): JsonResponse
