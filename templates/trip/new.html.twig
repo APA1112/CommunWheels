@@ -3,7 +3,7 @@
 {% block body %}
     <div class="container">
         <div class="form_container">
-            <h2>{{ timeTable.band.name }} -> ID: {{ timeTable.id }}</h2>
+            <h2>{{ timeTable.band.name }}</h2>
             <h2>{{ timeTable.weekStartDate | date('d/m/y') }}-{{ (timeTable.weekStartDate | date_modify('+5 days')) | date('d/m/y') }}</h2>
             {% set weekdays = {1: 'Lunes', 2: 'Martes', 3: 'Miércoles', 4: 'Jueves', 5: 'Viernes'} %}
             <table>

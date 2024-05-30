@@ -7,7 +7,6 @@ use App\Entity\TimeTable;
 use App\Entity\Trip;
 use App\Repository\AbsenceRepository;
 use App\Repository\DriverRepository;
-use App\Repository\GroupRepository;
 use App\Repository\NonSchoolDayRepository;
 use App\Repository\ScheduleRepository;
 use App\Repository\TimeTableRepository;
@@ -18,12 +17,18 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[IsGranted('ROLE_DRIVER')]
 class TimeTableController extends AbstractController
 {
+    public function __construct(MailerInterface $mailer)
+    {
+        $this->mailer = $mailer;
+    }
     #[Route('/cuadrantes/{id}', name: 'timetable_main')]
     public function modificar(Group $group, TimeTableRepository $timeTableRepository, PaginatorInterface $paginator, Request $request): Response
     {
@@ -83,9 +88,7 @@ class TimeTableController extends AbstractController
         }
 
         $timeTable = new TimeTable();
-        // Set any required fields here. For example:
         $timeTable->setBand($group);
-
         $timeTable->setWeekStartDate($weekStartDate);
         $timeTable->setActive(1);
 
@@ -130,7 +133,7 @@ class TimeTableController extends AbstractController
             // Convertir weekStartDate a una cadena de formato 'Y-m-d' para comparar
             $formattedWeekStartDate = $weekStartDate->format('Y-m-d');
 
-// Verificar si la fecha no es un día no escolar ni una ausencia del conductor
+            // Verificar si la fecha no es un día no escolar ni una ausencia del conductor
             $isNonSchoolDay = in_array($formattedWeekStartDate, $formattedGroupNonSchoolDaysDates);
             $isDriverAbsent = in_array($formattedWeekStartDate, $formattedDriverAbsencesDates);
             $driverAvailable = $tripDriverSchedules[$i]->getEntrySlot() != 0;
@@ -167,9 +170,21 @@ class TimeTableController extends AbstractController
             $tripRepository->add($trip);
             $weekStartDate->modify('+1 day');
         }
+        /*
+        foreach ($drivers as $driver) {
+            $email = (new Email())
+                ->from('commun.wheels@gmail.com')
+                ->to($driver->getEmail())
+                ->subject('Nueva cuadrante de la semana')
+                ->html('
+            <p>Hay un nuevo cuadrante para la semana.</p>
+            <p>No olvides mirarlo para ver si eres conductor o pasajero.</p>
+            <p>Y recuerda que no vas solo en la carretera.</p>
+            ');
 
-
-
+            $this->mailer->send($email);
+        }
+        */
         return $this->render('trip/new.html.twig', [
             'timeTable' => $timeTable,
             'group' => $group,

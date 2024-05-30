@@ -58,8 +58,8 @@ class DriverController extends AbstractController
         $driver->setDaysDriven(0);
         $driverRepository->add($driver);
         $userRepository->add($user);
+
         // Enviar correo al nuevo conductor
-        /*
         $email = (new Email())
             ->from('commun.wheels@gmail.com')
             ->to($driver->getEmail())
@@ -67,7 +67,7 @@ class DriverController extends AbstractController
             ->html('<p>Tu cuenta de conductor ha sido creada.</p><p>Usuario: ' . $driver->getUser()->getUsername() . '</p><p>Contraseña: ' . $plainPassword . '</p><p>Recuerda que debes cambiar tu contraseña en el área de datos personales</p>');
 
         $this->mailer->send($email);
-        */
+
         return $this->modificar($driver, $driverRepository, $request);
     }
 

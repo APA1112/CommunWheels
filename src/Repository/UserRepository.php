@@ -20,6 +20,14 @@ class UserRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, User::class);
     }
+    public function findGroupAdmins(): array
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.isGroupAdmin = 1')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
     public function save()
     {
         $this->getEntityManager()->flush();

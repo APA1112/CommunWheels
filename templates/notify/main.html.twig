@@ -1,11 +1,8 @@
 {% extends 'base.html.twig' %}
-
 {% block body %}
     <div class="container">
         <div class="button_container">
-            <a href="{{ path('new_absence', {'id':app.user.driver.id}) }}" class="primaryButton"><i
-                        class="ti ti-plus"></i>Nuevo
-                ausencia</a>
+            <a href="{{ path('new_absence', {'id':app.user.driver.id}) }}" class="primaryButton"><i class="ti ti-plus"></i>Nuevo ausencia</a>
         </div>
         <div class="card_container">
             {% for absence in absences %}
@@ -13,10 +10,8 @@
                 <div class="expandable">
                     <span class="title">{{ absence.description }}</span>
                     <div class="icons">
-                        <a href="{{ path('mod_absence', {'id':absence.id}) }}" class="btn edit"><i class="ti ti-edit"
-                                                                                                   style="font-size: 1.5rem"></i></a>
-                        <a href="#" class="btn delete" onclick="confirmDelete({{ absence.id }})"><i class="ti ti-trash"
-                                                                                                    style="font-size: 1.5rem"></i></a>
+                        <a href="{{ path('mod_absence', {'id':absence.id}) }}" class="btn edit"><i class="ti ti-edit" style="font-size: 1.5rem"></i></a>
+                        <a href="#" class="btn delete" onclick="confirmDelete({{ absence.id }})"><i class="ti ti-trash" style="font-size: 1.5rem"></i></a>
                         <span class="icon"><i class="ti ti-caret-down-filled" style="font-size: 1.5rem"></i></span>
                     </div>
                 </div>
@@ -28,13 +23,12 @@
                         </div>
                     </div>
                 </div>
-                {% else %}
-                    <h2 class="titulo">No hay notificaciones</h2>
-                {% endfor %}
             </div>
+            {% else %}
+                <h2 class="titulo">No hay notificaciones</h2>
+            {% endfor %}
         </div>
     </div>
-
     <script>
         function confirmDelete(id) {
             Swal.fire({
