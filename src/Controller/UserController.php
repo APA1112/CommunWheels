@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\ChangeUserPasswordType;
 use App\Repository\UserRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -55,7 +56,7 @@ class UserController extends AbstractController
     ): Response
     {
         // Denegar acceso si no es administrador
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $this->denyAccessUnlessGranted('ROLE_GROUP_ADMIN');
         // Crear formulario para el usuario pasado como parámetro
         $form = $this->createForm(ChangeUserPasswordType::class, $user, [
         // Si el usuario al que se quiere cambiar la contraseña somos

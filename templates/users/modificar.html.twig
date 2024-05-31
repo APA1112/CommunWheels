@@ -16,8 +16,9 @@
                     <button type="submit" class="primaryButton">Guardar</button>
                 {% else %}
                     <button type="submit" class="primaryButton">Guardar</button>
-                    <a href="{{ path('app_change_user_password', {'id':driver.id}) }}" class="secondaryButton">Cambiar
-                        contraseña</a>
+                    {% if is_granted('ROLE_GROUP_ADMIN')  and app.user != driver.user %}
+                        <a href="{{ path('app_change_user_password', {'id':driver.id}) }}" class="secondaryButton">Cambiar contraseña</a>
+                    {% endif %}
                 {% endif %}
             </div>
             {{ form_end(form) }}

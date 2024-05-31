@@ -178,7 +178,7 @@ class TimeTableController extends AbstractController
             $trips[] = $trip;
             $weekStartDate->modify('+1 day');
         }
-        /*
+
         foreach ($drivers as $driver) {
             $email = (new Email())
                 ->from('commun.wheels@gmail.com')
@@ -192,7 +192,7 @@ class TimeTableController extends AbstractController
 
             $this->mailer->send($email);
         }
-        */
+
 
         return $this->render('trip/new.html.twig', [
             'timeTable' => $timeTable,

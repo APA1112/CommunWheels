@@ -7,6 +7,7 @@
 .card_container {
     margin: 0 auto; /* Centrar el contenedor */
     width: 100%; /* Puedes ajustar el ancho máximo del contenedor */
+    margin-top: .5rem;
 }
 
 .expandable-container {
