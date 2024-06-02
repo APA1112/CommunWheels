@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Driver;
 use App\Entity\User;
 use App\Form\ChangeUserPasswordType;
 use App\Repository\UserRepository;
@@ -52,9 +53,10 @@ class UserController extends AbstractController
         Request $request,
         UserPasswordHasherInterface $passwordEncoder,
         UserRepository $userRepository,
-        User $user
+        Driver $driver
     ): Response
     {
+        $user = $driver->getUser();
         // Denegar acceso si no es administrador
         $this->denyAccessUnlessGranted('ROLE_GROUP_ADMIN');
         // Crear formulario para el usuario pasado como parámetro
