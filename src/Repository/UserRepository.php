@@ -39,5 +39,6 @@ class UserRepository extends ServiceEntityRepository
 
     public function add(User $user){
         $this->getEntityManager()->persist($user);
+        $this->getEntityManager()->flush();
     }
 }

@@ -57,25 +57,47 @@ class DriverController extends AbstractController
         $driver->getUser()->setIsAdmin(0);
         $driver->getUser()->setIsDriver(1);
         $driver->setDaysDriven(0);
-        $driverRepository->add($driver);
-        $userRepository->add($user);
 
-        // Enviar correo al nuevo conductor
-        $email = (new Email())
-            ->from('commun.wheels@gmail.com')
-            ->to($driver->getEmail())
-            ->subject('Bienvenido a CommunWheels ' . $driver->getName())
-            ->html('
-                    <p>Tu cuenta de conductor ha sido creada con las siguientes credenciales.</p>
-                    <p>Usuario: ' . $user->getUsername() . '</p>
-                    <p>Contraseña: ' . $plainPassword . '</p>
-                    <p>Recuerda que debes cambiar tu contraseña en panel de usuario.</p>
-');
+        $form = $this->createForm(DriverType::class, $driver);
 
-        $this->mailer->send($email);
+        $form->handleRequest($request);
 
-        return $this->modificar($driver, $driverRepository, $request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            try {
+                $username = $driver->getUser()->generateUsername($driver->getName(), $driver->getLastName());
+                $driver->getUser()->setUsername($username);
+                $driver->getUser()->setIsGroupAdmin($form->get('isAdmin')->getData());
+
+                $userRepository->add($user);
+                $driverRepository->add($driver);
+
+                // Enviar correo al nuevo conductor
+                $email = (new Email())
+                    ->from('commun.wheels@gmail.com')
+                    ->to($driver->getEmail())
+                    ->subject('Bienvenido a CommunWheels ' . $driver->getName())
+                    ->html('
+                        <p>Tu cuenta de conductor ha sido creada con las siguientes credenciales.</p>
+                        <p>Usuario: ' . $user->getUsername() . '</p>
+                        <p>Contraseña: ' . $plainPassword . '</p>
+                        <p>Recuerda que debes cambiar tu contraseña en panel de usuario.</p>
+                        <a href="https://communwheels.prodevnet.es">CommunWheels</a>');
+
+                $this->mailer->send($email);
+
+                $this->addFlash('success', 'Conductor creado con éxito');
+                return $this->redirectToRoute('driver_main');
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'No se han podido guardar los cambios');
+            }
+        }
+
+        return $this->render('users/modificar.html.twig', [
+            'form' => $form->createView(),
+            'driver' => $driver,
+        ]);
     }
+
 
     #[Route('/conductor/modificar/{id}', name: 'driver_mod')]
     public function modificar(Driver $driver, DriverRepository $driverRepository, Request $request): Response
@@ -84,19 +106,12 @@ class DriverController extends AbstractController
 
         $form->handleRequest($request);
 
-        $nuevo = $driver->getId() === null;
-
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                $username = $driver->getUser()->generateUsername($driver->getName(), $driver->getLastName());
-                $driver->getUser()->setUsername($username);
                 $driver->getUser()->setIsGroupAdmin($form->get('isAdmin')->getData());
                 $driverRepository->save();
-                if ($nuevo) {
-                    $this->addFlash('success', 'Conductor creado con exito');
-                } else {
-                    $this->addFlash('success', 'Cambios guardados con exito');
-                }
+
+                $this->addFlash('success', 'Cambios guardados con exito');
 
                 return $this->redirect($request->request->get('redirect') ?? $this->generateUrl('driver_main'));
             } catch (\Exception $e) {

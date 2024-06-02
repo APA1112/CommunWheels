@@ -107,5 +107,6 @@ class DriverRepository extends ServiceEntityRepository
 
     public function add(Driver $driver){
         $this->getEntityManager()->persist($driver);
+        $this->getEntityManager()->flush();
     }
 }
