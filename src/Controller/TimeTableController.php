@@ -136,6 +136,7 @@ class TimeTableController extends AbstractController
             $trip = new Trip();
             $trip->setTripDate($weekStartDate);
             $trip->setTimeTable($timeTable);
+            $trip->setActive(true);
 
             // Convertir weekStartDate a una cadena de formato 'Y-m-d' para comparar
             $formattedWeekStartDate = $weekStartDate->format('Y-m-d');

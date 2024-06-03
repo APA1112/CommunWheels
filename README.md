@@ -1,10 +1,12 @@
 ## List To Do:
 
 - Validate all inputs in forms
-- Change password
+- Change password :white_check_mark:
 - Pagination :white_check_mark:
-- Generate timetable
-- Send email to new user, to group members when generating timetable and to group admin when inserting an absence 
+- Generate timetable :white_check_mark:
+- Restrict access with roles in all controllers
+- Send email to new user, to group members when generating timetable and to group admin when inserting an absence :white_check_mark:
+- Modify one Trip without changing the res
 ___
 ## Templates To Do:
 
@@ -19,8 +21,7 @@ ___
 - Create user :white_check_mark:
 - Modify user :white_check_mark:
 - Delete user :white_check_mark:
-- Show timetable
+- Show timetable with expandable card
 - Enter driver schedule :white_check_mark:
 - Modify personal data :white_check_mark:
-- Restrict access with roles in all controllers
 - NonSchoolDay insert, update and delete with screens :white_check_mark:

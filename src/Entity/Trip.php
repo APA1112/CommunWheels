@@ -7,6 +7,8 @@ namespace App\Entity;
 use App\Repository\TripRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: TripRepository::class)]
 class Trip
@@ -25,13 +27,25 @@ class Trip
     #[ORM\Column]
     private ?int $exitSlot = null;
 
+    #[ORM\Column]
+    private ?bool $active = null;
+
     #[ORM\ManyToOne(inversedBy: 'trips')]
     #[ORM\JoinColumn(nullable: false)]
     private ?TimeTable $timeTable = null;
 
     #[ORM\ManyToOne(inversedBy: 'trips')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Driver $driver = null;
+    private ?Driver $mainDriver = null;
+
+    #[ORM\ManyToMany(targetEntity: Driver::class)]
+    #[ORM\JoinTable(name: 'trip_passengers')]
+    private Collection $passengers;
+
+    public function __construct()
+    {
+        $this->passengers = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -84,13 +98,36 @@ class Trip
 
     public function getDriver(): ?Driver
     {
-        return $this->driver;
+        return $this->mainDriver;
     }
 
-    public function setDriver(?Driver $driver): static
+    public function setDriver(?Driver $mainDriver): static
     {
-        $this->driver = $driver;
+        $this->mainDriver = $mainDriver;
         return $this;
     }
+
+    public function getPassengers(): Collection
+    {
+        return $this->passengers;
+    }
+
+    public function setPassengers(Collection $passengers): Trip
+    {
+        $this->passengers = $passengers;
+        return $this;
+    }
+
+    public function isActive(): ?bool
+    {
+        return $this->active;
+    }
+
+    public function setActive(?bool $active): Trip
+    {
+        $this->active = $active;
+        return $this;
+    }
+
 }
 

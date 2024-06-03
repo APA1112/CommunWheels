@@ -5,13 +5,13 @@
         <div class="form_container">
             <h2>{{ timeTable.band.name }}</h2>
             <h2>{{ timeTable.weekStartDate | date('d/m/y') }}
-                -{{ (timeTable.weekStartDate | date_modify('+5 days')) | date('d/m/y') }}</h2>
+                -{{ (timeTable.weekStartDate | date_modify('+4 days')) | date('d/m/y') }}</h2>
             {% set weekdays = {1: 'Lunes', 2: 'Martes', 3: 'Miércoles', 4: 'Jueves', 5: 'Viernes'} %}
             <table>
                 <thead>
                 <tr>
                     {% for i in 1..5 %}
-                        <th colspan="3">{{ weekdays[i] }}</th>
+                        <th colspan="4">{{ weekdays[i] }}</th>
                     {% endfor %}
                 </tr>
                 </thead>
@@ -27,11 +27,18 @@
                 <tr>
                     {% for trip in trips %}
                         {% if trip.entrySlot == 0 or trip.exitSlot == 0 %}
-                            <td colspan="3">{{ trip.tripDate | date('d-m-Y') }} - Día festivo</td>
+                            <td colspan="4">{{ trip.tripDate | date('d-m-Y') }} - Día festivo</td>
                         {% else %}
                             <td>{{ hourIntervals[trip.entrySlot] }}</td>
                             <td>{{ hourIntervals[trip.exitSlot] }}</td>
                             <td>{{ trip.driver }}</td>
+                            <td>
+                            {% if trip.driver == app.user.driver and trip.isActive %}
+                                <a href="{{ path('confirm_trip', {'id':trip.id}) }}" class="primaryButton">Hecho<i class="ti ti-check"></i></a>
+                            {% else %}
+                                <a href="{{ path('confirm_trip', {'id':trip.id}) }}" class="primaryButton disabled" aria-disabled="true">Hecho<i class="ti ti-check"></i></a>
+                            {% endif %}
+                            </td>
                         {% endif %}
                     {% endfor %}
                 </tr>
@@ -44,6 +51,13 @@
                         class="ti ti-arrow-left"></i>Volver</a>
         </div>
     </div>
+    <style>
+        .disabled {
+            pointer-events: none;
+            color: grey;
+            cursor: not-allowed;
+        }
+    </style>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             {% if success is defined and success %}
