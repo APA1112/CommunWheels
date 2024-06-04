@@ -48,31 +48,11 @@ class AbsenceController extends AbstractController
         $absence->setDriver($driver);
         $absenceRepository->add($absence);
 
-        $admins = $userRepository->findGroupAdmins();
-
-        foreach ($admins as $admin) {
-            $email = (new TemplatedEmail())
-                ->from(new Address('commun.wheels@gmail.com', 'CommunWheels'))
-                ->to($admin->getDriver()->getEmail())
-                ->subject('Notificación de ausencia')
-                ->htmlTemplate('emails/absence_notification.html.twig')
-                ->context([
-                    'group_admin_name' => $admin->getDriver()->getName(),
-                    'driver_name' => $absence->getDriver()->getName() . ' '. $absence->getDriver()->getLastName(),
-                    'start_date' => $absence->getAbsenceDate(),
-                    'reason' => $absence->getDescription(),
-                    'support_email' => 'support@communwheels.com',
-                    'year' => date('Y')
-                ]);
-
-            $this->mailer->send($email);
-        }
-
-        return $this->modificar($absence, $absenceRepository, $request);
+        return $this->modificar($absence, $absenceRepository, $request, $userRepository);
     }
 
     #[Route('/notificacion/modificar/{id}', name: 'mod_absence')]
-    public function modificar(Absence $absence, AbsenceRepository $absenceRepository, Request $request):Response
+    public function modificar(Absence $absence, AbsenceRepository $absenceRepository, Request $request, UserRepository $userRepository):Response
     {
         $form = $this->createForm(AbsenceType::class, $absence);
 
@@ -87,6 +67,25 @@ class AbsenceController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             try {
                 $absenceRepository->save();
+                $admins = $userRepository->findGroupAdmins();
+
+                foreach ($admins as $admin) {
+                    $email = (new TemplatedEmail())
+                        ->from(new Address('commun.wheels@gmail.com', 'CommunWheels'))
+                        ->to($admin->getDriver()->getEmail())
+                        ->subject('Notificación de ausencia')
+                        ->htmlTemplate('emails/absence_notification.html.twig')
+                        ->context([
+                            'group_admin_name' => $admin->getDriver()->getName(),
+                            'driver_name' => $absence->getDriver()->getName() . ' '. $absence->getDriver()->getLastName(),
+                            'start_date' => $absence->getAbsenceDate()->format('d-m-Y'),
+                            'reason' => $absence->getDescription(),
+                            'support_email' => 'support@communwheels.com',
+                            'year' => date('Y')
+                        ]);
+
+                    $this->mailer->send($email);
+                }
                 if ($nuevo){
                     $this->addFlash('success', 'Notificación de ausencia creada correctamente');
                 } else {
