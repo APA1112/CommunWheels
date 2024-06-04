@@ -1,0 +1,70 @@
+{# templates/emails/welcome_email.html.twig #}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenido a CommunWheels</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            padding-bottom: 20px;
+        }
+        .header img {
+            max-width: 150px;
+        }
+        .content {
+            line-height: 1.6;
+        }
+        .content h1 {
+            color: #333333;
+        }
+        .content p {
+            margin: 0 0 20px;
+        }
+        .footer {
+            text-align: center;
+            padding-top: 20px;
+            font-size: 12px;
+            color: #777777;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="content">
+        <h1>Bienvenido a CommunWheels, {{ driver_name }}</h1>
+        <p>Estamos encantados de darte la bienvenida a nuestra comunidad. Aquí están tus credenciales de acceso:</p>
+        <p><strong>Usuario:</strong> {{ username }}</p>
+        <p><strong>Contraseña:</strong> {{ plain_password }}</p>
+        <p>Te recomendamos cambiar tu contraseña la primera vez que inicies sesión. Puedes hacerlo siguiendo estos pasos:</p>
+        <ol>
+            <li>Inicia sesión en tu cuenta con las credenciales proporcionadas.</li>
+            <li>Ve a la sección de panel de usuario de tu cuenta.</li>
+            <li>Selecciona "Cambiar contraseña" y sigue las instrucciones.</li>
+        </ol>
+        <p>Si tienes alguna pregunta o necesitas ayuda, no dudes en contactarnos en {{ support_email }} .</p>
+        <p>Gracias por unirte a nosotros.</p>
+        <p>Saludos cordiales,<br>El equipo de CommunWheels</p>
+    </div>
+    <div class="footer">
+        <p>&copy; {{ year }} CommunWheels. Todos los derechos reservados.</p>
+    </div>
+</div>
+</body>
+</html>

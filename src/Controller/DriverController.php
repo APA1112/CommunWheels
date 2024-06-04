@@ -14,9 +14,11 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 
 #[IsGranted('ROLE_DRIVER')]
 class DriverController extends AbstractController
@@ -72,16 +74,18 @@ class DriverController extends AbstractController
                 $driverRepository->add($driver);
 
                 // Enviar correo al nuevo conductor
-                $email = (new Email())
-                    ->from('commun.wheels@gmail.com')
+                $email = (new TemplatedEmail())
+                    ->from(new Address('commun.wheels@gmail.com', 'CommunWheels'))
                     ->to($driver->getEmail())
                     ->subject('Bienvenido a CommunWheels ' . $driver->getName())
-                    ->html('
-                        <p>Tu cuenta de conductor ha sido creada con las siguientes credenciales.</p>
-                        <p>Usuario: ' . $user->getUsername() . '</p>
-                        <p>Contraseña: ' . $plainPassword . '</p>
-                        <p>Recuerda que debes cambiar tu contraseña en panel de usuario.</p>
-                        <a href="https://communwheels.prodevnet.es">CommunWheels</a>');
+                    ->htmlTemplate('emails/welcome_email.html.twig')
+                    ->context([
+                        'driver_name' => $driver->getName(),
+                        'username' => $user->getUsername(),
+                        'plain_password' => $plainPassword,
+                        'support_email' => 'commun.wheels@gmail.com',
+                        'year' => date('Y')
+                    ]);
 
                 $this->mailer->send($email);
 

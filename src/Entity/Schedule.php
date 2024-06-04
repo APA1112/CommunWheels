@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\ScheduleRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 #[ORM\Entity(repositoryClass: ScheduleRepository::class)]
 class Schedule
@@ -17,9 +19,15 @@ class Schedule
     private ?int $weekDay = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank]
     private ?int $entrySlot = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\GreaterThan(
+        propertyPath: 'entrySlot',
+        message: 'La hora de salida no puede ser mayor a la hora de salida'
+    )]
     private ?int $exitSlot = null;
 
     #[ORM\ManyToOne(inversedBy: 'schedules')]
@@ -75,5 +83,4 @@ class Schedule
 
         return $this;
     }
-
 }

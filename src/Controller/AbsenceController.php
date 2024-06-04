@@ -9,11 +9,13 @@ use App\Repository\AbsenceRepository;
 use App\Repository\DriverRepository;
 use App\Repository\UserRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
@@ -49,13 +51,19 @@ class AbsenceController extends AbstractController
         $admins = $userRepository->findGroupAdmins();
 
         foreach ($admins as $admin) {
-            $email = (new Email())
-                ->from('commun.wheels@gmail.com')
+            $email = (new TemplatedEmail())
+                ->from(new Address('commun.wheels@gmail.com', 'CommunWheels'))
                 ->to($admin->getDriver()->getEmail())
-                ->subject('Nueva Ausencia')
-                ->html('
-            <p>Una nueva notificación de ausencia ha sido creada.</p>
-            <p>Recuerda que debes acceder para generar un nuevo viaje para ese día</p>');
+                ->subject('Notificación de ausencia')
+                ->htmlTemplate('emails/absence_notification.html.twig')
+                ->context([
+                    'group_admin_name' => $admin->getDriver()->getName(),
+                    'driver_name' => $absence->getDriver()->getName() . ' '. $absence->getDriver()->getLastName(),
+                    'start_date' => $absence->getAbsenceDate(),
+                    'reason' => $absence->getDescription(),
+                    'support_email' => 'support@communwheels.com',
+                    'year' => date('Y')
+                ]);
 
             $this->mailer->send($email);
         }
