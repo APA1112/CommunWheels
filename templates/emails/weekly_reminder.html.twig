@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bienvenido a CommunWheels</title>
+    <title>Recordatorio para Crear el Cuadrante Semanal</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -47,18 +47,21 @@
 <body>
 <div class="container">
     <div class="content">
-        <h1>Bienvenido a CommunWheels, {{ driver_name }}</h1>
-        <p>Estamos encantados de darte la bienvenida a nuestra comunidad. Aquí están tus credenciales de acceso:</p>
-        <p><strong>Usuario:</strong> {{ username }}</p>
-        <p><strong>Contraseña:</strong> {{ plain_password }}</p>
-        <p>Te recomendamos cambiar tu contraseña la primera vez que inicies sesión. Puedes hacerlo siguiendo estos pasos:</p>
+        <h1>Recordatorio para Crear el Cuadrante Semanal</h1>
+        <p>Estimado/a {{ group_admin_name }},</p>
+        <p>Este es un recordatorio amistoso para que generes los nuevos cuadrantes para la semana que viene.</p>
+        <p>El cuadrante semanal es esencial para asegurar una buena organización y funcionamiento de nuestro equipo. Asegúrate de incluir todas las ausencias registradas y de verificar la disponibilidad de todos los miembros del grupo.</p>
+        <p>Para crear el nuevo cuadrante, por favor sigue estos pasos:</p>
         <ol>
-            <li>Inicia sesión en tu cuenta con las credenciales proporcionadas.</li>
-            <li>Ve a la sección de panel de usuario de tu cuenta.</li>
-            <li>Selecciona "Cambiar contraseña" y sigue las instrucciones.</li>
+            <li>Inicia sesión en tu cuenta de administrador.</li>
+            <li>Accede a la sección de "Grupos".</li>
+            <li>Despliega la información del grupo que deseas.</li>
+            <li>Selecciona "Cuadrantes".</li>
+            <li>Selecciona "Generar cuadrante".</li>
+            <li>Completa la información necesaria y guarda los cambios.</li>
         </ol>
-        <p>Si tienes alguna pregunta o necesitas ayuda, no dudes en contactarnos en {{ support_email }} .</p>
-        <p>Gracias por unirte a nosotros.</p>
+        <p>Si tienes alguna pregunta o necesitas ayuda, no dudes en contactarnos en {{ support_email }}.</p>
+        <p>Gracias por tu atención y por mantener todo en orden.</p>
         <p>Saludos cordiales,<br>El equipo de CommunWheels</p>
     </div>
     <div class="footer">
