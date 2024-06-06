@@ -44,6 +44,7 @@ CSS FOR CARD
     color: var(--text-color);
     font-size: xx-large;
     text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.85);
 
 }
 .card:hover{
@@ -119,7 +120,7 @@ CSS FOR PRIMARY BUTTON
     text-decoration: none;
     font-size: large;
     color: var(--original-back-color);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.85);
 }
 .primaryButton:hover{
     background-color: var(--primary-button-hover);
@@ -138,7 +139,7 @@ CSS FOR SECONDARY BUTTON
     text-decoration: none;
     font-size: large;
     color: var(--original-back-color);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.85);
 }
 .secondaryButton:hover{
     background-color: var(--secondary-button-hover);
@@ -157,7 +158,7 @@ CSS FOR DELETE BUTTON
     text-decoration: none;
     font-size: large;
     color: var(--original-back-color);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.85);
 }
 .deleteButton:hover{
     background-color: var(--delete-button-hover);
