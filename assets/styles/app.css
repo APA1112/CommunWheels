@@ -98,22 +98,22 @@ CSS FOR CARD
     padding: 0.5rem 0; /* Ajusta el padding según sea necesario */
 }
 .card-user .card-icon::before {
-    background-image: url('/home/alejandro/Escritorio/PruebaCommunWheels/public/images/bg-user.png');
+    background-image: url('/public/images/bg-user.png');
 }
 .card-group .card-icon::before {
-    background-image: url('/home/alejandro/Escritorio/PruebaCommunWheels/public/images/bg-group.png');
+    background-image: url('/public/images/bg-group.png');
 }
 .card-notify .card-icon::before {
-    background-image: url('/home/alejandro/Escritorio/PruebaCommunWheels/public/images/bg-notify.png');
+    background-image: url('/public/images/bg-notify.png');
 }
 .card-schedule .card-icon::before {
-    background-image: url('/home/alejandro/Escritorio/PruebaCommunWheels/public/images/bg-schedule.png');
+    background-image: url('/public/images/bg-schedule.png');
 }
 .card-password .card-icon::before {
-    background-image: url('/home/alejandro/Escritorio/PruebaCommunWheels/public/images/bg-password.png');
+    background-image: url('/public/images/bg-password.png');
 }
 .card-data .card-icon::before {
-    background-image: url('/home/alejandro/Escritorio/PruebaCommunWheels/public/images/bg-data.png');
+    background-image: url('/public/images/bg-data.png');
 }
 
 
