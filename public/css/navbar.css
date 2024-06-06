@@ -39,6 +39,10 @@ body {
     align-items: center;
     color: var(--text-color);
 }
+.navbar a img{
+    height: 100%;
+    width: auto;
+}
 
 .navbar a:hover {
     background-color: var(--hover-color);

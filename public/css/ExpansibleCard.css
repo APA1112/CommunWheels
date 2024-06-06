@@ -11,7 +11,7 @@
 }
 
 .expandable-container {
-    margin-bottom: 10px; /* Espacio entre los contenedores de elementos */
+    margin-bottom: 15px; /* Espacio entre los contenedores de elementos */
 }
 
 .expandable {
@@ -26,7 +26,7 @@
     box-sizing: border-box;
     cursor: pointer;
     border-radius: 10px; /* Borde redondeado completo */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
 }
 
 .expandable.expanded {
@@ -71,7 +71,7 @@
     padding: 0 15px; /* Quitar padding superior cuando está colapsado */
     box-sizing: border-box;
     border-radius: 0 0 10px 10px; /* Borde redondeado inferior */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
 }
 
 .content.expanded {

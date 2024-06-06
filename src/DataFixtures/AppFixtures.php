@@ -35,7 +35,7 @@ class AppFixtures extends Fixture
         // Crear el usuario admin
         $adminUser = UserFactory::createOne([
             'username' => 'admin',
-            'password' => $this->passwordHasher->hashPassword(new User(), 'admin'),
+            'password' => $this->passwordHasher->hashPassword(new User(), 'Lvame80d!'),
             'isAdmin' => true,
         ]);
 

@@ -14,7 +14,8 @@
 body{
     background-color: var(--original-back-color);
     color: var(--text-color);
-    font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif; /* Fuente similar a MUI */
+    font-family: 'Jost','Roboto', 'Helvetica', 'Arial', sans-serif;
+    font-size: large;
 }
 .container{
     height: 80vh;
@@ -31,27 +32,91 @@ body{
 CSS FOR CARD
 
  */
-.card{
+.card {
     height: auto;
     min-width: 40%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    border: 2px solid #CCDBDC;
-    border-radius: 10px;
+    border-radius: 10px; /* Este es el border-radius general */
     text-decoration: none;
     color: var(--text-color);
     font-size: xx-large;
     text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.85);
-
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s;
 }
-.card:hover{
+
+.card:hover {
     background-color: var(--back-color);
     cursor: pointer;
     transform: scale(1.05);
 }
+
+.card-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8rem;
+    width: 100%;
+    height: auto;
+    position: relative;
+    margin: 0; /* Eliminar márgenes */
+    padding: 0; /* Eliminar padding */
+}
+
+.card-icon::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    opacity: 0.2; /* Ajusta este valor para cambiar la opacidad */
+    z-index: 0;
+    border-top-left-radius: 10px; /* Asegura que el borde redondeado coincida */
+    border-top-right-radius: 10px;
+}
+
+.card-icon i {
+    position: relative;
+    z-index: 1; /* Asegura que el icono esté encima del fondo */
+}
+
+.card-text {
+    width: 100%;
+    text-align: center; /* Centra el texto dentro del div */
+    font-size: xx-large;
+    color: var(--original-back-color);
+    border-bottom-left-radius: 10px; /* Redondea la esquina inferior izquierda */
+    border-bottom-right-radius: 10px; /* Redondea la esquina inferior derecha */
+    background-color: var(--text-color); /* Mantiene el mismo fondo que el contenedor principal */
+    margin: 0; /* Eliminar márgenes */
+    padding: 0.5rem 0; /* Ajusta el padding según sea necesario */
+}
+.card-user .card-icon::before {
+    background-image: url('/home/alejandro/Escritorio/PruebaCommunWheels/public/images/bg-user.png');
+}
+.card-group .card-icon::before {
+    background-image: url('/home/alejandro/Escritorio/PruebaCommunWheels/public/images/bg-group.png');
+}
+.card-notify .card-icon::before {
+    background-image: url('/home/alejandro/Escritorio/PruebaCommunWheels/public/images/bg-notify.png');
+}
+.card-schedule .card-icon::before {
+    background-image: url('/home/alejandro/Escritorio/PruebaCommunWheels/public/images/bg-schedule.png');
+}
+.card-password .card-icon::before {
+    background-image: url('/home/alejandro/Escritorio/PruebaCommunWheels/public/images/bg-password.png');
+}
+.card-data .card-icon::before {
+    background-image: url('/home/alejandro/Escritorio/PruebaCommunWheels/public/images/bg-data.png');
+}
+
+
 @media(max-width: 1060px){
     .logo{
         display: none;
@@ -120,7 +185,7 @@ CSS FOR PRIMARY BUTTON
     text-decoration: none;
     font-size: large;
     color: var(--original-back-color);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.85);
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
 }
 .primaryButton:hover{
     background-color: var(--primary-button-hover);
@@ -139,7 +204,7 @@ CSS FOR SECONDARY BUTTON
     text-decoration: none;
     font-size: large;
     color: var(--original-back-color);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.85);
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
 }
 .secondaryButton:hover{
     background-color: var(--secondary-button-hover);
@@ -158,7 +223,7 @@ CSS FOR DELETE BUTTON
     text-decoration: none;
     font-size: large;
     color: var(--original-back-color);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.85);
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
 }
 .deleteButton:hover{
     background-color: var(--delete-button-hover);
@@ -178,7 +243,7 @@ CSS FOR FORM
     padding: 2rem;
     gap: 10px 20px;
     width: 100%;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.5);
 }
 .inner{
     display: flex;
@@ -250,7 +315,7 @@ CSS FOR FORM
     border-radius: 5px;
     width: 25%;
     gap: 20px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.5);
 }
 
 .active_hour {

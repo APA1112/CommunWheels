@@ -5,9 +5,13 @@
         {% include 'users/card_personal.html.twig' %}
         {% include 'schedule/card.html.twig' %}
 
-        <a href="{{ path('app_change_password') }}" class="card">
-            <i class="ti ti-brand-samsungpass" style='font-size: 8rem;'></i>
-            <h3>Cambiar contraseña</h3>
+        <a href="{{ path('app_change_password') }}" class="card card-password">
+            <div class="card-icon">
+                <i class="ti ti-brand-samsungpass" style='font-size: 8rem;'></i>
+            </div>
+            <div class="card-text">
+                <h3>Cambiar contraseña</h3>
+            </div>
         </a>
     </div>
 {% endblock %}
