@@ -174,12 +174,19 @@ class TimeTableController extends AbstractController
             $trip->setDriver($driver);
             $trip->setEntrySlot($entrySlot);
             $trip->setExitSlot($exitSlot);
+            $trip->setActive(true);
+
+            foreach ($drivers as $passDriver) {
+                if ($passDriver !== $driver) {
+                    $trip->addPassenger($passDriver);
+                }
+            }
 
             $tripRepository->add($trip);
             $trips[] = $trip;
             $weekStartDate->modify('+1 day');
         }
-
+        /*
         foreach ($drivers as $driver) {
             $email = (new Email())
                 ->from('commun.wheels@gmail.com')
@@ -193,7 +200,7 @@ class TimeTableController extends AbstractController
 
             $this->mailer->send($email);
         }
-
+        */
 
         return $this->render('trip/new.html.twig', [
             'timeTable' => $timeTable,

@@ -46,7 +46,11 @@
                             </div>
                             <div class="expanded_card">
                                 <p class="label">Pasajeros:</p>
-                                <p class="value">{{ trip.driver }}</p>
+                                <p class="value">
+                                    {% for passenger in trip.passengers %}
+                                        <p>{{ passenger.name }} {{ passenger.lastName }} </p>
+                                    {% endfor %}
+                                </p>
                             </div>
                             <div class="expanded_card">
                                 {% if trip.driver == app.user.driver and trip.isActive %}

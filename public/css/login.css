@@ -7,7 +7,8 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Jost','Roboto', 'Helvetica', 'Arial', sans-serif;
+    font-size: large;
     margin: 0;
     height: 100vh;
     overflow: hidden;

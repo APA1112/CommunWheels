@@ -1,7 +1,5 @@
 <?php
 
-// src/Entity/Trip.php
-
 namespace App\Entity;
 
 use App\Repository\TripRepository;
@@ -15,11 +13,11 @@ class Trip
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTime $tripDate = null;
+    private ?\DateTimeInterface $tripDate = null;
 
     #[ORM\Column]
     private ?int $entrySlot = null;
@@ -52,12 +50,12 @@ class Trip
         return $this->id;
     }
 
-    public function getTripDate(): ?\DateTime
+    public function getTripDate(): ?\DateTimeInterface
     {
         return $this->tripDate;
     }
 
-    public function setTripDate(?\DateTime $tripDate): Trip
+    public function setTripDate(?\DateTimeInterface $tripDate): self
     {
         $this->tripDate = $tripDate;
         return $this;
@@ -68,7 +66,7 @@ class Trip
         return $this->entrySlot;
     }
 
-    public function setEntrySlot(?int $entrySlot): Trip
+    public function setEntrySlot(?int $entrySlot): self
     {
         $this->entrySlot = $entrySlot;
         return $this;
@@ -79,7 +77,7 @@ class Trip
         return $this->exitSlot;
     }
 
-    public function setExitSlot(?int $exitSlot): Trip
+    public function setExitSlot(?int $exitSlot): self
     {
         $this->exitSlot = $exitSlot;
         return $this;
@@ -90,7 +88,7 @@ class Trip
         return $this->timeTable;
     }
 
-    public function setTimeTable(?TimeTable $timeTable): static
+    public function setTimeTable(?TimeTable $timeTable): self
     {
         $this->timeTable = $timeTable;
         return $this;
@@ -101,7 +99,7 @@ class Trip
         return $this->mainDriver;
     }
 
-    public function setDriver(?Driver $mainDriver): static
+    public function setDriver(?Driver $mainDriver): self
     {
         $this->mainDriver = $mainDriver;
         return $this;
@@ -112,9 +110,12 @@ class Trip
         return $this->passengers;
     }
 
-    public function setPassengers(Collection $passengers): Trip
+    public function addPassenger(Driver $driver): self
     {
-        $this->passengers = $passengers;
+        if (!$this->passengers->contains($driver)) {
+            $this->passengers->add($driver);
+        }
+
         return $this;
     }
 
@@ -123,11 +124,9 @@ class Trip
         return $this->active;
     }
 
-    public function setActive(?bool $active): Trip
+    public function setActive(?bool $active): self
     {
         $this->active = $active;
         return $this;
     }
-
 }
-
