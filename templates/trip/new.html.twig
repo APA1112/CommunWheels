@@ -8,17 +8,17 @@
                 -{{ (timeTable.weekStartDate | date_modify('+4 days')) | date('d/m/y') }}</h2>
             {% set weekdays = {1: 'Lunes', 2: 'Martes', 3: 'Miércoles', 4: 'Jueves', 5: 'Viernes'} %}
             {% set hourIntervals = {
-                1: '8:15 - 9:15',
-                2: '9:15 - 10:15',
-                3: '10:15 - 11:15',
-                4: '11:45 - 12:45',
-                5: '12:45 - 13:45',
-                6: '13:45 - 14:45'
+                1: '8:15',
+                2: '9:15',
+                3: '10:15',
+                4: '11:45',
+                5: '12:45',
+                6: '13:45'
             } %}
             {% for trip in trips %}
                 <div class="expandable-container">
                     <div class="expandable">
-                        <span class="title">{{ weekdays[loop.index] }}</span>
+                        <span class="title">{{ weekdays[trip.tripDate | date('N')] }}</span>
                         <div class="icons">
                             <a href="#" class="btn edit">
                                 <i class="ti ti-edit" style="font-size: 1.5rem"></i>
@@ -34,22 +34,22 @@
                             </div>
                             <div class="expanded_card">
                                 <p class="label">Hora de entrada:</p>
-                                <p class="value">{{ trip.entrySlot }}</p>
+                                <p class="value">{{ hourIntervals[trip.entrySlot] }}</p>
                             </div>
                             <div class="expanded_card">
                                 <p class="label">Hora de salida:</p>
-                                <p class="value">{{ trip.exitSlot }}</p>
+                                <p class="value">{{ hourIntervals[trip.exitSlot] }}</p>
                             </div>
                             <div class="expanded_card">
                                 <p class="label">Conductor:</p>
-                                <p class="value">{{ trip.driver }}</p>
+                                <p class="value">{{ trip.driver.name }} {{ trip.driver.lastName }}</p>
                             </div>
                             <div class="expanded_card">
                                 <p class="label">Pasajeros:</p>
                                 <p class="value">
                                     {% for passenger in trip.passengers %}
-                                        <p>{{ passenger.name }} {{ passenger.lastName }} </p>
-                                    {% endfor %}
+                                <p>{{ passenger.name }} {{ passenger.lastName }} </p>
+                                {% endfor %}
                                 </p>
                             </div>
                             <div class="expanded_card">
