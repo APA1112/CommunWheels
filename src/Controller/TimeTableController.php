@@ -59,6 +59,7 @@ class TimeTableController extends AbstractController
         ]);
     }
 
+    #[IsGranted('ROLE_GROUP_ADMIN')]
     #[Route('/cuadrante/nuevo/{id}', name: 'timeTable_new')]
     public function newTrip(
         Group                  $group,
