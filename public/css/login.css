@@ -42,17 +42,6 @@ body {
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     width: 300px;
     text-align: center;
-    transform-origin: center;
-    animation: grow 2s ease-out;
-}
-
-@keyframes grow {
-    0% {
-        transform: scaleY(0);
-    }
-    100% {
-        transform: scaleY(1);
-    }
 }
 
 .login-container h1 {

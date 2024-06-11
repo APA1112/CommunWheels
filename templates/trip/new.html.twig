@@ -46,7 +46,10 @@
                         <tr>
                             <td>
                                 {{ dayNames[i] }} {{ (timeTable.weekStartDate|date_modify('+' ~ i ~ ' days'))|date('d-m-Y') }}
-                                <a href="#" class="icons" style="text-decoration: none"><i class="ti ti-edit" style="font-size: 1.5rem; color: white;"></i></a>
+                                {% if is_granted('ROLE_GROUP_ADMIN') %}
+                                    <a href="#" class="icons" style="text-decoration: none"><i class="ti ti-edit"
+                                                                                               style="font-size: 1.5rem; color: white;"></i></a>
+                                {% endif %}
                             </td>
                             {% for hourIndex in 1..6 %}
                                 {% set dayTrips = trips|filter(trip => trip.tripDate|date('N') == (i + 1)) %}
@@ -54,7 +57,8 @@
                                 {% if tripsForCurrentHour|length > 0 %}
                                     <td>
                                         {% for trip in tripsForCurrentHour %}
-                                            <div class="trip-cell" style="background-color: {{ colors[i % colors|length] }}">
+                                            <div class="trip-cell"
+                                                 style="background-color: {{ colors[i % colors|length] }}">
                                                 Conductor: {{ trip.driver.name }}<br>
                                                 Entrada: {{ entryHourIntervals[trip.entrySlot] }}<br>
                                                 Salida: {{ exitHourIntervals[trip.exitSlot] }}<br>
