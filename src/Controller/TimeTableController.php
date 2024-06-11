@@ -108,8 +108,10 @@ class TimeTableController extends AbstractController
             $this->addFlash('error', 'Ha habido un error creando el cuadrante.');
             return $this->redirectToRoute('timetable_main', ['id' => $group->getId()]);
         }
-        $timeTableRepository->add($timeTable);
+        //$timeTableRepository->add($timeTable);
 
+        $tripDriverSchedules = $scheduleRepository->findDriverSchedules($drivers[0]);
+        $tripDriverAbsences = $absenceRepository->findDriverAbsences($drivers[0]);
         $groupNonSchoolDays = $nonSchoolDayRepository->findByGroup($group);
         $groupNonSchoolDaysDates = [];
         $driverAbsencesDates = [];
@@ -117,6 +119,15 @@ class TimeTableController extends AbstractController
         foreach ($groupNonSchoolDays as $groupNonSchoolDay) {
             $groupNonSchoolDaysDates[] = $groupNonSchoolDay->getDayDate();
         }
+
+        foreach ($tripDriverAbsences as $driverAbsence) {
+            $driverAbsencesDates[] = $driverAbsence->getAbsenceDate();
+        }
+
+        // Preformatear las fechas
+        $formattedDriverAbsencesDates = array_map(function ($date) {
+            return $date->format('Y-m-d');
+        }, $driverAbsencesDates);
 
         $formattedGroupNonSchoolDaysDates = array_map(function ($date) {
             return $date->format('Y-m-d');
@@ -127,103 +138,78 @@ class TimeTableController extends AbstractController
         for ($i = 0; $i < 5; $i++) {
             foreach ($drivers as $driver) {
                 $schedule = $driver->getSchedules()[$i];
+                $waitTime = $driver->getWaitTime();
+                if ($schedule->getEntrySlot() === 1) {
+                    $entrySlotAdjusted = $schedule->getEntrySlot();
+                } else {
+                    $entrySlotAdjusted = $schedule->getEntrySlot() - $waitTime;
+                }
+                if ($schedule->getExitSlot() === 1) {
+                    $exitSlotAdjusted = $schedule->getExitSlot();
+                } else {
+                    $exitSlotAdjusted = $schedule->getEntrySlot() + $waitTime;
+                }
                 $entrySlot = $schedule->getEntrySlot();
                 $exitSlot = $schedule->getExitSlot();
-                $waitTime = $driver->getWaitTime();
-                // Ajustar entrySlot y exitSlot
-                $entrySlotAdjusted = ($entrySlot == 1) ? $entrySlot : $entrySlot - $waitTime;
-                $exitSlotAdjusted = ($exitSlot == 1) ? $exitSlot : $exitSlot + $waitTime;
-
-                // Crear clave basada en los slots originales y ajustados
-                $originalKey = $entrySlot . '-' . $exitSlot;
-                $adjustedKey1 = $entrySlotAdjusted . '-' . $exitSlot;
-                $adjustedKey2 = $entrySlot . '-' . $exitSlotAdjusted;
-                $adjustedKey3 = $entrySlotAdjusted . '-' . $exitSlotAdjusted;
-
-                // Verificar si alguna clave existente coincide con las posibles combinaciones
-                $foundKey = false;
-                foreach ([$originalKey, $adjustedKey1, $adjustedKey2, $adjustedKey3] as $key) {
-                    if (isset($scheduleGroups[$key])) {
-                        $scheduleGroups[$key][] = $driver;
-                        $foundKey = true;
-                        break;
-                    }
+                $key = $entrySlot . '-' . $exitSlot;
+                if (!isset($scheduleGroups[$key])) {
+                    $scheduleGroups[$key] = [];
                 }
-
-                // Si no se encontró ninguna clave existente, crear una nueva clave con los valores originales
-                if (!$foundKey) {
-                    if (!isset($scheduleGroups[$originalKey])) {
-                        $scheduleGroups[$originalKey] = [];
-                    }
-                    $scheduleGroups[$originalKey][] = $driver;
+                if (($entrySlot == $entrySlotAdjusted || $entrySlot == $schedule->getEntrySlot()) and ($exitSlot == $exitSlotAdjusted || $exitSlot == $schedule->getExitSlot())) {
+                    $scheduleGroups[$key][] = $driver;
                 }
             }
+            dd($scheduleGroups);
+            $trip = new Trip();
+            $trip->setTripDate($weekStartDate);
+            $trip->setTimeTable($timeTable);
+            $trip->setActive(true);
 
-            foreach ($scheduleGroups as $scheduleGroup) {
-                $tripDriverSchedules = $scheduleRepository->findDriverSchedules($scheduleGroup[0]);
-                $tripDriverAbsences = $absenceRepository->findDriverAbsences($scheduleGroup[0]);
+            // Convertir weekStartDate a una cadena de formato 'Y-m-d' para comparar
+            $formattedWeekStartDate = $weekStartDate->format('Y-m-d');
 
-                foreach ($tripDriverAbsences as $driverAbsence) {
-                    $driverAbsencesDates[] = $driverAbsence->getAbsenceDate();
-                }
+            // Verificar si la fecha no es un día no escolar ni una ausencia del conductor
+            $isNonSchoolDay = in_array($formattedWeekStartDate, $formattedGroupNonSchoolDaysDates);
+            $isDriverAbsent = in_array($formattedWeekStartDate, $formattedDriverAbsencesDates);
+            $driverAvailable = $tripDriverSchedules[$i]->getEntrySlot() != 0;
 
-                // Preformatear las fechas
-                $formattedDriverAbsencesDates = array_map(function ($date) {
-                    return $date->format('Y-m-d');
-                }, $driverAbsencesDates);
-
-                $trip = new Trip();
-                $trip->setTripDate($weekStartDate);
-                $trip->setTimeTable($timeTable);
-                $trip->setActive(true);
-
-                // Convertir weekStartDate a una cadena de formato 'Y-m-d' para comparar
-                $formattedWeekStartDate = $weekStartDate->format('Y-m-d');
-
-                // Verificar si la fecha no es un día no escolar ni una ausencia del conductor
-                $isNonSchoolDay = in_array($formattedWeekStartDate, $formattedGroupNonSchoolDaysDates);
-                $isDriverAbsent = in_array($formattedWeekStartDate, $formattedDriverAbsencesDates);
-                $driverAvailable = $tripDriverSchedules[$i]->getEntrySlot() != 0;
-
-                if (!$isNonSchoolDay) {
-                    if (!$isDriverAbsent && $driverAvailable) {
-                        $driver = $scheduleGroup[0];
-                        $entrySlot = $tripDriverSchedules[$i]->getEntrySlot();
-                        $exitSlot = $tripDriverSchedules[$i]->getExitSlot();
-                    } else {
-                        // Encontrar el primer conductor disponible
-                        foreach ($scheduleGroup as $driver) {
-                            if ($driver !== $scheduleGroup[0]) {
-                                $driverSchedule = $driver->getSchedules()[$i];
-                                $entrySlot = $driverSchedule->getEntrySlot();
-                                $exitSlot = $driverSchedule->getExitSlot();
-                                if ($entrySlot != 0) {
-                                    break;
-                                }
+            if (!$isNonSchoolDay) {
+                if (!$isDriverAbsent && $driverAvailable) {
+                    $driver = $drivers[0];
+                    $entrySlot = $tripDriverSchedules[$i]->getEntrySlot();
+                    $exitSlot = $tripDriverSchedules[$i]->getExitSlot();
+                } else {
+                    // Encontrar el primer conductor disponible
+                    foreach ($drivers as $driver) {
+                        if ($driver !== $drivers[0]) {
+                            $driverSchedule = $driver->getSchedules()[$i];
+                            $entrySlot = $driverSchedule->getEntrySlot();
+                            $exitSlot = $driverSchedule->getExitSlot();
+                            if ($entrySlot != 0) {
+                                break;
                             }
                         }
                     }
-                } else {
-                    $driver = $scheduleGroup[0];
-                    $entrySlot = 0;
-                    $exitSlot = 0;
                 }
-
-
-                $trip->setDriver($driver);
-                $trip->setEntrySlot($entrySlot);
-                $trip->setExitSlot($exitSlot);
-
-                foreach ($scheduleGroup as $passDriver) {
-                    if ($passDriver !== $driver and count($trip->getPassengers()) < $driver->getSeats()) {
-                        $trip->addPassenger($passDriver);
-                    }
-                }
-
-                $tripRepository->add($trip);
-                $trips[] = $trip;
+            } else {
+                $driver = $drivers[0];
+                $entrySlot = 0;
+                $exitSlot = 0;
             }
 
+
+            $trip->setDriver($driver);
+            $trip->setEntrySlot($entrySlot);
+            $trip->setExitSlot($exitSlot);
+
+            foreach ($drivers as $passDriver) {
+                if ($passDriver !== $driver and count($trip->getPassengers()) < $driver->getSeats()) {
+                    $trip->addPassenger($passDriver);
+                }
+            }
+
+            $tripRepository->add($trip);
+            $trips[] = $trip;
             $weekStartDate->modify('+1 day');
         }
         /*
