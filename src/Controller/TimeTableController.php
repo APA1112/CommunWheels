@@ -29,6 +29,7 @@ class TimeTableController extends AbstractController
     {
         $this->mailer = $mailer;
     }
+
     #[Route('/cuadrantes/{id}', name: 'timetable_main')]
     public function modificar(Group $group, TimeTableRepository $timeTableRepository, PaginatorInterface $paginator, Request $request): Response
     {
@@ -107,7 +108,7 @@ class TimeTableController extends AbstractController
             $this->addFlash('error', 'Ha habido un error creando el cuadrante.');
             return $this->redirectToRoute('timetable_main', ['id' => $group->getId()]);
         }
-        $timeTableRepository->add($timeTable);
+        //$timeTableRepository->add($timeTable);
 
         $tripDriverSchedules = $scheduleRepository->findDriverSchedules($drivers[0]);
         $tripDriverAbsences = $absenceRepository->findDriverAbsences($drivers[0]);
@@ -132,7 +133,33 @@ class TimeTableController extends AbstractController
             return $date->format('Y-m-d');
         }, $groupNonSchoolDaysDates);
 
+        $scheduleGroups = [];
+
         for ($i = 0; $i < 5; $i++) {
+            foreach ($drivers as $driver) {
+                $schedule = $driver->getSchedules()[$i];
+                $waitTime = $driver->getWaitTime();
+                if ($schedule->getEntrySlot() === 1) {
+                    $entrySlotAdjusted = $schedule->getEntrySlot();
+                } else {
+                    $entrySlotAdjusted = $schedule->getEntrySlot() - $waitTime;
+                }
+                if ($schedule->getExitSlot() === 1) {
+                    $exitSlotAdjusted = $schedule->getExitSlot();
+                } else {
+                    $exitSlotAdjusted = $schedule->getEntrySlot() + $waitTime;
+                }
+                $entrySlot = $schedule->getEntrySlot();
+                $exitSlot = $schedule->getExitSlot();
+                $key = $entrySlot . '-' . $exitSlot;
+                if (!isset($scheduleGroups[$key])) {
+                    $scheduleGroups[$key] = [];
+                }
+                if (($entrySlot == $entrySlotAdjusted || $entrySlot == $schedule->getEntrySlot()) and ($exitSlot == $exitSlotAdjusted || $exitSlot == $schedule->getExitSlot())) {
+                    $scheduleGroups[$key][] = $driver;
+                }
+            }
+            dd($scheduleGroups);
             $trip = new Trip();
             $trip->setTripDate($weekStartDate);
             $trip->setTimeTable($timeTable);
@@ -174,10 +201,9 @@ class TimeTableController extends AbstractController
             $trip->setDriver($driver);
             $trip->setEntrySlot($entrySlot);
             $trip->setExitSlot($exitSlot);
-            $trip->setActive(true);
 
             foreach ($drivers as $passDriver) {
-                if ($passDriver !== $driver) {
+                if ($passDriver !== $driver and count($trip->getPassengers()) < $driver->getSeats()) {
                     $trip->addPassenger($passDriver);
                 }
             }
