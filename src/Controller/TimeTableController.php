@@ -147,7 +147,7 @@ class TimeTableController extends AbstractController
                 if ($schedule->getExitSlot() === 1) {
                     $exitSlotAdjusted = $schedule->getExitSlot();
                 } else {
-                    $exitSlotAdjusted = $schedule->getEntrySlot() + $waitTime;
+                    $exitSlotAdjusted = $schedule->getExitSlot() + $waitTime;
                 }
                 $entrySlot = $schedule->getEntrySlot();
                 $exitSlot = $schedule->getExitSlot();
