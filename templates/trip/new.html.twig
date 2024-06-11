@@ -2,80 +2,85 @@
 
 {% block body %}
     <div class="container">
-        <div class="card_container">
-            <h2 class="titulo">{{ timeTable.band.name }}</h2>
-            <h2 class="titulo">{{ timeTable.weekStartDate | date('d/m/y') }}
-                -{{ (timeTable.weekStartDate | date_modify('+4 days')) | date('d/m/y') }}</h2>
-            {% set weekdays = {1: 'Lunes', 2: 'Martes', 3: 'Miércoles', 4: 'Jueves', 5: 'Viernes'} %}
-            {% set hourIntervals = {
-                1: '8:15',
-                2: '9:15',
-                3: '10:15',
-                4: '11:45',
-                5: '12:45',
-                6: '13:45'
-            } %}
-            {% for trip in trips %}
-                <div class="expandable-container">
-                    <div class="expandable">
-                        <span class="title">{{ weekdays[trip.tripDate | date('N')] }}</span>
-                        <div class="icons">
-                            <a href="#" class="btn edit">
-                                <i class="ti ti-edit" style="font-size: 1.5rem"></i>
-                            </a>
-                            <span class="icon"><i class="ti ti-caret-down-filled" style="font-size: 1.5rem"></i></span>
-                        </div>
-                    </div>
-                    <div class="content">
-                        <div class="card-grid">
-                            <div class="expanded_card">
-                                <p class="label">Fecha:</p>
-                                <p class="value">{{ trip.tripDate | date('d-m-Y') }}</p>
-                            </div>
-                            <div class="expanded_card">
-                                <p class="label">Hora de entrada:</p>
-                                <p class="value">{{ hourIntervals[trip.entrySlot] }}</p>
-                            </div>
-                            <div class="expanded_card">
-                                <p class="label">Hora de salida:</p>
-                                <p class="value">{{ hourIntervals[trip.exitSlot] }}</p>
-                            </div>
-                            <div class="expanded_card">
-                                <p class="label">Conductor:</p>
-                                <p class="value">{{ trip.driver.name }} {{ trip.driver.lastName }}</p>
-                            </div>
-                            <div class="expanded_card">
-                                <p class="label">Pasajeros:</p>
-                                <p class="value">
-                                    {% for passenger in trip.passengers %}
-                                <p>{{ passenger.name }} {{ passenger.lastName }} </p>
-                                {% endfor %}
-                                </p>
-                            </div>
-                            <div class="expanded_card">
-                                {% if trip.driver == app.user.driver and trip.isActive %}
-                                    <a href="{{ path('confirm_trip', {'id':trip.id}) }}" class="primaryButton">Hecho<i class="ti ti-check"></i></a>
+        <div class="form_container">
+            <h2 class="titulo">Cuadrante para la semana del {{ timeTable.weekStartDate|date('d-m-Y') }}</h2>
+            <div class="schedule-container">
+                <table class="schedule-table">
+                    <thead>
+                    <tr>
+                        <th>Día/Hora</th>
+                        {% set hourIntervals = {
+                            1: '8:15 - 9:15',
+                            2: '9:15 - 10:15',
+                            3: '10:15 - 11:15',
+                            4: '11:45 - 12:45',
+                            5: '12:45 - 13:45',
+                            6: '13:45 - 14:45'
+                        } %}
+                        {% set entryHourIntervals = {
+                            1: '8:15',
+                            2: '9:15',
+                            3: '10:15',
+                            4: '11:45',
+                            5: '12:45',
+                            6: '13:45'
+                        } %}
+                        {% set exitHourIntervals = {
+                            1: '9:15',
+                            2: '10:15',
+                            3: '11:15',
+                            4: '12:45',
+                            5: '13:45',
+                            6: '14:45'
+                        } %}
+                        {% for hourInterval in hourIntervals %}
+                            <th>{{ hourInterval }}</th>
+                        {% endfor %}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% set colors = ['#FFDDC1', '#FFABAB', '#FFC3A0', '#FF677D', '#D4A5A5', '#392F5A', '#31A2AC', '#61C0BF', '#6B4226', '#D9BF77'] %}
+                    {% set dayNames = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'] %}
+
+                    {% for i in 0..4 %}
+                        <tr>
+                            <td>
+                                {{ dayNames[i] }} {{ (timeTable.weekStartDate|date_modify('+' ~ i ~ ' days'))|date('d-m-Y') }}
+                                <a href="#" class="icons" style="text-decoration: none"><i class="ti ti-edit" style="font-size: 1.5rem; color: white;"></i></a>
+                            </td>
+                            {% for hourIndex in 1..6 %}
+                                {% set dayTrips = trips|filter(trip => trip.tripDate|date('N') == (i + 1)) %}
+                                {% set tripsForCurrentHour = dayTrips|filter(trip => trip.entrySlot <= hourIndex and trip.exitSlot >= hourIndex) %}
+                                {% if tripsForCurrentHour|length > 0 %}
+                                    <td>
+                                        {% for trip in tripsForCurrentHour %}
+                                            <div class="trip-cell" style="background-color: {{ colors[i % colors|length] }}">
+                                                Conductor: {{ trip.driver.name }}<br>
+                                                Entrada: {{ entryHourIntervals[trip.entrySlot] }}<br>
+                                                Salida: {{ exitHourIntervals[trip.exitSlot] }}<br>
+                                                Pasajeros:
+                                                {% for passenger in trip.passengers %}
+                                                    {{ passenger.name }} {{ passenger.lastName }}{% if not loop.last %}, {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                        {% endfor %}
+                                    </td>
                                 {% else %}
-                                    <a href="{{ path('confirm_trip', {'id':trip.id}) }}" class="primaryButton disabled" aria-disabled="true">Hecho<i class="ti ti-check"></i></a>
+                                    <td></td>
                                 {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
-        <div class="button_container">
-            <a href="{{ path('timetable_main', {'id':group.id}) }}" class="secondaryButton"><i
-                        class="ti ti-arrow-left"></i>Volver</a>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="button_container">
+                <a href="{{ path('timetable_main', {'id': timeTable.band.id}) }}" class="secondaryButton">
+                    <i class="ti ti-arrow-left"></i>Volver
+                </a>
+            </div>
         </div>
     </div>
-    <style>
-        .disabled {
-            pointer-events: none;
-            color: grey;
-            cursor: not-allowed;
-        }
-    </style>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             {% if success is defined and success %}

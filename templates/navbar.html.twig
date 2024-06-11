@@ -12,6 +12,15 @@
             <li>
                 <a href="{{ path('main') }}"><img src="{{ asset('images/LogoCommunWheelsWhite.png') }}" alt="Logo">CommunWheels</a>
             </li>
+            <li class="hideOnMobile">
+                <a href="{{ path('group_main') }}">Grupos</a>
+            </li>
+            <li class="hideOnMobile">
+                <a href="{{ path('driver_main') }}">Usuarios</a>
+            </li>
+            <li class="hideOnMobile">
+                <a href="{{ path('notify_main') }}">Notificaciones</a>
+            </li>
             {% if app.user %}
                 <li class="hideOnMobile">
                     <a href="#" id="userDropdown">

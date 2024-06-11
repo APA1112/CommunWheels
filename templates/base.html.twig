@@ -1,61 +1,65 @@
 <!DOCTYPE html>
 <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}CommunWheels{% endblock %}</title>
-        <link rel="icon" href="{{ asset('images/LogoCommunWheelsWhite2.png') }}">
-        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
-        {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
-            <link href="{{ asset('css/reset.css')}}" type="text/css" rel="stylesheet">
-            <link href="{{ asset('css/navbar.css')}}" type="text/css" rel="stylesheet">
-            <link href="{{ asset('css/sweetAlert.css')}}" type="text/css" rel="stylesheet">
-            <link href="{{ asset('css/ExpansibleCard.css')}}" type="text/css" rel="stylesheet">
-            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css" />
-            <link rel="stylesheet" href="{{ asset('build/app.css') }}">
-            <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-            <link rel="preconnect" href="https://fonts.googleapis.com">
-            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-            <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-        {% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}CommunWheels{% endblock %}</title>
+    <link rel="icon" href="{{ asset('images/LogoCommunWheelsWhite2.png') }}">
+    {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+        <link href="{{ asset('css/reset.css') }}" type="text/css" rel="stylesheet">
+        <link href="{{ asset('css/navbar.css') }}" type="text/css" rel="stylesheet">
+        <link href="{{ asset('css/sweetAlert.css') }}" type="text/css" rel="stylesheet">
+        <link href="{{ asset('css/ExpansibleCard.css') }}" type="text/css" rel="stylesheet">
+        <link rel="stylesheet"
+              href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css"/>
+        <link rel="stylesheet" href="{{ asset('build/app.css') }}">
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap"
+              rel="stylesheet">
+    {% endblock %}
 
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-            <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
-            <script type="text/javascript" src="{{ asset('js/sidebar.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('js/ExpandibleCard.js') }}"></script>
-            <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-            <script src="{{ asset('build/app.js') }}"></script>
-        {% endblock %}
-    </head>
-    <body>
-        <header>
-            {% block header %}
-                {% include 'navbar.html.twig' %}
-            {% endblock %}
-        </header>
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                {% for mensaje in app.flashes('success') %}
-                Swal.fire({
-                    title: 'Éxito',
-                    text: '{{ mensaje }}',
-                    icon: 'success',
-                    confirmButtonText: 'Ok'
-                });
-                {% endfor %}
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+        <script type="text/javascript" src="{{ asset('js/sidebar.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('js/ExpandibleCard.js') }}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="{{ asset('build/app.js') }}"></script>
+    {% endblock %}
+</head>
+<body>
+<header>
+    {% block header %}
+        {% include 'navbar.html.twig' %}
+    {% endblock %}
+</header>
+<div class="container">
+    {% block body %}{% endblock %}
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        {% for mensaje in app.flashes('success') %}
+        Swal.fire({
+            title: 'Éxito',
+            text: '{{ mensaje }}',
+            icon: 'success',
+            confirmButtonText: 'Ok'
+        });
+        {% endfor %}
 
-                {% for mensaje in app.flashes('error') %}
-                Swal.fire({
-                    title: 'Error',
-                    text: '{{ mensaje }}',
-                    icon: 'error',
-                    confirmButtonText: 'Ok'
-                });
-                {% endfor %}
-            });
-        </script>
-        {% block body %}{% endblock %}
-    </body>
+        {% for mensaje in app.flashes('error') %}
+        Swal.fire({
+            title: 'Error',
+            text: '{{ mensaje }}',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+        });
+        {% endfor %}
+    });
+</script>
+</body>
 </html>
