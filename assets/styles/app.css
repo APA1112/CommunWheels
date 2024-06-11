@@ -306,6 +306,7 @@ CSS FOR FORM
     font-weight: bold;
     text-align: center;
     margin-bottom: 1rem;
+    color: white;
 }
 .schedule_form_container{
     display: flex;
