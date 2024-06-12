@@ -171,6 +171,7 @@ class TimeTableController extends AbstractController
 
         //Generamos un trip para cada dia de la semana
         //Recorremos los horarios de cada dia de la semana
+        $weekStartDateClone = clone $weekStartDate;
         foreach ($schedulesGroups as $key => $schedulesGroup) {
             //Recorremos cada agrupacion de horarios
             foreach ($schedulesGroup as $scheduleGroup) {
@@ -240,7 +241,7 @@ class TimeTableController extends AbstractController
                     $trips[] = $trip;
                 }
             }
-            $weekStartDate->modify('+1 day');
+            $weekStartDateClone->modify('+1 day');
         }
         /*
         foreach ($drivers as $driver) {
@@ -258,6 +259,7 @@ class TimeTableController extends AbstractController
         }
         */
 
+        //dd($timeTable, $trips);
         return $this->render('trip/new.html.twig', [
             'timeTable' => $timeTable,
             'trips' => $trips,
