@@ -13,11 +13,13 @@ use App\Repository\TimeTableRepository;
 use App\Repository\TripRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -190,7 +192,7 @@ class TimeTableController extends AbstractController
                     }, $driverAbsencesDates);
 
                     $trip = new Trip();
-                    $trip->setTripDate($weekStartDate);
+                    $trip->setTripDate($weekStartDateClone);
                     $trip->setTimeTable($timeTable);
                     $trip->setActive(true);
 
@@ -243,21 +245,25 @@ class TimeTableController extends AbstractController
             }
             $weekStartDateClone->modify('+1 day');
         }
-        /*
+
         foreach ($drivers as $driver) {
-            $email = (new Email())
-                ->from('commun.wheels@gmail.com')
+            // Enviar correo al nuevo conductor
+            $email = (new TemplatedEmail())
+                ->from(new Address('commun.wheels@gmail.com', 'CommunWheels'))
                 ->to($driver->getEmail())
-                ->subject('Nueva cuadrante de la semana')
-                ->html('
-            <p>Hay un nuevo cuadrante para la semana.</p>
-            <p>No olvides mirarlo para ver si eres conductor o pasajero.</p>
-            <p>Y recuerda que no vas solo en la carretera.</p>
-            ');
+                ->subject('Nuevo cuadrante generado para ' . $driver->getName())
+                ->htmlTemplate('emails/new_schedule.html.twig')
+                ->context([
+                    'driver_name' => $driver->getName(),
+                    'start_date' => $timeTable->getWeekStartDate()->format('d-m-Y'),
+                    'group' => $group->getName(),
+                    'support_email' => 'commun.wheels@gmail.com',
+                    'year' => date('Y')
+                ]);
 
             $this->mailer->send($email);
+
         }
-        */
 
         //dd($timeTable, $trips);
         return $this->render('trip/new.html.twig', [
