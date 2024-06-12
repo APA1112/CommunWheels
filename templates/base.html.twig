@@ -37,9 +37,7 @@
         {% include 'navbar.html.twig' %}
     {% endblock %}
 </header>
-<div class="container">
     {% block body %}{% endblock %}
-</div>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         {% for mensaje in app.flashes('success') %}

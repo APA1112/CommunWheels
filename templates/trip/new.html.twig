@@ -1,86 +1,76 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    {% set hourIntervals = {
+        1: '8:15 - 9:15',
+        2: '9:15 - 10:15',
+        3: '10:15 - 11:15',
+        4: '11:45 - 12:45',
+        5: '12:45 - 13:45',
+        6: '13:45 - 14:45'
+    } %}
+    {% set entryHourIntervals = {
+        1: '8:15',
+        2: '9:15',
+        3: '10:15',
+        4: '11:45',
+        5: '12:45',
+        6: '13:45'
+    } %}
+    {% set exitHourIntervals = {
+        1: '9:15',
+        2: '10:15',
+        3: '11:15',
+        4: '12:45',
+        5: '13:45',
+        6: '14:45'
+    } %}
+    {% set weekdays = {1: 'Lunes', 2: 'Martes', 3: 'Miércoles', 4: 'Jueves', 5: 'Viernes'} %}
     <div class="container">
         <div class="form_container">
-            <h2 class="titulo">Cuadrante para la semana del {{ timeTable.weekStartDate|date('d-m-Y') }}</h2>
-            <div class="schedule-container">
-                <table class="schedule-table">
-                    <thead>
-                    <tr>
-                        <th>Día/Hora</th>
-                        {% set hourIntervals = {
-                            1: '8:15 - 9:15',
-                            2: '9:15 - 10:15',
-                            3: '10:15 - 11:15',
-                            4: '11:45 - 12:45',
-                            5: '12:45 - 13:45',
-                            6: '13:45 - 14:45'
-                        } %}
-                        {% set entryHourIntervals = {
-                            1: '8:15',
-                            2: '9:15',
-                            3: '10:15',
-                            4: '11:45',
-                            5: '12:45',
-                            6: '13:45'
-                        } %}
-                        {% set exitHourIntervals = {
-                            1: '9:15',
-                            2: '10:15',
-                            3: '11:15',
-                            4: '12:45',
-                            5: '13:45',
-                            6: '14:45'
-                        } %}
-                        {% for hourInterval in hourIntervals %}
-                            <th>{{ hourInterval }}</th>
-                        {% endfor %}
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% set colors = ['#FFDDC1', '#FFABAB', '#FFC3A0', '#FF677D', '#D4A5A5', '#392F5A', '#31A2AC', '#61C0BF', '#6B4226', '#D9BF77'] %}
-                    {% set dayNames = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'] %}
+            <h2 class="titulo">Cuadrante para la semana del {{ timeTable.weekStartDate|date('d-m-Y') }}
+                -{{ (timeTable.weekStartDate|date_modify('+4 days'))|date('d-m-Y') }}</h2>
 
-                    {% for i in 0..4 %}
-                        <tr>
-                            <td>
-                                {{ dayNames[i] }} {{ (timeTable.weekStartDate|date_modify('+' ~ i ~ ' days'))|date('d-m-Y') }}
-                                {% if is_granted('ROLE_GROUP_ADMIN') %}
-                                    <a href="#" class="icons" style="text-decoration: none"><i class="ti ti-edit"
-                                                                                               style="font-size: 1.5rem; color: white;"></i></a>
-                                {% endif %}
-                            </td>
-                            {% for hourIndex in 1..6 %}
-                                {% set dayTrips = trips|filter(trip => trip.tripDate|date('N') == (i + 1)) %}
-                                {% set tripsForCurrentHour = dayTrips|filter(trip => trip.entrySlot <= hourIndex and trip.exitSlot >= hourIndex) %}
-                                {% if tripsForCurrentHour|length > 0 %}
-                                    <td>
-                                        {% for trip in tripsForCurrentHour %}
-                                            <div class="trip-cell"
-                                                 style="background-color: {{ colors[i % colors|length] }}">
-                                                Conductor: {{ trip.driver.name }}<br>
-                                                Entrada: {{ entryHourIntervals[trip.entrySlot] }}<br>
-                                                Salida: {{ exitHourIntervals[trip.exitSlot] }}<br>
-                                                Pasajeros:
-                                                {% for passenger in trip.passengers %}
-                                                    {{ passenger.name }} {{ passenger.lastName }}{% if not loop.last %}, {% endif %}
-                                                {% endfor %}
-                                            </div>
-                                        {% endfor %}
-                                    </td>
-                                {% else %}
-                                    <td></td>
-                                {% endif %}
-                            {% endfor %}
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            <div class="button_container">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Hora entrada</th>
+                    <th>Hora salida</th>
+                    <th>Conductor</th>
+                    <th>Pasajeros</th>
+                    <th>Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for trip in trips %}
+                    <tr>
+                        <td>{{ trip.tripDate | date('d-m-Y') }}</td>
+                        <td>{{ entryHourIntervals[trip.entrySlot] }}</td>
+                        <td>{{ exitHourIntervals[trip.exitSlot] }}</td>
+                        <td>{{ trip.driver }}</td>
+                        <td>
+                            {% if trip.passengers is not empty %}
+                                {% for passenger in trip.passengers %}
+                                    {{ passenger.name }} {{ passenger.lastName }}<br>
+                                {% endfor %}
+                            {% else %}
+                                No tiene pasajeros
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{{ path('mod_trip', {'id':trip.id}) }}" class="primaryButton   ">
+                                <i class="ti ti-edit"></i> Editar
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="button_container mt-4">
                 <a href="{{ path('timetable_main', {'id': timeTable.band.id}) }}" class="secondaryButton">
-                    <i class="ti ti-arrow-left"></i>Volver
+                    <i class="ti ti-arrow-left"></i> Volver
                 </a>
             </div>
         </div>

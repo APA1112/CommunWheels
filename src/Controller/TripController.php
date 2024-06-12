@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\TimeTable;
 use App\Entity\Trip;
 use App\Repository\DriverRepository;
 use App\Repository\TripRepository;
@@ -38,6 +39,24 @@ class TripController extends AbstractController
             'timeTable' => $trip->getTimeTable(),
             'trips' => $trip->getTimeTable()->getTrips(),
             'group' => $trip->getTimeTable()->getBand(),
+        ]);
+    }
+
+    #[Route('/trip/{id}', name: 'mod_trip')]
+    public function modTrip(Trip $trip, TripRepository $tripRepository): Response
+    {
+        if (count($trip->getPassengers()) == 0) {
+            $drivers = $trip->getPassengers();
+            $timeTable = $trip->getTimeTable();
+            $tripRepository->remove($trip);
+        } else {
+            $drivers = $trip->getPassengers();
+            $timeTable = $trip->getTimeTable();
+        }
+        return $this->render('trip/mod.html.twig', [
+            'drivers' => $drivers,
+            'timeTable' => $timeTable,
+            'trip' => $trip,
         ]);
     }
 }
