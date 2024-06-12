@@ -16,7 +16,7 @@
             </div>
             <h1>Iniciar sesión</h1>
             {% if error %}
-                <h2 style="color: red">{{ error.message }}</h2>
+                <h2 style="color: red">{{ error.messageKey|trans(error.messageData, 'security') }}</h2>
             {% endif %}
             <form method="post">
                 <label for="username">Usuario:</label>
