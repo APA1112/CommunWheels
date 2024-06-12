@@ -41,5 +41,6 @@ class ScheduleRepository extends ServiceEntityRepository
 
     public function add(Schedule $schedule){
         $this->getEntityManager()->persist($schedule);
+        $this->getEntityManager()->flush();
     }
 }

@@ -39,10 +39,11 @@ class ScheduleController extends AbstractController
             $scheduleRepository->add($schedule);
         }
 
-        //$scheduleRepository->save();
+        $scheduleRepository->save(); // Asegúrate de guardar los cambios
 
-        return $this->modificar($driver, $scheduleRepository, $request);
+        return $this->redirectToRoute('schedule_update', ['id' => $driver->getId()]);
     }
+
     #[Route('/horario/modificar/{id}', name: 'schedule_update')]
     public function modificar(Driver $driver, ScheduleRepository $scheduleRepository, Request $request): Response
     {
@@ -67,4 +68,5 @@ class ScheduleController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
 }

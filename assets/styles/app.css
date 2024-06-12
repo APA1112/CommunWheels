@@ -34,7 +34,7 @@ CSS FOR CARD
  */
 .card {
     height: auto;
-    min-width: 40%;
+    min-width: 33%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -44,7 +44,7 @@ CSS FOR CARD
     color: var(--text-color);
     font-size: xx-large;
     text-align: center;
-    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.1);
     transition: transform 0.3s;
 }
 
@@ -185,7 +185,7 @@ CSS FOR PRIMARY BUTTON
     text-decoration: none;
     font-size: large;
     color: var(--original-back-color);
-    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.1);
 }
 .primaryButton:hover{
     background-color: var(--primary-button-hover);
@@ -204,7 +204,7 @@ CSS FOR SECONDARY BUTTON
     text-decoration: none;
     font-size: large;
     color: var(--original-back-color);
-    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.1);
 }
 .secondaryButton:hover{
     background-color: var(--secondary-button-hover);
@@ -223,7 +223,7 @@ CSS FOR DELETE BUTTON
     text-decoration: none;
     font-size: large;
     color: var(--original-back-color);
-    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.1);
 }
 .deleteButton:hover{
     background-color: var(--delete-button-hover);
@@ -243,7 +243,7 @@ CSS FOR FORM
     padding: 2rem;
     gap: 10px 20px;
     width: 100%;
-    box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.5);
+    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.1);
 }
 .inner{
     display: flex;
@@ -316,7 +316,7 @@ CSS FOR FORM
     border-radius: 5px;
     width: 25%;
     gap: 20px;
-    box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.5);
+    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.1);
 }
 
 .active_hour {
