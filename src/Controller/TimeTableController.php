@@ -246,7 +246,6 @@ class TimeTableController extends AbstractController
             $weekStartDateClone->modify('+1 day');
         }
 
-        /*
         foreach ($drivers as $driver) {
             // Enviar correo al nuevo conductor
             $email = (new TemplatedEmail())
@@ -265,11 +264,7 @@ class TimeTableController extends AbstractController
             $this->mailer->send($email);
 
         }
-        */
-
-
-
-        //dd($timeTable, $trips);
+        
         return $this->render('trip/new.html.twig', [
             'timeTable' => $timeTable,
             'trips' => $trips,
