@@ -52,7 +52,7 @@ body::before {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 60px;
+    gap: 30px;
     padding: 0 3rem;
     scroll-snap-stop: always; /* Asegura que el scroll se detenga en cada contenedor */
 }
