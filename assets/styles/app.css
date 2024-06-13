@@ -4,8 +4,8 @@
     --original-back-color: #263D42;
     --back-color: hsla(192, 19%, 15%);
     --back-color-blur: hsla(192, 19%, 15%, 0.25);
-        --primary-button: #63C7B2;
-        --primary-button-hover: hsla(168, 58%, 73%, 1);
+    --primary-button: #63C7B2;
+    --primary-button-hover: hsla(168, 58%, 73%, 1);
     --secondary-button: #80CED7;
     --secondary-button-hover: hsla(184, 50%, 80%, 1);
     --delete-button: #8E6C88;

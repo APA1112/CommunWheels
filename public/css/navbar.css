@@ -1,8 +1,15 @@
 :root {
     --text-color: hsl(190, 20%, 50%);
     --hover-color: #CCDBDC;
+    --original-back-color: #263D42;
     --back-color: hsla(192, 19%, 15%);
     --back-color-blur: hsla(192, 19%, 15%, 0.25);
+    --primary-button: #63C7B2;
+    --primary-button-hover: hsla(168, 58%, 73%, 1);
+    --secondary-button: #80CED7;
+    --secondary-button-hover: hsla(184, 50%, 80%, 1);
+    --delete-button: #8E6C88;
+    --delete-button-hover: hsla(294, 33%, 70%, 1);
 }
 
 body {
@@ -114,6 +121,22 @@ body {
     background-color: var(--hover-color);
 }
 
+.active {
+    position: relative;
+    color: white; /* Ajusta esto según tu necesidad */
+}
+
+.active::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    opacity: .5;
+    bottom: 0px; /* Ajusta la distancia del subrayado al texto */
+    height: 4px; /* Ajusta el grosor del subrayado */
+    background-color: var(--primary-button); /* Color del subrayado */
+    border-radius: 2px; /* Opcional: para hacer los bordes del subrayado redondeados */
+}
 /* Media queries */
 @media(max-width: 700px) {
     .hideOnMobile {

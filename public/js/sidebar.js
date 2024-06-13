@@ -6,6 +6,8 @@ function main(){
     const closeSidebar = document.querySelector('.sidebar li:first-child a');
     const userDropdown = document.getElementById('userDropdown');
     const dropdownContent = document.querySelector('.dropdown-content');
+    const currentPath = window.location.pathname;
+    const links = document.querySelectorAll('.navbar a');
 
     // Asegurarse de que el sidebar esté oculto al cargar la página
     sidebar.style.display = 'none';
@@ -33,6 +35,13 @@ function main(){
     window.addEventListener('click', function(event) {
         if (!event.target.matches('#userDropdown')) {
             dropdownContent.style.maxHeight = '0px';
+        }
+    });
+
+    // Añadir clase 'active' solo a los enlaces de Grupos, Usuarios y Notificaciones
+    links.forEach(link => {
+        if (link.href.includes(currentPath) && (link.href.includes('group_main') || link.href.includes('driver_main') || link.href.includes('notify_main'))) {
+            link.classList.add('active');
         }
     });
 }
