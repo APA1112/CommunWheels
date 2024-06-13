@@ -11,12 +11,17 @@
     --delete-button: #8E6C88;
     --delete-button-hover: hsla(294, 33%, 70%, 1);
 }
-body{
+body {
     background-color: var(--original-back-color);
     color: var(--text-color);
-    font-family: 'Jost','Roboto', 'Helvetica', 'Arial', sans-serif;
+    font-family: 'Jost', 'Roboto', 'Helvetica', 'Arial', sans-serif;
     font-size: large;
+    height: 100%; /* Asegura que el body ocupe toda la altura disponible */
+    margin: 0; /* Elimina el margen por defecto del body */
+    overflow: hidden; /* Evita el scroll en el body */
+    position: relative; /* Para permitir el uso de ::before con posición absoluta */
 }
+
 body::before {
     content: "";
     position: absolute;
@@ -29,20 +34,29 @@ body::before {
     background-repeat: no-repeat;
     background-position: center;
     opacity: 0.01; /* Ajusta la opacidad de la imagen */
-    z-index: -2; /* Mueve la imagen detrás del contenido */
+    z-index: -1; /* Mueve la imagen detrás del contenido */
 }
 
-.container{
-    height: calc(100vh - 50px);
+.scroll-container {
+    scroll-snap-type: y mandatory;
+    overflow-y: scroll;
+    height: 100vh; /* Asegura que el contenedor tome toda la altura de la ventana gráfica */
+    position: relative; /* Para posicionar contenido dentro del scroll-container */
+}
+
+.container {
+    scroll-snap-align: start;
+    margin-top: 50px;
+    height: calc(100vh - 50px); /* Ajusta la altura para permitir el scroll */
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-around;
     justify-content: center;
     gap: 60px;
-    margin-top: 50px;
     padding: 0 3rem;
+    scroll-snap-stop: always; /* Asegura que el scroll se detenga en cada contenedor */
 }
+
 /**
 
 CSS FOR CARD
