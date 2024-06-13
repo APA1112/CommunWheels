@@ -3,10 +3,10 @@
 {% block body %}
     <div class="scroll-container">
         <div class="container">
+            {% include 'groups/card.html.twig' %}
             {% if is_granted('ROLE_GROUP_ADMIN') %}
                 {% include 'users/card.html.twig' %}
             {% endif %}
-            {% include 'groups/card.html.twig' %}
             {% include 'notify/card.html.twig' %}
             <h1 class="titulo">Más sobre nosotros</h1>
             <a href="" id="scroll-to-cards" class="bouncing-arrow"><i class="ti ti-circle-arrow-down"

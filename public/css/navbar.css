@@ -138,7 +138,7 @@ body {
     border-radius: 2px; /* Opcional: para hacer los bordes del subrayado redondeados */
 }
 /* Media queries */
-@media(max-width: 700px) {
+@media(max-width: 900px) {
     .hideOnMobile {
         display: none;
     }

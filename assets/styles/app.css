@@ -167,7 +167,7 @@ CSS FOR CARD
         transform: scale(1.05);
     }
 }
-@media(max-width: 900px){
+@media(max-width: 990px){
     .container{
         flex-direction: column;
         flex-wrap: nowrap;
