@@ -13,10 +13,23 @@
 }
 body{
     background-color: var(--original-back-color);
-    background-image: url('/public/images/bg-body.png');
     color: var(--text-color);
     font-family: 'Jost','Roboto', 'Helvetica', 'Arial', sans-serif;
     font-size: large;
+}
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('/public/images/bg-body.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0.01; /* Ajusta la opacidad de la imagen */
+    z-index: -2; /* Mueve la imagen detrás del contenido */
 }
 
 .container{
@@ -67,6 +80,7 @@ CSS FOR CARD
     position: relative;
     margin: 0; /* Eliminar márgenes */
     padding: 0; /* Eliminar padding */
+    background-color: var(--original-back-color);
 }
 
 .card-icon::before {
@@ -78,7 +92,7 @@ CSS FOR CARD
     height: 100%;
     background-size: cover;
     background-position: center;
-    opacity: 0.2; /* Ajusta este valor para cambiar la opacidad */
+    opacity: 0.1; /* Ajusta este valor para cambiar la opacidad */
     z-index: 0;
     border-top-left-radius: 10px; /* Asegura que el borde redondeado coincida */
     border-top-right-radius: 10px;

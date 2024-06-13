@@ -25,6 +25,16 @@ class AppFixtures extends Fixture
         // Crear grupos
         GroupFactory::createMany(3);
 
+        $adminDriver = DriverFactory::createOne([
+            'id' => 0,
+            'name' => 'Administrador',
+            'lastName' => 'General',
+            'email' => 'commun.wheels@gmail.com',
+            'seats' => 0,
+            'days_driven' => 0,
+            'waitTime' => 0,
+        ]);
+
         // Crear conductores primero
         $drivers = DriverFactory::createMany(10, function () {
             return [
@@ -34,9 +44,13 @@ class AppFixtures extends Fixture
 
         // Crear el usuario admin
         $adminUser = UserFactory::createOne([
+            'id' => 0,
             'username' => 'admin',
             'password' => $this->passwordHasher->hashPassword(new User(), 'Lvame80d!'),
             'isAdmin' => true,
+            'isGroupAdmin' => true,
+            'isDriver' => true,
+            'driver_id' => 0
         ]);
 
         // Crear usuarios dependientes de los nombres de los conductores

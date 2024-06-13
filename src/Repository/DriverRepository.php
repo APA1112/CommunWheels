@@ -26,12 +26,14 @@ class DriverRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('d')
             ->select('d')
             ->addSelect('u')
+            ->where('d.id != 0')
             ->leftJoin('d.user', 'u')
             ->getQuery();
     }
     public function findAllDrivers(){
         return $this->createQueryBuilder('d')
             ->select('d')
+            ->where('d.id != 0')
             ->addSelect('u')
             ->leftJoin('d.user', 'u')
             ->getQuery()
