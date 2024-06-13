@@ -18,12 +18,12 @@ class TripController extends AbstractController
     {
         $trip = $tripRepository->find($trip->getId());
         if (!$trip) {
-            throw $this->createNotFoundException('No trip found for id ' . $trip->getId());
+            throw $this->createNotFoundException('No se ha encontrado viaje para el id ' . $trip->getId());
         }
 
         // Verificar que el usuario actual es el conductor del viaje
         if ($trip->getDriver() !== $this->getUser()->getDriver()) {
-            throw $this->createAccessDeniedException('You are not the driver of this trip.');
+            throw $this->createAccessDeniedException('No eres el conductor de este viaje.');
         }
 
         // Incrementar daysDriven

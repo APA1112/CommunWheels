@@ -13,6 +13,7 @@
 }
 body{
     background-color: var(--original-back-color);
+    background-image: url('/public/images/bg-body.png');
     color: var(--text-color);
     font-family: 'Jost','Roboto', 'Helvetica', 'Arial', sans-serif;
     font-size: large;
