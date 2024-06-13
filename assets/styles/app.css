@@ -282,6 +282,7 @@ CSS FOR FORM
     padding: 2rem;
     gap: 10px 20px;
     width: 100%;
+    max-height: calc(100vh - 50px);
     box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.1);
 }
 .inner{
@@ -342,6 +343,13 @@ CSS FOR FORM
 }
 .titulo{
     font-size: x-large;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 1rem;
+    color: white;
+}
+.titulo-principal{
+    font-size: xx-large;
     font-weight: bold;
     text-align: center;
     margin-bottom: 1rem;

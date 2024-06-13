@@ -173,8 +173,10 @@ class TimeTableController extends AbstractController
 
         //Generamos un trip para cada dia de la semana
         //Recorremos los horarios de cada dia de la semana
-        $weekStartDateClone = clone $weekStartDate;
         foreach ($schedulesGroups as $key => $schedulesGroup) {
+            // Clonamos la fecha de inicio de la semana y la ajustamos para el día actual del bucle
+            $currentTripDate = (clone $weekStartDate)->modify('+' . $key . ' days');
+
             //Recorremos cada agrupacion de horarios
             foreach ($schedulesGroup as $scheduleGroup) {
                 //Recorremos los conductores en la agrupacion
@@ -192,16 +194,16 @@ class TimeTableController extends AbstractController
                     }, $driverAbsencesDates);
 
                     $trip = new Trip();
-                    $trip->setTripDate($weekStartDateClone);
+                    $trip->setTripDate($currentTripDate);
                     $trip->setTimeTable($timeTable);
                     $trip->setActive(true);
 
-                    // Convertir weekStartDate a una cadena de formato 'Y-m-d' para comparar
-                    $formattedWeekStartDate = $weekStartDate->format('Y-m-d');
+                    // Convertir currentTripDate a una cadena de formato 'Y-m-d' para comparar
+                    $formattedCurrentTripDate = $currentTripDate->format('Y-m-d');
 
                     // Verificar si la fecha no es un día no escolar ni una ausencia del conductor
-                    $isNonSchoolDay = in_array($formattedWeekStartDate, $formattedGroupNonSchoolDaysDates);
-                    $isDriverAbsent = in_array($formattedWeekStartDate, $formattedDriverAbsencesDates);
+                    $isNonSchoolDay = in_array($formattedCurrentTripDate, $formattedGroupNonSchoolDaysDates);
+                    $isDriverAbsent = in_array($formattedCurrentTripDate, $formattedDriverAbsencesDates);
                     $driverAvailable = $tripDriverSchedules[$key]->getEntrySlot() != 0;
 
                     if (!$isNonSchoolDay) {
@@ -213,7 +215,7 @@ class TimeTableController extends AbstractController
                             // Encontrar el primer conductor disponible
                             foreach ($driverGroup as $driver) {
                                 if ($driver !== $driverGroup[0]) {
-                                    $driverSchedule = $driver->getSchedules()[$i];
+                                    $driverSchedule = $driver->getSchedules()[$key];
                                     $entrySlot = $driverSchedule->getEntrySlot();
                                     $exitSlot = $driverSchedule->getExitSlot();
                                     if ($entrySlot != 0) {
@@ -228,13 +230,12 @@ class TimeTableController extends AbstractController
                         $exitSlot = 0;
                     }
 
-
                     $trip->setDriver($driver);
                     $trip->setEntrySlot($entrySlot);
                     $trip->setExitSlot($exitSlot);
 
                     foreach ($driverGroup as $passDriver) {
-                        if ($passDriver !== $driver and count($trip->getPassengers()) < $driver->getSeats()) {
+                        if ($passDriver !== $driver && count($trip->getPassengers()) < $driver->getSeats()) {
                             $trip->addPassenger($passDriver);
                         }
                     }
@@ -243,28 +244,8 @@ class TimeTableController extends AbstractController
                     $trips[] = $trip;
                 }
             }
-            $weekStartDateClone->modify('+1 day');
         }
 
-        foreach ($drivers as $driver) {
-            // Enviar correo al nuevo conductor
-            $email = (new TemplatedEmail())
-                ->from(new Address('commun.wheels@gmail.com', 'CommunWheels'))
-                ->to($driver->getEmail())
-                ->subject('Nuevo cuadrante generado para ' . $driver->getName())
-                ->htmlTemplate('emails/new_schedule.html.twig')
-                ->context([
-                    'driver_name' => $driver->getName(),
-                    'start_date' => $timeTable->getWeekStartDate()->format('d-m-Y'),
-                    'group' => $group->getName(),
-                    'support_email' => 'commun.wheels@gmail.com',
-                    'year' => date('Y')
-                ]);
-
-            $this->mailer->send($email);
-
-        }
-        
         return $this->render('trip/new.html.twig', [
             'timeTable' => $timeTable,
             'trips' => $trips,
@@ -272,6 +253,7 @@ class TimeTableController extends AbstractController
             'success' => true,
         ]);
     }
+
 
     #[IsGranted('ROLE_GROUP_ADMIN')]
     #[Route('/cuadrante/eliminar/{id}', name: 'timetable_delete')]

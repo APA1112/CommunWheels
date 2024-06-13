@@ -1,14 +1,6 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {% set hourIntervals = {
-        1: '8:15 - 9:15',
-        2: '9:15 - 10:15',
-        3: '10:15 - 11:15',
-        4: '11:45 - 12:45',
-        5: '12:45 - 13:45',
-        6: '13:45 - 14:45'
-    } %}
     {% set entryHourIntervals = {
         1: '8:15',
         2: '9:15',
@@ -26,45 +18,55 @@
         6: '14:45'
     } %}
     {% set weekdays = {1: 'Lunes', 2: 'Martes', 3: 'Miércoles', 4: 'Jueves', 5: 'Viernes'} %}
+    {% set colors = ['#FFDDC1', '#FFABAB', '#FFC3A0', '#FF677D', '#D4A5A5', '#392F5A', '#31A2AC', '#61C0BF', '#6B4226', '#D9BF77'] %}
+
     <div class="container">
         <div class="form_container">
-            <h2 class="titulo">Cuadrante para la semana del {{ timeTable.weekStartDate|date('d-m-Y') }}
-                -{{ (timeTable.weekStartDate|date_modify('+4 days'))|date('d-m-Y') }}</h2>
+            <h2 class="titulo">Cuadrante para la semana del {{ timeTable.weekStartDate|date('d-m-Y') }} al {{ (timeTable.weekStartDate|date_modify('+4 days'))|date('d-m-Y') }}</h2>
 
-            <table class="table table-striped">
+            <table class="table table-bordered">
                 <thead>
                 <tr>
-                    <th>Fecha</th>
-                    <th>Hora entrada</th>
-                    <th>Hora salida</th>
-                    <th>Conductor</th>
-                    <th>Pasajeros</th>
-                    <th>Acciones</th>
+                    {% for day in 1..5 %}
+                        <th>{{ weekdays[day] }}<br>{{ (timeTable.weekStartDate|date_modify('+' ~ (day-1) ~ ' days'))|date('d-m-Y') }}</th>
+                    {% endfor %}
                 </tr>
                 </thead>
                 <tbody>
-                {% for trip in trips %}
-                    <tr>
-                        <td>{{ trip.tripDate | date('d-m-Y') }}</td>
-                        <td>{{ entryHourIntervals[trip.entrySlot] }}</td>
-                        <td>{{ exitHourIntervals[trip.exitSlot] }}</td>
-                        <td>{{ trip.driver }}</td>
+                <tr>
+                    {% for day in 1..5 %}
                         <td>
-                            {% if trip.passengers is not empty %}
-                                {% for passenger in trip.passengers %}
-                                    {{ passenger.name }} {{ passenger.lastName }}<br>
-                                {% endfor %}
-                            {% else %}
-                                No tiene pasajeros
-                            {% endif %}
+                            {% set dayTrips = trips|filter(trip => trip.tripDate|date('N') == day) %}
+                            {% set dayTripsSorted = dayTrips|sort((a, b) => a.entrySlot <=> b.entrySlot) %}
+
+                            {% for trip in dayTripsSorted %}
+                                {% set colorIndex = loop.index0 %}
+                                {% set tripColor = colors[colorIndex % colors|length] %}
+                                {% set textColor = (tripColor matches '/#FF|#D4|#31|#61|#D9/') ? 'black' : 'white' %}
+                                <div class="trip-info" style="background-color: {{ tripColor }}; color: {{ textColor }};">
+                                    <strong>Conductor: </strong>{{ trip.driver.name }}<br>
+                                    <strong>Entrada: </strong>{{ entryHourIntervals[trip.entrySlot] }}<br>
+                                    <strong>Salida: </strong>{{ exitHourIntervals[trip.exitSlot] }}<br>
+                                    <strong>Pasajeros: </strong>
+                                    {% if trip.passengers is not empty %}
+                                        {% for passenger in trip.passengers %}
+                                            {{ passenger.name }} {{ passenger.lastName }}<br>
+                                        {% endfor %}
+                                    {% else %}
+                                        No tiene pasajeros<br>
+                                    {% endif %}
+                                    <a href="{{ path('confirm_trip', {'id': trip.id}) }}" class="btn">
+                                        <i class="ti ti-check"></i>
+                                    </a>
+                                    <a href="{{ path('mod_trip', {'id': trip.id}) }}" class="btn">
+                                        <i class="ti ti-edit"></i>
+                                    </a>
+                                </div>
+                                <hr>
+                            {% endfor %}
                         </td>
-                        <td>
-                            <a href="{{ path('mod_trip', {'id':trip.id}) }}" class="primaryButton   ">
-                                <i class="ti ti-edit"></i> Editar
-                            </a>
-                        </td>
-                    </tr>
-                {% endfor %}
+                    {% endfor %}
+                </tr>
                 </tbody>
             </table>
 
@@ -75,6 +77,23 @@
             </div>
         </div>
     </div>
+
+    <style>
+        .trip-info {
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .btn{
+            color: black;
+            text-decoration: none;
+            font-size: x-large;
+        }
+        hr {
+            border-top: 1px solid #dee2e6;
+        }
+    </style>
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             {% if success is defined and success %}

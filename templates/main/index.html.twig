@@ -1,22 +1,30 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-	<div class="scroll-container">
-		<div class="container">
-            <h1>Bienvenido</h1>
-            <p>Este es un texto de bienvenida. Puedes agregar más detalles aquí.</p>
-			<h1 class="titulo">¿Que quieres hacer?</h1>
-			<a href="" id="scroll-to-cards" class="bouncing-arrow"><i class="ti ti-circle-arrow-down" style="font-size: 4rem;"></i></a>
-		</div>
-		<div class="container" id="cards">
-			{% if is_granted('ROLE_GROUP_ADMIN') %}
-				{% include 'users/card.html.twig' %}
-			{% endif %}
-			{% include 'groups/card.html.twig' %}
-			{% include 'notify/card.html.twig' %}
-		</div>
-	</div>
-	<style>
+    <div class="scroll-container">
+        <div class="container">
+            {% if is_granted('ROLE_GROUP_ADMIN') %}
+                {% include 'users/card.html.twig' %}
+            {% endif %}
+            {% include 'groups/card.html.twig' %}
+            {% include 'notify/card.html.twig' %}
+            <h1 class="titulo">Más sobre nosotros</h1>
+            <a href="" id="scroll-to-cards" class="bouncing-arrow"><i class="ti ti-circle-arrow-down"
+                                                                      style="font-size: 4rem;"></i></a>
+        </div>
+        <div class="container" id="cards">
+            <div class="form_container">
+                <h1 class="titulo-principal">Bienvenido a Communwheels</h1>
+                <p>Communwheels es una innovadora plataforma dedicada a compartir coche de manera eficiente y segura.
+                    Nuestro objetivo principal es facilitar el transporte colaborativo, reduciendo costos y
+                    contribuyendo a la disminución de la huella de carbono. Únete a nuestra comunidad y descubre una
+                    forma de viajar más económica y respetuosa con el medio ambiente. Con Communwheels, no solo
+                    compartes un coche, compartes un viaje, experiencias y haces nuevos amigos. ¡Bienvenido a una nueva
+                    era de movilidad sostenible!</p>
+            </div>
+        </div>
+    </div>
+    <style>
         .bouncing-arrow {
             display: inline-block;
             animation: bounce 2s infinite;
@@ -40,11 +48,11 @@
         }
     </style>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             var scrollToCardsLink = document.getElementById('scroll-to-cards');
-            scrollToCardsLink.addEventListener('click', function(event) {
+            scrollToCardsLink.addEventListener('click', function (event) {
                 event.preventDefault();
-                document.getElementById('cards').scrollIntoView({ behavior: 'smooth' });
+                document.getElementById('cards').scrollIntoView({behavior: 'smooth'});
             });
         });
     </script>
