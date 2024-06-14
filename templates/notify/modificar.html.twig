@@ -1,61 +1,70 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="container">
-        <div class="form_container">
-            {% if absence.id is null %}
-                <h2>Datos de la nueva notificación</h2>
-            {% else %}
-                <h2>Datos de la notificación</h2>
-            {% endif %}
-            {{ form_start(form) }}
-            {{ form_widget(form) }}
-            <div class="buttons">
-                <button type="submit" class="primaryButton">Guardar</button>
-            </div>
-            {{ form_end(form) }}
-        </div>
-        <div class="button_container">
-            <a href="{{ path('notify_main') }}" class="secondaryButton"><i class="ti ti-arrow-left"></i>Volver</a>
-        </div>
-    </div>
+	<div class="container">
+		<div class="form_container">
+			{% if absence.id is null %}
+				<h2>Datos de la nueva notificación</h2>
+			{% else %}
+				<h2>Datos de la notificación</h2>
+			{% endif %}
+			
+			{{ form_start(form, {'attr': {'novalidate':'novalidate'}}) }}
+			
+			{{ form_label(form.driver) }}
+			{{ form_widget(form.driver) }}
+			{{ form_errors(form.driver) }}
+			
+			{{ form_label(form.description) }}
+			{{ form_widget(form.description) }}
+			{{ form_errors(form.description) }}
+			
+			{{ form_label(form.absenceDate) }}
+			{{ form_widget(form.absenceDate) }}
+			{{ form_errors(form.absenceDate) }}
+			
+			<div class="buttons">
+				<button type="submit" class="primaryButton">Guardar</button>
+			</div>
+			
+			{{ form_end(form) }}
+		</div>
+		
+		<div class="button_container">
+			<a href="{{ path('notify_main') }}" class="secondaryButton">
+				<i class="ti ti-arrow-left"></i> Volver
+			</a>
+		</div>
+	</div>
 
-    <script>
-        function confirmDelete(groupId) {
-            Swal.fire({
-                title: '¿Estás seguro?',
-                text: "¡No podrás recuperar esta notificacion!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#8E6C88',
-                cancelButtonColor: '#80CED7',
-                confirmButtonText: 'Sí, eliminarlo',
-                cancelButtonText: 'Cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: '{{ path('absence_delete', {'id': 'ID_PLACEHOLDER'}) }}'.replace('ID_PLACEHOLDER', groupId),
-                        type: 'DELETE',
-                        success: function(response) {
-                            Swal.fire(
-                                '¡Eliminado!',
-                                'La ausencia ha sido eliminado.',
-                                'success'
-                            ).then(() => {
-                                window.location.href = '{{ path('notify_main') }}';
-                            });
-                        },
-                        error: function(xhr) {
-                            Swal.fire(
-                                'Error',
-                                'Hubo un problema al eliminar la notificación de ausencia.',
-                                'error'
-                            );
-                        }
-                    });
-                }
-            })
-        }
-    </script>
+	<script>
+		function confirmDelete(groupId) {
+			Swal.fire({
+				title: '¿Estás seguro?',
+				text: "¡No podrás recuperar esta notificación!",
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#8E6C88',
+				cancelButtonColor: '#80CED7',
+				confirmButtonText: 'Sí, eliminarlo',
+				cancelButtonText: 'Cancelar'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					$.ajax({
+						url: '{{ path('absence_delete', {'id': 'ID_PLACEHOLDER'}) }}'.replace('ID_PLACEHOLDER', groupId),
+						type: 'DELETE',
+						success: function (response) {
+							Swal.fire('¡Eliminado!', 'La ausencia ha sido eliminada.', 'success').then(() => {
+								window.location.href = '{{ path('notify_main') }}';
+							});
+						},
+						error: function (xhr) {
+							Swal.fire('Error', 'Hubo un problema al eliminar la notificación de ausencia.', 'error');
+						}
+					});
+				}
+			});
+		}
+	</script>
 
 {% endblock %}

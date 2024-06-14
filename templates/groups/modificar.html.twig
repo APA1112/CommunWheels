@@ -8,12 +8,29 @@
             {% else %}
                 <h2>Datos del Grupo</h2>
             {% endif %}
-            {{ form_start(form) }}
-            {{ form_widget(form) }}
-            <div class="buttons">
-                <button type="submit" class="primaryButton">Guardar</button>
-            </div>
-            {{ form_end(form) }}
+			{{ form_start(form, {'attr': {'novalidate':'novalidate'}}) }}
+			
+			{{ form_label(form.name) }}
+			{{ form_widget(form.name) }}
+			{{ form_errors(form.name) }}
+			
+			{{ form_label(form.origin) }}
+			{{ form_widget(form.origin) }}
+			{{ form_errors(form.origin) }}
+			
+			{{ form_label(form.destination) }}
+			{{ form_widget(form.destination) }}
+			{{ form_errors(form.destination) }}
+
+            {{ form_label(form.drivers) }}
+			{{ form_widget(form.drivers) }}
+			{{ form_errors(form.drivers) }}
+			
+			<div class="button_container">
+				<button type="submit" class="primaryButton">Guardar</button>
+			</div>
+			
+			{{ form_end(form) }}
         </div>
         <div class="button_container">
             <a href="{{ path('group_main') }}" class="secondaryButton"><i class="ti ti-arrow-left"></i>Volver</a>

@@ -17,6 +17,7 @@ class AbsenceType extends AbstractType
     {
         $builder
             ->add('driver', EntityType::class, [
+                'label' => 'Conductor',
                 'class' => Driver::class,
                 'disabled' => true
             ])

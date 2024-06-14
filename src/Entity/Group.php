@@ -6,6 +6,7 @@ use App\Repository\GroupRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: GroupRepository::class)]
 #[ORM\Table(name: '`group`')]
@@ -20,9 +21,13 @@ class Group
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:'El origen es obligatoria')]
+    #[Assert\Length(min: 2, max: 255)]
     private ?string $origin = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:'El destino es obligatoria')]
+    #[Assert\Length(min: 2, max: 255)]
     private ?string $destination = null;
 
     #[ORM\ManyToMany(targetEntity: Driver::class, inversedBy: 'groupCollection')]
