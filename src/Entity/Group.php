@@ -21,12 +21,12 @@ class Group
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message:'El origen es obligatoria')]
+    #[Assert\NotBlank(message:'El origen es obligatorio')]
     #[Assert\Length(min: 2, max: 255)]
     private ?string $origin = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message:'El destino es obligatoria')]
+    #[Assert\NotBlank(message:'El destino es obligatorio')]
     #[Assert\Length(min: 2, max: 255)]
     private ?string $destination = null;
 

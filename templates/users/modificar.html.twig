@@ -1,70 +1,83 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="container">
-        <div class="form_container">
-            {% if driver.id is null %}
-                <h2>Datos del nuevo usuario</h2>
-            {% else %}
-                <h2>Datos del usuario</h2>
-            {% endif %}
-            {{ form_start(form) }}
-            {{ form_row(form) }}
-            <input type="hidden" name="redirect" value="{{ app.request.get('redirect') }}">
-            <div class="buttons">
-                {% if driver.id is null %}
-                    <button type="submit" class="primaryButton">Guardar</button>
-                {% else %}
-                    <button type="submit" class="primaryButton">Guardar</button>
-                    {% if is_granted('ROLE_GROUP_ADMIN')  and app.user != driver.user %}
-                        <a href="{{ path('app_change_user_password', {'id':driver.id}) }}" class="secondaryButton">Cambiar contraseña</a>
-                    {% endif %}
-                {% endif %}
-            </div>
-            {{ form_end(form) }}
-        </div>
-        <div class="button_container">
-            <a href="{{ app.request.get('redirect') ? app.request.get('redirect') : path('driver_main') }}"
-               class="secondaryButton"><i class="ti ti-arrow-left"></i>Volver</a>
-        </div>
-    </div>
+	<div class="container">
+		<div class="form_container">
+			{% if driver.id is null %}
+				<h2>Datos del nuevo usuario</h2>
+			{% else %}
+				<h2>Datos del usuario</h2>
+			{% endif %}
+			{{ form_start(form, {'attr': {'novalidate':'novalidate'}}) }}
+			{{ form_label(form.name) }}
+			{{ form_widget(form.name) }}
+			{{ form_errors(form.name) }}
 
-    <script>
-        function confirmDelete(groupId) {
-            Swal.fire({
-                title: '¿Estás seguro?',
-                text: "¡No podrás recuperar este usuario!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#8E6C88',
-                cancelButtonColor: '#80CED7',
-                confirmButtonText: 'Sí, eliminarlo',
-                cancelButtonText: 'Cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: '{{ path('driver_delete', {'id': 'ID_PLACEHOLDER'}) }}'.replace('ID_PLACEHOLDER', groupId),
-                        type: 'DELETE',
-                        success: function (response) {
-                            Swal.fire(
-                                '¡Eliminado!',
-                                'El usuario ha sido eliminado.',
-                                'success'
-                            ).then(() => {
-                                window.location.href = '{{ path('driver_main') }}';
-                            });
-                        },
-                        error: function (xhr) {
-                            Swal.fire(
-                                'Error',
-                                'Hubo un problema al eliminar el usuario.',
-                                'error'
-                            );
-                        }
-                    });
-                }
-            })
-        }
-    </script>
+			{{ form_label(form.lastName) }}
+			{{ form_widget(form.lastName) }}
+			{{ form_errors(form.lastName) }}
+
+			{{ form_label(form.email) }}
+			{{ form_widget(form.email) }}
+			{{ form_errors(form.email) }}
+
+			{{ form_label(form.seats) }}
+			{{ form_widget(form.seats) }}
+			{{ form_errors(form.seats) }}
+
+			{{ form_label(form.waitTime) }}
+			{{ form_widget(form.waitTime) }}
+			{{ form_errors(form.waitTime) }}
+
+			{{ form_label(form.isAdmin) }}
+			{{ form_widget(form.isAdmin) }}
+			<input type="hidden" name="redirect" value="{{ app.request.get('redirect') }}">
+			<div class="buttons">
+				{% if driver.id is null %}
+					<button type="submit" class="primaryButton">Guardar</button>
+				{% else %}
+					<button type="submit" class="primaryButton">Guardar</button>
+					{% if is_granted('ROLE_GROUP_ADMIN')  and app.user != driver.user %}
+						<a href="{{ path('app_change_user_password', {'id':driver.id}) }}" class="secondaryButton">Cambiar contraseña</a>
+					{% endif %}
+				{% endif %}
+			</div>
+			{{ form_end(form) }}
+		</div>
+		<div class="button_container">
+			<a href="{{ app.request.get('redirect') ? app.request.get('redirect') : path('driver_main') }}" class="secondaryButton">
+				<i class="ti ti-arrow-left"></i>Volver</a>
+		</div>
+	</div>
+
+	<script>
+		function confirmDelete(groupId) {
+Swal.fire({
+title: '¿Estás seguro?',
+text: "¡No podrás recuperar este usuario!",
+icon: 'warning',
+showCancelButton: true,
+confirmButtonColor: '#8E6C88',
+cancelButtonColor: '#80CED7',
+confirmButtonText: 'Sí, eliminarlo',
+cancelButtonText: 'Cancelar'
+}).then((result) => {
+if (result.isConfirmed) {
+$.ajax({
+url: '{{ path('driver_delete', {'id': 'ID_PLACEHOLDER'}) }}'.replace('ID_PLACEHOLDER', groupId),
+type: 'DELETE',
+success: function (response) {
+Swal.fire('¡Eliminado!', 'El usuario ha sido eliminado.', 'success').then(() => {
+window.location.href = '{{ path('driver_main') }}';
+});
+},
+error: function (xhr) {
+Swal.fire('Error', 'Hubo un problema al eliminar el usuario.', 'error');
+}
+});
+}
+})
+}
+	</script>
 
 {% endblock %}

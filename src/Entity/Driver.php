@@ -6,6 +6,7 @@ use App\Repository\DriverRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: DriverRepository::class)]
 class Driver
@@ -16,21 +17,40 @@ class Driver
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:'El nombre es obligatorio')]
+    #[Assert\Length(min: 2, max: 255)]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:'Los apellidos son obligatorios')]
+    #[Assert\Length(min: 2, max: 255)]
+    
     private ?string $lastName = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:'El email es obligatorio')]
+    #[Assert\Email()]
     private ?string $email = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message:'El numero de asientos libres es obligatorio')]
+    #[Assert\Range(
+        min: 0,
+        max: 6,
+        notInRangeMessage: 'El número de asientos libres debe estar entre {{ min }} y {{ max }}',
+    )]
     private ?int $seats = null;
 
     #[ORM\Column]
     private ?int $daysDriven = null;
 
     #[ORM\Column(nullable: true)]
+    #[Assert\NotBlank(message:'El timepo de espera es obligatorio')]
+    #[Assert\Range(
+        min: 0,
+        max: 2,
+        notInRangeMessage: 'El timepo de espera debe estar entre {{ min }} y {{ max }}',
+    )]
     private ?int $waitTime = null;
 
     #[ORM\ManyToMany(targetEntity: Group::class, mappedBy: 'drivers')]
