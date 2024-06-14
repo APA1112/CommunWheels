@@ -32,7 +32,7 @@
 			{{ form_label(form.isAdmin) }}
 			{{ form_widget(form.isAdmin) }}
 			<input type="hidden" name="redirect" value="{{ app.request.get('redirect') }}">
-			<div class="buttons">
+			<div class="button_container">
 				{% if driver.id is null %}
 					<button type="submit" class="primaryButton">Guardar</button>
 				{% else %}
