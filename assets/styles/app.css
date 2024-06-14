@@ -69,15 +69,20 @@ body::before {
 .section:first-child{
     background-color: var(--back-color);
     padding: 2rem;
+    padding-left: 4.5rem;
     border-radius: 10px;
-    width: auto;
+    width: fit-content;
 }
-section>*{
-    padding: 10px;
-    text-align: center;
+.section div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
-input{
+.section input{
     border-radius: 10px;
+    height: auto;
+    padding: 1rem;
 }
 /**
 
@@ -209,6 +214,12 @@ CSS FOR CARD
     .section{
         grid-template-columns: repeat(2, 1fr);
     }
+    .section:first-child{
+        background-color: var(--back-color);
+        padding: 2rem;
+        border-radius: 10px;
+        width: fit-content;
+    }
 }
 /**
 
@@ -249,6 +260,7 @@ CSS FOR PRIMARY BUTTON
     border-radius: 10px;
     border: none;
     padding: 1rem;
+    width: fit-content;
     background-color: var(--primary-button);
     text-decoration: none;
     font-size: large;

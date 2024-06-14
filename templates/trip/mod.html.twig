@@ -3,12 +3,12 @@
 {% block body %}
     <div class="container">
         <div class="form_container">
-            <h2>Modificar viaje del {{ trip.tripDate | date('d-m-Y') }}</h2>
+            <h2 class="titulo">Modificar viaje del {{ trip.tripDate | date('d-m-Y') }}</h2>
             {% if drivers is not empty %}
                 {{ dump(drivers, timeTable, trip) }}
 
             {% else %}
-                <h3>No es necesario generar un trip, ya que no hay pasajeros que necesiten de el</h3>
+                <h3>No es necesario generar un nuevo viaje, ya que no hay pasajeros que necesiten de el</h3>
             {% endif %}
             <div class="button_container">
                 <a href="{{ path('see_timetable', {'id':timeTable.id}) }}" class="secondaryButton"><i class="ti ti-arrow-left"></i>Volver</a>

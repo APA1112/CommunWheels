@@ -8,12 +8,12 @@
                     Cuadrante</a>
             </div>
         {% endif %}
+        <h2 class="titulo">Cuadrantes del grupo {{ group.name }}</h2>
         <div class="card_container">
-            <h2 class="titulo">Cuadrantes del grupo {{ group.name }}</h2>
             {% for timeTable in pagination %}
                 <div class="expandable-container">
                     <div class="expandable">
-                        <span class="title">{{ timeTable.weekStartDate | date('d-m-Y') }}</span>
+                        <span class="title">{{ group.name }}</br>{{ timeTable.weekStartDate | date('d-m-Y') }}</span>
                         <div class="icons">
                             <a href="#" class="btn delete" onclick="confirmDelete({{ timeTable.id }})"><i
                                         class="ti ti-trash" style="font-size: 1.5rem"></i></a>

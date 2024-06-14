@@ -6,9 +6,12 @@
 			<div class="section">
 				<input type="text" placeholder="Origen">
 				<input type="text" placeholder="Destino">
-				<button class="primaryButton">
-					<i class="ti ti-search"></i>
-				</button>
+				<div>
+					<a href="#" class="primaryButton">
+						<i class="ti ti-search"></i>
+						Buscar
+					</a>
+				</div>
 			</div>
 			<div class="section">
 				{% include 'groups/card.html.twig' %}
@@ -34,11 +37,11 @@
 	</div>
 	<script>
 		document.addEventListener('DOMContentLoaded', function () {
-        var scrollToCardsLink = document.getElementById('scroll-to-cards');
-        scrollToCardsLink.addEventListener('click', function (event) {
-        event.preventDefault();
-        document.getElementById('cards').scrollIntoView({behavior: 'smooth'});
-        });
-        });
+var scrollToCardsLink = document.getElementById('scroll-to-cards');
+scrollToCardsLink.addEventListener('click', function (event) {
+event.preventDefault();
+document.getElementById('cards').scrollIntoView({behavior: 'smooth'});
+});
+});
 	</script>
 {% endblock %}
