@@ -11,21 +11,22 @@
 					</svg>
 				</a>
 			</li>
-			{% if app.user.driver is not null %}
-				<li>
-					<a href="{{ path('user_panel') }}">
+			<li>
+				<a href="#" class="userDropdown">
+					{% if app.user.driver is null %}
+						<i class="ti ti-user-filled"></i>
+						{{ app.user }}
+					{% else %}
 						<i class="ti ti-user-filled"></i>
 						{{ app.user.driver }}
-					</a>
-				</li>
-			{% else %}
-				<li>
-					<a href="{{ path('user_panel') }}">
-						<i class="ti ti-user-filled"></i>
-						{{ app.user}}
-					</a>
-				</li>
-			{% endif %}
+					{% endif %}
+				</a>
+				<div class="dropdown-content">
+					<a href="{{ path('driver_mod', {'id': app.user.driver.id, 'redirect': app.request.uri}) }}">Datos personales</a>
+					<a href="{{ path('schedule_main') }}">Horario</a>
+					<a href="{{ path('app_change_password') }}">Cambiar contraseña</a>
+				</div>
+			</li>
 			<li>
 				<a href="{{ path('group_main') }}">Grupos</a>
 			</li>
@@ -63,22 +64,23 @@
 			</li>
 			{% if app.user %}
 				<li class="hideOnMobile">
-					<a href="#" id="userDropdown">
+					<a href="#" class="userDropdown">
 						{% if app.user.driver is null %}
 							<i class="ti ti-user-filled"></i>
-							{{ app.user }}
+							{{ app.user }}<i class="ti ti-caret-down-filled"></i>
 						{% else %}
 							<i class="ti ti-user-filled"></i>
-							{{ app.user.driver }}
+							{{ app.user.driver }}<i class="ti ti-caret-down-filled"></i>
 						{% endif %}
 					</a>
 					<div class="dropdown-content">
-						<a href="{{ path('user_panel') }}">Panel de Usuario</a>
+						<a href="{{ path('driver_mod', {'id': app.user.driver.id, 'redirect': app.request.uri}) }}">Datos personales</a>
+						<a href="{{ path('schedule_main') }}">Horario</a>
+						<a href="{{ path('app_change_password') }}">Cambiar contraseña</a>
 						<a href="{{ path('app_logout') }}">
 							<i class="ti ti-logout"></i>Log Out</a>
 					</div>
 				</li>
-
 			{% endif %}
 			<li class="menuButton">
 				<a href="#">

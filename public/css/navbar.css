@@ -69,14 +69,16 @@ body {
     top: 0;
     right: 0;
     height: 100vh;
-    max-width: 250px;
+    max-width: 300px;
     z-index: 999;
     background-color: var(--back-color-blur);
     backdrop-filter: blur(10px);
     box-shadow: -10px 0 10px rgba(0, 0, 0, 0.1);
     display: none; /* Asegurarse de que esté oculto por defecto */
     flex-direction: column;
-
+    align-items: flex-start;
+    justify-content: flex-start; /* Asegura que los elementos se alineen al inicio del contenedor */
+    padding-top: 0; /* Añade espacio en la parte superior */
 }
 
 .sidebar li {
@@ -137,7 +139,20 @@ body {
     background-color: var(--primary-button); /* Color del subrayado */
     border-radius: 2px; /* Opcional: para hacer los bordes del subrayado redondeados */
 }
+.userDropdown .ti-caret-down-filled {
+    transition: transform 0.3s;
+}
+
+.userDropdown.open .ti-caret-down-filled {
+    transform: rotate(180deg);
+}
+
 /* Media queries */
+@media(min-width: 900px) {
+    .sidebar {
+        display: none;
+    }
+}
 @media(max-width: 900px) {
     .hideOnMobile {
         display: none;
