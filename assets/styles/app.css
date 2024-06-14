@@ -16,10 +16,10 @@ body {
     color: var(--text-color);
     font-family: 'Jost', 'Roboto', 'Helvetica', 'Arial', sans-serif;
     font-size: large;
-    height: 100%; /* Asegura que el body ocupe toda la altura disponible */
-    margin: 0; /* Elimina el margen por defecto del body */
-    overflow: hidden; /* Evita el scroll en el body */
-    position: relative; /* Para permitir el uso de ::before con posición absoluta */
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    position: relative;
 }
 
 body::before {
@@ -33,30 +33,52 @@ body::before {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    opacity: 0.01; /* Ajusta la opacidad de la imagen */
-    z-index: -1; /* Mueve la imagen detrás del contenido */
+    opacity: 0.01;
+    z-index: -1;
 }
 
 .scroll-container {
     scroll-snap-type: y mandatory;
     overflow-y: scroll;
-    height: 100vh; /* Asegura que el contenedor tome toda la altura de la ventana gráfica */
-    position: relative; /* Para posicionar contenido dentro del scroll-container */
+    height: 100vh;
+    position: relative;
+    /* Oculta el scrollbar */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
 .container {
     scroll-snap-align: start;
     margin-top: 50px;
-    height: calc(100vh - 50px); /* Ajusta la altura para permitir el scroll */
+    height: calc(100vh - 50px);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 30px;
     padding: 0 3rem;
-    scroll-snap-stop: always; /* Asegura que el scroll se detenga en cada contenedor */
+    scroll-snap-stop: always;
 }
-
+.section{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 3rem;
+    width: 100%;
+}
+.section:first-child{
+    background-color: var(--back-color);
+    padding: 2rem;
+    border-radius: 10px;
+    width: auto;
+}
+section>*{
+    padding: 10px;
+    text-align: center;
+}
+input{
+    border-radius: 10px;
+}
 /**
 
 CSS FOR CARD
@@ -181,6 +203,12 @@ CSS FOR CARD
         cursor: pointer;
         transform: scale(1.05);
     }
+
+}
+@media(max-width: 910px){
+    .section{
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 /**
 
@@ -219,6 +247,7 @@ CSS FOR PRIMARY BUTTON
  */
 .primaryButton{
     border-radius: 10px;
+    border: none;
     padding: 1rem;
     background-color: var(--primary-button);
     text-decoration: none;
@@ -336,10 +365,11 @@ CSS FOR FORM
  */
 .button_container{
     display: flex;
-    justify-content: space-between;
+    gap: 30px;
     width: 100%;
     box-sizing: border-box;
     align-items: flex-start;
+    justify-content: flex-end;
 }
 .titulo{
     font-size: x-large;
@@ -432,4 +462,36 @@ CSS FOR FORM
         padding: 4px 12px; /* Ajuste del espaciado interno para pantallas pequeñas */
         margin: 2px; /* Ajuste del espaciado externo para pantallas pequeñas */
     }
+}
+.footer-section {
+    position: absolute;
+    bottom: -4rem;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
+}
+
+.footer-section h1 {
+    margin-bottom: 1.5rem;
+}
+
+.footer-content {
+    text-align: center;
+}
+
+.bouncing-arrow {
+    margin-top: 0.5rem;
+    display: inline-block;
+    text-decoration: none;
+    color: white;
+    position: relative;
+    bottom: 20px;
+    transition: transform 0.3s;
+}
+.bouncing-arrow:hover {
+    cursor: pointer;
+    transform: scale(1.05);
 }

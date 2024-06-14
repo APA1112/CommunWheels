@@ -1,92 +1,98 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="container">
-        {% if is_granted('ROLE_GROUP_ADMIN') %}
-            <div class="button_container">
-            <a href="{{ path('group_new') }}" class="primaryButton"><i class="ti ti-plus"></i>Nuevo grupo</a>
-                {% if app.request.attributes.get('_route')=='group_filter' %}
-                    <a href="{{ path('group_main') }}" class="secondaryButton"><i class="ti ti-arrow-left"></i>Volver</a>
-                {% else %}
-                    <a href="{{ path('group_filter') }}" class="secondaryButton">Ver mis grupos</a>
-                {% endif %}
-            </div>
-        {% endif %}
-        <div class="card_container">
-            {% for group in pagination %}
-                <div class="expandable-container">
-                    <div class="expandable">
-                        <span class="title">{{ group.name }}</span>
-                        <div class="icons">
-                            <a href="{{ path('group_mod', {'id':group.id}) }}" class="btn edit"><i class="ti ti-edit" style="font-size: 1.5rem"></i></a>
-                            <a href="#" class="btn delete" onclick="confirmDelete({{ group.id }})"><i class="ti ti-trash" style="font-size: 1.5rem"></i></a>
-                            <span class="icon"><i class="ti ti-caret-down-filled" style="font-size: 1.5rem"></i></span>
-                        </div>
-                    </div>
-                    <div class="content">
-                        <div class="card-grid">
-                            <div class="expanded_card">
-                                <p class="label">Origen:</p>
-                                <p class="value">{{ group.origin }}</p>
-                            </div>
-                            <div class="expanded_card">
-                                <p class="label">Destino:</p>
-                                <p class="value">{{ group.destination }}</p>
-                            </div>
-                            <div class="expanded_card">
-                                <a href="{{ path('timetable_main', {'id':group.id}) }}" class="secondaryButton">Ver cuadrantes</a>
-                            </div>
-                            {% if is_granted('ROLE_GROUP_ADMIN') %}
-                            <div class="expanded_card">
-                                <a href="{{ path('app_non_school_day', {'id':group.id}) }}" class="secondaryButton">Días festivos</a>
-                            </div>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
-        {# display navigation #}
-        <div class="paginator">
-            {{ knp_pagination_render(pagination) }}
-        </div>
-    </div>
+	<div class="container">
+		{% if pagination is empty %}
+        <h2 class="titulo">Aun no perteneces a ningún grupo</h2>
+			<a href="{{ path('main') }}" class="secondaryButton">
+				<i class="ti ti-arrow-left"></i>Volver</a>
+		{% else %}
+			{% if is_granted('ROLE_GROUP_ADMIN') %}
+				<div class="button_container">
+					<a href="{{ path('group_new') }}" class="primaryButton">
+						<i class="ti ti-plus"></i>Nuevo grupo</a>
+					{% if app.request.attributes.get('_route')=='group_filter' %}
+						<a href="{{ path('group_main') }}" class="secondaryButton">
+							<i class="ti ti-arrow-left"></i>Volver</a>
+					{% else %}
+						<a href="{{ path('group_filter') }}" class="secondaryButton">Ver mis grupos</a>
+					{% endif %}
+				</div>
+			{% endif %}
+			<div class="card_container">
+				{% for group in pagination %}
+					<div class="expandable-container">
+						<div class="expandable">
+							<span class="title">{{ group.name }}</span>
+							<div class="icons">
+								<a href="{{ path('group_mod', {'id':group.id}) }}" class="btn edit">
+									<i class="ti ti-edit" style="font-size: 1.5rem"></i>
+								</a>
+								<a href="#" class="btn delete" onclick="confirmDelete({{ group.id }})">
+									<i class="ti ti-trash" style="font-size: 1.5rem"></i>
+								</a>
+								<span class="icon">
+									<i class="ti ti-caret-down-filled" style="font-size: 1.5rem"></i>
+								</span>
+							</div>
+						</div>
+						<div class="content">
+							<div class="card-grid">
+								<div class="expanded_card">
+									<p class="label">Origen:</p>
+									<p class="value">{{ group.origin }}</p>
+								</div>
+								<div class="expanded_card">
+									<p class="label">Destino:</p>
+									<p class="value">{{ group.destination }}</p>
+								</div>
+								<div class="expanded_card">
+									<a href="{{ path('timetable_main', {'id':group.id}) }}" class="secondaryButton">Ver cuadrantes</a>
+								</div>
+								{% if is_granted('ROLE_GROUP_ADMIN') %}
+									<div class="expanded_card">
+										<a href="{{ path('app_non_school_day', {'id':group.id}) }}" class="secondaryButton">Días festivos</a>
+									</div>
+								{% endif %}
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+			{# display navigation #}
+			<div class="paginator">
+				{{ knp_pagination_render(pagination) }}
+			</div>
+		{% endif %}
+	</div>
 
-    <script>
-        function confirmDelete(groupId) {
-            Swal.fire({
-                title: '¿Estás seguro?',
-                text: "¡No podrás recuperar este grupo!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#8E6C88',
-                cancelButtonColor: '#80CED7',
-                confirmButtonText: 'Sí, eliminarlo',
-                cancelButtonText: 'Cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: '{{ path('group_delete', {'id': 'ID_PLACEHOLDER'}) }}'.replace('ID_PLACEHOLDER', groupId),
-                        type: 'DELETE',
-                        success: function(response) {
-                            Swal.fire(
-                                '¡Eliminado!',
-                                'El grupo ha sido eliminado.',
-                                'success'
-                            ).then(() => {
-                                window.location.href = '{{ path('group_main') }}';
-                            });
-                        },
-                        error: function(xhr) {
-                            Swal.fire(
-                                'Error',
-                                'Hubo un problema al eliminar el grupo.',
-                                'error'
-                            );
-                        }
-                    });
-                }
-            })
-        }
-    </script>
+	<script>
+		function confirmDelete(groupId) {
+Swal.fire({
+title: '¿Estás seguro?',
+text: "¡No podrás recuperar este grupo!",
+icon: 'warning',
+showCancelButton: true,
+confirmButtonColor: '#8E6C88',
+cancelButtonColor: '#80CED7',
+confirmButtonText: 'Sí, eliminarlo',
+cancelButtonText: 'Cancelar'
+}).then((result) => {
+if (result.isConfirmed) {
+$.ajax({
+url: '{{ path('group_delete', {'id': 'ID_PLACEHOLDER'}) }}'.replace('ID_PLACEHOLDER', groupId),
+type: 'DELETE',
+success: function (response) {
+Swal.fire('¡Eliminado!', 'El grupo ha sido eliminado.', 'success').then(() => {
+window.location.href = '{{ path('group_main') }}';
+});
+},
+error: function (xhr) {
+Swal.fire('Error', 'Hubo un problema al eliminar el grupo.', 'error');
+}
+});
+}
+})
+}
+	</script>
 {% endblock %}

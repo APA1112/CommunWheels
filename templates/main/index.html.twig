@@ -1,59 +1,44 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="scroll-container">
-        <div class="container">
-            {% include 'groups/card.html.twig' %}
-            {% if is_granted('ROLE_GROUP_ADMIN') %}
-                {% include 'users/card.html.twig' %}
-            {% endif %}
-            {% include 'notify/card.html.twig' %}
-            <h1 class="titulo">Más sobre nosotros</h1>
-            <a href="" id="scroll-to-cards" class="bouncing-arrow"><i class="ti ti-circle-arrow-down"
-                                                                      style="font-size: 4rem;"></i></a>
-        </div>
-        <div class="container" id="cards">
-            <div class="form_container">
-                <h1 class="titulo-principal">Bienvenido a Communwheels</h1>
-                <p>Communwheels es una innovadora plataforma dedicada a compartir coche de manera eficiente y segura.
-                    Nuestro objetivo principal es facilitar el transporte colaborativo, reduciendo costos y
-                    contribuyendo a la disminución de la huella de carbono. Únete a nuestra comunidad y descubre una
-                    forma de viajar más económica y respetuosa con el medio ambiente. Con Communwheels, no solo
-                    compartes un coche, compartes un viaje, experiencias y haces nuevos amigos. ¡Bienvenido a una nueva
-                    era de movilidad sostenible!</p>
-            </div>
-        </div>
-    </div>
-    <style>
-        .bouncing-arrow {
-            display: inline-block;
-            animation: bounce 2s infinite;
-            text-decoration: none;
-            color: white;
-            position: absolute;
-            bottom: 20px;
-            transform: translateX(-50%);
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {
-                transform: translateY(0);
-            }
-            40% {
-                transform: translateY(-20px);
-            }
-            60% {
-                transform: translateY(-10px);
-            }
-        }
-    </style>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var scrollToCardsLink = document.getElementById('scroll-to-cards');
-            scrollToCardsLink.addEventListener('click', function (event) {
-                event.preventDefault();
-                document.getElementById('cards').scrollIntoView({behavior: 'smooth'});
-            });
+	<div class="scroll-container">
+		<div class="container">
+			<div class="section">
+				<input type="text" placeholder="Origen">
+				<input type="text" placeholder="Destino">
+				<button class="primaryButton">
+					<i class="ti ti-search"></i>
+				</button>
+			</div>
+			<div class="section">
+				{% include 'groups/card.html.twig' %}
+				{% if is_granted('ROLE_GROUP_ADMIN') %}
+					{% include 'users/card.html.twig' %}
+				{% endif %}
+				{% include 'notify/card.html.twig' %}
+			</div>
+			<div class="footer-section">
+				<div class="footer-content">
+					<h1>Ultimos viajes</h1>
+					<a href="" id="scroll-to-cards" class="bouncing-arrow">
+						<i class="ti ti-circle-arrow-down" style="font-size: 2rem;"></i>
+					</a>
+				</div>
+			</div>
+		</div>
+		<div class="container" id="cards">
+			<div class="form_container">
+				<h1 class="titulo-principal">Ultimos viajes</h1>
+			</div>
+		</div>
+	</div>
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+        var scrollToCardsLink = document.getElementById('scroll-to-cards');
+        scrollToCardsLink.addEventListener('click', function (event) {
+        event.preventDefault();
+        document.getElementById('cards').scrollIntoView({behavior: 'smooth'});
         });
-    </script>
+        });
+	</script>
 {% endblock %}

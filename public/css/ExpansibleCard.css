@@ -8,6 +8,10 @@
     margin: 0 auto; /* Centrar el contenedor */
     width: 100%; /* Puedes ajustar el ancho máximo del contenedor */
     margin-top: .5rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    column-gap: 25px;
 }
 
 .expandable-container {
@@ -117,4 +121,23 @@
 
 .expanded_card .value {
     margin: 0;
+}
+@media (max-width: 960px) {
+    .card_container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        column-gap: 25px;
+    }
+}
+@media (max-width: 700px) {
+    .card_container {
+        grid-template-columns: repeat(1, 1fr);
+        padding: .5rem;
+        gap: 20px;
+        column-gap: 25px;
+        overflow-y: scroll;
+        /* Oculta el scrollbar */
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
 }

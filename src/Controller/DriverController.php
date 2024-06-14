@@ -38,7 +38,7 @@ class DriverController extends AbstractController
         $pagination = $paginator->paginate(
             $query, /* query NOT result */
             $request->query->getInt('page', 1), /*page number*/
-            8 /*limit per page*/
+            9 /*limit per page*/
         );
         return $this->render('users/main.html.twig', [
             'drivers' => $drivers,
