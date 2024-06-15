@@ -118,6 +118,14 @@ class Trip
 
         return $this;
     }
+    public function removePassenger(Driver $driver): self
+    {
+        if ($this->passengers->contains($driver)) {
+            $this->passengers->removeElement($driver);
+        }
+
+        return $this;
+    }
 
     public function isActive(): ?bool
     {

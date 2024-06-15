@@ -78,6 +78,7 @@ class AbsenceController extends AbstractController
                         ->context([
                             'group_admin_name' => $admin->getDriver()->getName(),
                             'driver_name' => $absence->getDriver()->getName() . ' '. $absence->getDriver()->getLastName(),
+                            'driver_groups' => $absence->getDriver()->getGroupCollection(),
                             'start_date' => $absence->getAbsenceDate()->format('d-m-Y'),
                             'reason' => $absence->getDescription(),
                             'support_email' => 'support@communwheels.com',

@@ -1,18 +1,73 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    {% set entryHourIntervals = {
+        1: '8:15',
+        2: '9:15',
+        3: '10:15',
+        4: '11:45',
+        5: '12:45',
+        6: '13:45'
+    } %}
+    {% set exitHourIntervals = {
+        1: '9:15',
+        2: '10:15',
+        3: '11:15',
+        4: '12:45',
+        5: '13:45',
+        6: '14:45'
+    } %}
     <div class="container">
         <div class="form_container">
             <h2 class="titulo">Modificar viaje del {{ trip.tripDate | date('d-m-Y') }}</h2>
-            {% if drivers is not empty %}
-                {{ dump(drivers, timeTable, trip) }}
-
+            {% if notNeeded == false %}
+                <h3 class="titulo">El conductor no tiene progamada ninguna ausencia para este día</h3>
+                <div class="button_container">
+                    <a href="{{ path('see_timetable', {'id':timeTable.id}) }}" class="secondaryButton"><i
+                                class="ti ti-arrow-left"></i>Volver</a>
+                </div>
             {% else %}
-                <h3>No es necesario generar un nuevo viaje, ya que no hay pasajeros que necesiten de el</h3>
+                <h3 class="titulo">No es necesario generar un nuevo viaje, ya que no hay pasajeros que necesiten de
+                    el</h3>
+                <div class="button_container">
+                    {#
+                    <a href="#" class="deleteButton" onclick="confirmDelete({{ trip.id }})">
+                        <i class="ti ti-trash" style="font-size: 1.2rem;"></i>
+                    </a>
+                    #}
+                    <a href="{{ path('see_timetable', {'id':timeTable.id}) }}" class="secondaryButton"><i
+                                class="ti ti-arrow-left"></i>Volver</a>
+                </div>
             {% endif %}
-            <div class="button_container">
-                <a href="{{ path('see_timetable', {'id':timeTable.id}) }}" class="secondaryButton"><i class="ti ti-arrow-left"></i>Volver</a>
-            </div>
         </div>
     </div>
+    <script>
+        function confirmDelete(id) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "¡No podrás recuperar este viaje!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#8E6C88',
+                cancelButtonColor: '#80CED7',
+                confirmButtonText: 'Sí, eliminarlo',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '{{ path('trip_delete', {'id': 'ID_PLACEHOLDER'}) }}'.replace('ID_PLACEHOLDER', id),
+                        type: 'DELETE',
+                        success: function (response) {
+                            Swal.fire('¡Eliminado!', 'El usuario ha sido eliminado.', 'success').then(() => {
+                                window.location.href = '{{ path('see_timetable', {'id':timeTable.id}) }}';
+                            });
+                        },
+                        error: function (xhr) {
+                            Swal.fire('Error', 'Hubo un problema al eliminar el usuario.', 'error');
+                        }
+                    });
+                }
+            })
+        }
+    </script>
 {% endblock %}

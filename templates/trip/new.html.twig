@@ -67,7 +67,7 @@
 											No tiene pasajeros<br>
 										{% endif %}
 										{% if trip.driver == app.user.driver %}
-											<a href="{{ path('confirm_trip', {'id': trip.id}) }}" class="btn">
+											<a href="{{ path('confirm_trip', {'id': trip.id}) }}" class="{{ trip.active == 1 ? 'btn' : 'btn_inactive' }}" {{ trip.active == 1 ? '' : 'disabled' }}>
 												<i class="ti ti-check"></i>
 											</a>
 										{% endif %}
@@ -107,6 +107,12 @@
 		}
 		hr {
 			border-top: 1px solid #dee2e6;
+		}
+		.btn_inactive{
+			color: gray;
+			text-decoration: none;
+			font-size: x-large;
+			cursor: auto;
 		}
 	</style>
 
