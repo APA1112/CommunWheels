@@ -29,8 +29,10 @@
             {{ form_widget(form.waitTime) }}
             {{ form_errors(form.waitTime) }}
 
+            {% if is_granted('ROLE_GROUP_ADMIN') %}
             {{ form_label(form.isAdmin) }}
             {{ form_widget(form.isAdmin) }}
+            {% endif %}
             <input type="hidden" name="redirect" value="{{ app.request.get('redirect') }}">
             <div class="button_container">
                 {% if driver.id is null %}
@@ -46,7 +48,7 @@
             {{ form_end(form) }}
         </div>
         <div class="button_container">
-            <a href="{{ app.request.get('redirect') ? app.request.get('redirect') : path('driver_main') }}"
+            <a href="{{ path('main') }}"
                class="secondaryButton">
                 <i class="ti ti-arrow-left"></i>Volver</a>
         </div>

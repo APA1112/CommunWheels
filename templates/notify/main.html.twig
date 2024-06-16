@@ -2,30 +2,43 @@
 {% block body %}
     <div class="container">
         <div class="button_container">
-            <a href="{{ path('new_absence', {'id':app.user.driver.id}) }}" class="primaryButton"><i class="ti ti-plus"></i>Nuevo ausencia</a>
+            <a href="{{ path('new_absence', {'id':app.user.driver.id}) }}" class="primaryButton"><i
+                        class="ti ti-plus"></i>Nuevo ausencia</a>
+            {% if app.request.attributes.get('_route')=='absence_filter' %}
+                <a href="{{ path('notify_main') }}" class="secondaryButton">
+                    <i class="ti ti-arrow-left"></i>Volver</a>
+            {% else %}
+                <a href="{{ path('absence_filter') }}" class="secondaryButton">Ver mis ausencias</a>
+            {% endif %}
         </div>
         <div class="card_container">
-            {% for absence in absences %}
-            <div class="expandable-container">
-                <div class="expandable">
-                    <span class="title">{{ absence.description }}</span>
-                    <div class="icons">
-                        <a href="{{ path('mod_absence', {'id':absence.id}) }}" class="btn edit"><i class="ti ti-edit" style="font-size: 1.5rem"></i></a>
-                        <a href="#" class="btn delete" onclick="confirmDelete({{ absence.id }})"><i class="ti ti-trash" style="font-size: 1.5rem"></i></a>
-                        <span class="icon"><i class="ti ti-caret-down-filled" style="font-size: 1.5rem"></i></span>
+            {% for absence in pagination %}
+                <div class="expandable-container">
+                    <div class="expandable">
+                        <span class="title">{{ absence.description }}</span>
+                        <div class="icons">
+                            <a href="{{ path('mod_absence', {'id':absence.id}) }}" class="btn edit"><i
+                                        class="ti ti-edit" style="font-size: 1.5rem"></i></a>
+                            <a href="#" class="btn delete" onclick="confirmDelete({{ absence.id }})"><i
+                                        class="ti ti-trash" style="font-size: 1.5rem"></i></a>
+                            <span class="icon"><i class="ti ti-caret-down-filled" style="font-size: 1.5rem"></i></span>
+                        </div>
                     </div>
-                </div>
-                <div class="content">
-                    <div class="card-grid">
-                        <div class="expanded_card">
-                            <p class="label">Fecha:</p>
-                            <p class="value">{{ absence.absenceDate | date('d-m-Y') }}</p>
+                    <div class="content">
+                        <div class="card-grid">
+                            <div class="expanded_card">
+                                <p class="label">Fecha:</p>
+                                <p class="value">{{ absence.absenceDate | date('d-m-Y') }}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
             {% else %}
-                <h2 class="titulo">No hay notificaciones</h2>
+                {% if app.request.attributes.get('_route')=='group_filter' %}
+                    <h2 class="titulo">No tienes ausencias programadas</h2>
+                {% else %}
+                    <h2 class="titulo">No hay ausencias programadas</h2>
+                {% endif %}
             {% endfor %}
         </div>
     </div>

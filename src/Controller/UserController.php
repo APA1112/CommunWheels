@@ -19,11 +19,6 @@ class UserController extends AbstractController
     public function __construct(UserPasswordHasherInterface $passwordHasher){
         $this->passwordHasher = $passwordHasher;
     }
-    #[Route('/user', name: 'user_panel')]
-    public function panel():Response
-    {
-        return $this->render('users/panel.html.twig');
-    }
     #[Route('/change-password', name: 'app_change_password')]
     public function changePassword(
         Request $request,

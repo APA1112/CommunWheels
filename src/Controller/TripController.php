@@ -51,70 +51,50 @@ class TripController extends AbstractController
         $actualDriverAbsences = $trip->getDriver()->getAbsences();
         $drivers = $trip->getPassengers();
         $timeTable = $trip->getTimeTable();
-        $notNedeed = false;
         $dateTrip = $trip->getTripDate()->format('Y-m-d');
         $driverAbsences = [];
 
         foreach ($actualDriverAbsences as $driverAbsence) {
             $driverAbsences[] = $driverAbsence->getAbsenceDate()->format('Y-m-d');
         }
-        foreach ($driverAbsences as $driverAbsence) {
-            if ($driverAbsence !== $dateTrip) {
-                $notNedeed = false;
-            } else {
-                $notNedeed = true;
-                break;
-            }
-        }
 
-        if (count($trip->getPassengers()) == 0 and $notNedeed) {
+        $notNedeed = in_array($dateTrip, $driverAbsences);
+        $noPassengers = count($drivers) == 0;
+
+        if ($noPassengers && $notNedeed) {
             $tripRepository->remove($trip);
             $entityManager->flush();
-            /**
-             * Enviar email cuando se elimine el trip y hacer la plantilla
-             *
-             * SweetAlert cuando se elimine
-             */
+            // Código de manejo de email y SweetAlert
             return $this->render('trip/mod.html.twig', [
                 'drivers' => $drivers,
                 'timeTable' => $timeTable,
                 'trip' => $trip,
                 'notNeeded' => $notNedeed
             ]);
-        } else {
-            $drivers = $trip->getPassengers();
-            $tripDate = $trip->getTripDate();
-            $availableDriver = null;
+        }
 
-            foreach ($drivers as $driver) {
-                $driverAbsences = $driver->getAbsences();
-                $isAvailable = true;
-
-                foreach ($driverAbsences as $driverAbsence) {
-                    if ($driverAbsence->getAbsenceDate() == $tripDate) {
-                        $isAvailable = false;
-                        break;
-                    }
-                }
-
-                if ($isAvailable) {
-                    $availableDriver = $driver;
+        $availableDriver = null;
+        foreach ($drivers as $driver) {
+            $isAvailable = true;
+            foreach ($driver->getAbsences() as $driverAbsence) {
+                if ($driverAbsence->getAbsenceDate() == $trip->getTripDate()) {
+                    $isAvailable = false;
                     break;
                 }
             }
-
-            if ($availableDriver !== null) {
-                $trip->setDriver($availableDriver);
-                $trip->removePassenger($availableDriver);
-                $entityManager->persist($trip);
-                $entityManager->flush();
-                /**
-                 * Enviar email cuando se modifique el trip y hacer la plantilla
-                 *
-                 * SweetAlert cuando se modifique
-                */
-                return $this->redirectToRoute('see_timetable', ['id' => $timeTable->getId()]);
+            if ($isAvailable) {
+                $availableDriver = $driver;
+                break;
             }
+        }
+
+        if ($availableDriver !== null) {
+            $trip->setDriver($availableDriver);
+            $trip->removePassenger($availableDriver);
+            $entityManager->persist($trip);
+            $entityManager->flush();
+            // Código de manejo de email y SweetAlert
+            return $this->redirectToRoute('see_timetable', ['id' => $timeTable->getId()]);
         }
 
         return $this->render('trip/mod.html.twig', [
@@ -124,6 +104,7 @@ class TripController extends AbstractController
             'notNeeded' => $notNedeed
         ]);
     }
+
 
 
     #[IsGranted('ROLE_GROUP_ADMIN')]

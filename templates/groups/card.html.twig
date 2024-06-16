@@ -3,6 +3,10 @@
         <i class="ti ti-users-group" style='font-size: 8rem; opacity: 0;'></i>
     </div>
     <div class="card-text">
-        <h3>Gestionar grupos</h3>
+        {% if is_granted('ROLE_GROUP_ADMIN') %}
+            <h3>Gestionar grupos</h3>
+        {% else %}
+            <h3>Grupos</h3>
+        {% endif %}
     </div>
 </a>

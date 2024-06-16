@@ -15,10 +15,10 @@
 				<a href="#" class="userDropdown">
 					{% if app.user.driver is null %}
 						<i class="ti ti-user-filled"></i>
-						{{ app.user }}
+						{{ app.user }}<i class="ti ti-caret-down-filled"></i>
 					{% else %}
 						<i class="ti ti-user-filled"></i>
-						{{ app.user.driver }}
+						{{ app.user.driver }}<i class="ti ti-caret-down-filled"></i>
 					{% endif %}
 				</a>
 				<div class="dropdown-content">
@@ -29,6 +29,9 @@
 			</li>
 			<li>
 				<a href="{{ path('group_main') }}">Grupos</a>
+			</li>
+			<li>
+				<a href="#">Cuadrantes</a>
 			</li>
 			{% if is_granted('ROLE_GROUP_ADMIN') %}
 				<li>
@@ -52,6 +55,11 @@
 			<li class="hideOnMobile">
 				<a href="{{ path('group_main') }}" class="{{ current_path == 'group_main' ? 'active' : '' }}">Grupos</a>
 			</li>
+			{#
+			<li class="hideOnMobile">
+				<a href="#" class="{{ current_path == 'timetable_main' ? 'active' : '' }}">Cuadrantes</a>
+			</li>
+			#}
 			{% if is_granted('ROLE_GROUP_ADMIN') %}
 				<li class="hideOnMobile">
 					<a href="{{ path('driver_main') }}" class="{{ current_path == 'driver_main' ? 'active' : '' }}">Usuarios</a>

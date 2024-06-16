@@ -8,6 +8,7 @@ use App\Form\AbsenceType;
 use App\Repository\AbsenceRepository;
 use App\Repository\DriverRepository;
 use App\Repository\UserRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,14 +32,50 @@ class AbsenceController extends AbstractController
         $this->mailer = $mailer;
     }
     #[Route('/notificaciones', name: 'notify_main')]
-    public function index(AbsenceRepository $absenceRepository, DriverRepository $driverRepository, Request $request): Response
+    public function index(AbsenceRepository $absenceRepository, PaginatorInterface $paginator, DriverRepository $driverRepository, Request $request): Response
     {
-        $userId = $this->getUser()->getDriver();
-        $absences = $absenceRepository->findDriverAbsences($userId);
+        $user = $this->getUser();
+        if($user->isIsGroupAdmin() || $user->isIsAdmin()){
+            $absences = $absenceRepository->findAllAbsences();
+            $query = $absenceRepository->absencesPagination();
+            $pagination = $paginator->paginate(
+                $query, /* query NOT result */
+                $request->query->getInt('page', 1), /*page number*/
+                10 /*limit per page*/
+            );
+        } else {
+            $driver = $user->getDriver();
+            $absences = $absenceRepository->findDriverAbsences($driver);
+            $query = $absenceRepository->driverAbsencesPagination($driver);
+            $pagination = $paginator->paginate(
+                $query, /* query NOT result */
+                $request->query->getInt('page', 1), /*page number*/
+                10 /*limit per page*/
+            );
+        }
 
         return $this->render('notify/main.html.twig', [
             'absences' => $absences,
+            'pagination' => $pagination,
         ]);
+    }
+    #[Route('/ausencias/filtrados', name: 'absence_filter')]
+    public function filterIndex(AbsenceRepository $absenceRepository, PaginatorInterface $paginator, Request $request):Response{
+
+        $driver = $this->getUser()->getDriver();
+        $absences = $absenceRepository->findDriverAbsences($driver);
+        $query = $absenceRepository->driverAbsencesPagination($driver);
+        $pagination = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            10 /*limit per page*/
+        );
+
+        return $this->render('notify/main.html.twig',
+            [
+                'absences' => $absences,
+                'pagination' => $pagination,
+            ]);
     }
 
     #[Route('/notificacion/nueva/{id}', name: 'new_absence')]

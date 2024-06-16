@@ -20,7 +20,12 @@ class AbsenceRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Absence::class);
     }
-
+    public function absencesPagination()
+    {
+        return $this->createQueryBuilder('a')
+            ->select('a')
+            ->getQuery();
+    }
     public function findAllAbsences()
     {
         return $this->createQueryBuilder('a')
@@ -28,11 +33,20 @@ class AbsenceRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+    public function driverAbsencesPagination($id){
+        return $this->createQueryBuilder('a')
+            ->select('a')
+            ->where('a.driver = :id')
+            ->setParameter('id', $id)
+            ->orderBy('a.absenceDate', 'DESC')
+            ->getQuery();
+    }
     public function findDriverAbsences($id){
         return $this->createQueryBuilder('a')
             ->select('a')
             ->where('a.driver = :id')
             ->setParameter('id', $id)
+            ->orderBy('a.absenceDate', 'DESC')
             ->getQuery()
             ->getResult();
     }
