@@ -105,7 +105,7 @@ class AbsenceController extends AbstractController
             try {
                 $absenceRepository->save();
                 $admins = $userRepository->findGroupAdmins();
-                /*
+
                 foreach ($admins as $admin) {
                     $email = (new TemplatedEmail())
                         ->from(new Address('commun.wheels@gmail.com', 'CommunWheels'))
@@ -124,7 +124,7 @@ class AbsenceController extends AbstractController
 
                     $this->mailer->send($email);
                 }
-                */
+
                 if ($nuevo){
                     $this->addFlash('success', 'Notificación de ausencia creada correctamente');
                 } else {
