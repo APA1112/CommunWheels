@@ -40,6 +40,15 @@ class TripRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+    public function findTripById($trip)
+    {
+        return $this->createQueryBuilder('t')
+            ->select('t')
+            ->where('t.id = :trip')
+            ->setParameter('trip', $trip)
+            ->getQuery()
+            ->getResult();
+    }
 
     public function save()
     {

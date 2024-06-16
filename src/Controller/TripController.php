@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Mime\Address;
+use DateTime;
 
 class TripController extends AbstractController
 {
@@ -26,14 +27,26 @@ class TripController extends AbstractController
     #[Route('/trip/confirm/{id}', name: 'confirm_trip')]
     public function confirmTrip(Trip $trip, DriverRepository $driverRepository, TripRepository $tripRepository): Response
     {
-        $trip = $tripRepository->find($trip->getId());
+        $driver = $this->getUser()->getDriver();
+
         if (!$trip) {
-            throw $this->createNotFoundException('No se ha encontrado viaje para el id ' . $trip->getId());
+            $this->addFlash('error','No se ha encontrado viaje para el id ' . $trip->getId());
         }
 
         // Verificar que el usuario actual es el conductor del viaje
         if ($trip->getDriver() !== $this->getUser()->getDriver()) {
-            throw $this->createAccessDeniedException('No eres el conductor de este viaje.');
+            $this->addFlash('error', 'No eres el conductor de este viaje.');
+        }
+
+        $currentDate = new DateTime();
+
+        if ($trip->getTripDate() >= $currentDate) {
+            $this->addFlash('error', 'No puedes confirmar un viaje que aún no ha ocurrido.');
+            return $this->render('trip/new.html.twig', [
+                'timeTable' => $trip->getTimeTable(),
+                'trips' => $trip->getTimeTable()->getTrips(),
+                'group' => $trip->getTimeTable()->getBand(),
+            ]);
         }
 
         // Incrementar daysDriven
@@ -43,7 +56,6 @@ class TripController extends AbstractController
         $trip->setActive(false);
 
         $driverRepository->save();
-        //dd($trip->getTimeTable()->getBand());
 
         return $this->render('trip/new.html.twig', [
             'timeTable' => $trip->getTimeTable(),
@@ -99,8 +111,8 @@ class TripController extends AbstractController
                 $this->mailer->send($email);
 
             }
-
-            return $this->redirectToRoute('see_timetable', ['id' => $timeTable->getId(), 'delete' => 1]);
+            $this->addFlash('success', 'El viaje a sido eliminado con éxito.');
+            return $this->redirectToRoute('see_timetable', ['id' => $timeTable->getId()]);
         }
 
         $availableDriver = null;
@@ -123,6 +135,7 @@ class TripController extends AbstractController
             $trip->removePassenger($availableDriver);
             $entityManager->persist($trip);
             $entityManager->flush();
+            $this->addFlash('success', 'El viaje a sido modificado con éxito.');
 
             foreach ($timeTable->getBand()->getDrivers() as $driver) {
                 // Enviar correo al nuevo conductor
@@ -144,6 +157,6 @@ class TripController extends AbstractController
             }
 
         }
-        return $this->redirectToRoute('see_timetable', ['id' => $timeTable->getId(), 'modify' => 1]);
+        return $this->redirectToRoute('see_timetable', ['id' => $timeTable->getId()]);
     }
 }
