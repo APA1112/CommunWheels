@@ -8,14 +8,21 @@ use App\Repository\DriverRepository;
 use App\Repository\TripRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Mime\Address;
 
 class TripController extends AbstractController
 {
+    public function __construct(MailerInterface $mailer)
+    {
+        $this->mailer = $mailer;
+    }
     #[Route('/trip/confirm/{id}', name: 'confirm_trip')]
     public function confirmTrip(Trip $trip, DriverRepository $driverRepository, TripRepository $tripRepository): Response
     {
@@ -61,16 +68,39 @@ class TripController extends AbstractController
         $notNedeed = in_array($dateTrip, $driverAbsences);
         $noPassengers = count($drivers) == 0;
 
-        if ($noPassengers && $notNedeed) {
-            $tripRepository->remove($trip);
-            $entityManager->flush();
-            // Código de manejo de email y SweetAlert
+        if (!$notNedeed){
             return $this->render('trip/mod.html.twig', [
                 'drivers' => $drivers,
                 'timeTable' => $timeTable,
                 'trip' => $trip,
-                'notNeeded' => $notNedeed
+                'notNeeded' => $notNedeed,
             ]);
+        }
+
+        if ($noPassengers) {
+            $tripRepository->remove($trip);
+            $entityManager->flush();
+
+            foreach ($timeTable->getBand()->getDrivers() as $driver) {
+                // Enviar correo al nuevo conductor
+                $email = (new TemplatedEmail())
+                    ->from(new Address('commun.wheels@gmail.com', 'CommunWheels'))
+                    ->to($driver->getEmail())
+                    ->subject('Modificacion en el cuadrante del grupo ' . $timeTable->getBand())
+                    ->htmlTemplate('emails/trip_mod_notification.html.twig')
+                    ->context([
+                        'driver_name' => $driver->getName(),
+                        'trip_date' => $trip->getTripDate()->format('d-m-Y'),
+                        'group' => $timeTable->getBand()->getName(),
+                        'support_email' => 'commun.wheels@gmail.com',
+                        'year' => date('Y')
+                    ]);
+
+                $this->mailer->send($email);
+
+            }
+
+            return $this->redirectToRoute('see_timetable', ['id' => $timeTable->getId(), 'delete' => 1]);
         }
 
         $availableDriver = null;
@@ -93,31 +123,27 @@ class TripController extends AbstractController
             $trip->removePassenger($availableDriver);
             $entityManager->persist($trip);
             $entityManager->flush();
-            // Código de manejo de email y SweetAlert
-            return $this->redirectToRoute('see_timetable', ['id' => $timeTable->getId()]);
+
+            foreach ($timeTable->getBand()->getDrivers() as $driver) {
+                // Enviar correo al nuevo conductor
+                $email = (new TemplatedEmail())
+                    ->from(new Address('commun.wheels@gmail.com', 'CommunWheels'))
+                    ->to($driver->getEmail())
+                    ->subject('Modificacion en el cuadrante del grupo ' . $timeTable->getBand())
+                    ->htmlTemplate('emails/trip_mod_notification.html.twig')
+                    ->context([
+                        'driver_name' => $driver->getName(),
+                        'trip_date' => $trip->getTripDate()->format('d-m-Y'),
+                        'group' => $timeTable->getBand()->getName(),
+                        'support_email' => 'commun.wheels@gmail.com',
+                        'year' => date('Y')
+                    ]);
+
+                $this->mailer->send($email);
+
+            }
+
         }
-
-        return $this->render('trip/mod.html.twig', [
-            'drivers' => $drivers,
-            'timeTable' => $timeTable,
-            'trip' => $trip,
-            'notNeeded' => $notNedeed
-        ]);
-    }
-
-
-
-    #[IsGranted('ROLE_GROUP_ADMIN')]
-    #[Route('/cuadrante/eliminar/{id}', name: 'trip_delete')]
-    public function eliminar(Request $request, Trip $trip, TripRepository $tripRepository): JsonResponse
-    {
-        // Verifica que la solicitud es AJAX
-        if ($request->isXmlHttpRequest()) {
-            $tripRepository->remove($trip);
-
-            return new JsonResponse(['status' => 'Trip deleted'], 200);
-        }
-
-        return new JsonResponse(['status' => 'Invalid request'], 400);
+        return $this->redirectToRoute('see_timetable', ['id' => $timeTable->getId(), 'modify' => 1]);
     }
 }

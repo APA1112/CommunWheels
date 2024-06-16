@@ -4,11 +4,13 @@
         <div class="button_container">
             <a href="{{ path('new_absence', {'id':app.user.driver.id}) }}" class="primaryButton"><i
                         class="ti ti-plus"></i>Nuevo ausencia</a>
-            {% if app.request.attributes.get('_route')=='absence_filter' %}
-                <a href="{{ path('notify_main') }}" class="secondaryButton">
-                    <i class="ti ti-arrow-left"></i>Volver</a>
-            {% else %}
-                <a href="{{ path('absence_filter') }}" class="secondaryButton">Ver mis ausencias</a>
+            {% if is_granted('ROLE_GROUP_ADMIN') %}
+                {% if app.request.attributes.get('_route')=='absence_filter' %}
+                    <a href="{{ path('notify_main') }}" class="secondaryButton">
+                        <i class="ti ti-arrow-left"></i>Volver</a>
+                {% else %}
+                    <a href="{{ path('absence_filter') }}" class="secondaryButton">Ver mis ausencias</a>
+                {% endif %}
             {% endif %}
         </div>
         <div class="card_container">

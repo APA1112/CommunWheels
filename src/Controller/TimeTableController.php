@@ -245,7 +245,26 @@ class TimeTableController extends AbstractController
                 }
             }
         }
+        /*
+        foreach ($drivers as $driver) {
+            // Enviar correo al nuevo conductor
+            $email = (new TemplatedEmail())
+                ->from(new Address('commun.wheels@gmail.com', 'CommunWheels'))
+                ->to($driver->getEmail())
+                ->subject('Nuevo cuadrante generado para ' . $driver->getName())
+                ->htmlTemplate('emails/new_schedule.html.twig')
+                ->context([
+                    'driver_name' => $driver->getName(),
+                    'start_date' => $timeTable->getWeekStartDate()->format('d-m-Y'),
+                    'group' => $group->getName(),
+                    'support_email' => 'commun.wheels@gmail.com',
+                    'year' => date('Y')
+                ]);
 
+            $this->mailer->send($email);
+
+        }
+        */
         return $this->render('trip/new.html.twig', [
             'timeTable' => $timeTable,
             'trips' => $trips,

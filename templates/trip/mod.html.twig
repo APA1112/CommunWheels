@@ -26,48 +26,7 @@
                     <a href="{{ path('see_timetable', {'id':timeTable.id}) }}" class="secondaryButton"><i
                                 class="ti ti-arrow-left"></i>Volver</a>
                 </div>
-            {% else %}
-                <h3 class="titulo">No es necesario generar un nuevo viaje, ya que no hay pasajeros que necesiten de
-                    el</h3>
-                <div class="button_container">
-                    {#
-                    <a href="#" class="deleteButton" onclick="confirmDelete({{ trip.id }})">
-                        <i class="ti ti-trash" style="font-size: 1.2rem;"></i>
-                    </a>
-                    #}
-                    <a href="{{ path('see_timetable', {'id':timeTable.id}) }}" class="secondaryButton"><i
-                                class="ti ti-arrow-left"></i>Volver</a>
-                </div>
             {% endif %}
         </div>
     </div>
-    <script>
-        function confirmDelete(id) {
-            Swal.fire({
-                title: '¿Estás seguro?',
-                text: "¡No podrás recuperar este viaje!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#8E6C88',
-                cancelButtonColor: '#80CED7',
-                confirmButtonText: 'Sí, eliminarlo',
-                cancelButtonText: 'Cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: '{{ path('trip_delete', {'id': 'ID_PLACEHOLDER'}) }}'.replace('ID_PLACEHOLDER', id),
-                        type: 'DELETE',
-                        success: function (response) {
-                            Swal.fire('¡Eliminado!', 'El usuario ha sido eliminado.', 'success').then(() => {
-                                window.location.href = '{{ path('see_timetable', {'id':timeTable.id}) }}';
-                            });
-                        },
-                        error: function (xhr) {
-                            Swal.fire('Error', 'Hubo un problema al eliminar el usuario.', 'error');
-                        }
-                    });
-                }
-            })
-        }
-    </script>
 {% endblock %}

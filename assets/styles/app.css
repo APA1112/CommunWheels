@@ -507,3 +507,25 @@ CSS FOR FORM
     cursor: pointer;
     transform: scale(1.05);
 }
+.trip-info {
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.btn {
+    color: black;
+    text-decoration: none;
+    font-size: x-large;
+}
+
+hr {
+    border-top: 1px solid #dee2e6;
+}
+
+.btn_inactive {
+    color: gray;
+    text-decoration: none;
+    font-size: x-large;
+    cursor: auto;
+}

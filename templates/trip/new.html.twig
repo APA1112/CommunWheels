@@ -1,38 +1,20 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {% set entryHourIntervals = {
-        1: '8:15',
-        2: '9:15',
-        3: '10:15',
-        4: '11:45',
-        5: '12:45',
-        6: '13:45'
-    } %}
-    {% set exitHourIntervals = {
-        1: '9:15',
-        2: '10:15',
-        3: '11:15',
-        4: '12:45',
-        5: '13:45',
-        6: '14:45'
-    } %}
+    {% set entryHourIntervals = {1: '8:15', 2: '9:15', 3: '10:15', 4: '11:45', 5: '12:45', 6: '13:45'} %}
+    {% set exitHourIntervals = {1: '9:15', 2: '10:15', 3: '11:15', 4: '12:45', 5: '13:45', 6: '14:45'} %}
     {% set weekdays = {1: 'Lunes', 2: 'Martes', 3: 'Miércoles', 4: 'Jueves', 5: 'Viernes'} %}
     {% set colors = ['#FFDDC1', '#FFABAB', '#FFC3A0', '#FF677D', '#D4A5A5', '#392F5A', '#31A2AC', '#61C0BF', '#6B4226', '#D9BF77'] %}
 
     <div class="container">
         <div class="form_container">
-            <h2 class="titulo">Cuadrante para la semana del
-                {{ timeTable.weekStartDate|date('d-m-Y') }}
-                al
-                {{ (timeTable.weekStartDate|date_modify('+4 days'))|date('d-m-Y') }}</h2>
+            <h2 class="titulo">Cuadrante para la semana del {{ timeTable.weekStartDate|date('d-m-Y') }} al {{ (timeTable.weekStartDate|date_modify('+4 days'))|date('d-m-Y') }}</h2>
 
             <table class="table table-bordered">
                 <thead>
                 <tr>
                     {% for day in 1..5 %}
-                        <th>{{ weekdays[day] }}
-                            <br>{{ (timeTable.weekStartDate|date_modify('+' ~ (day-1) ~ ' days'))|date('d-m-Y') }}</th>
+                        <th>{{ weekdays[day] }}<br>{{ (timeTable.weekStartDate|date_modify('+' ~ (day-1) ~ ' days'))|date('d-m-Y') }}</th>
                     {% endfor %}
                 </tr>
                 </thead>
@@ -46,31 +28,21 @@
                             {% for trip in dayTripsSorted %}
                                 {% set colorIndex = loop.index0 %}
                                 {% set tripColor = colors[colorIndex % colors|length] %}
-                                {% set textColor = (tripColor matches '/#FF|#D4|#31|#61|#D9/') ? 'black' : 'white' %}
-                                <div class="trip-info"
-                                     style="background-color: {{ tripColor }}; color: {{ textColor }};">
-                                    <strong>Conductor:
-                                    </strong>
-                                    {{ trip.driver.name }} {{ trip.driver.lastName }}<br>
-                                    <strong>Entrada:
-                                    </strong>
-                                    {{ entryHourIntervals[trip.entrySlot] }}<br>
-                                    <strong>Salida:
-                                    </strong>
-                                    {{ exitHourIntervals[trip.exitSlot] }}<br>
-                                    <strong>Pasajeros:
-                                    </strong>
+                                {% set textColor = tripColor in ['#FFDDC1', '#FFABAB', '#FFC3A0', '#FF677D', '#D4A5A5', '#31A2AC', '#61C0BF', '#D9BF77'] ? 'black' : 'white' %}
+                                <div class="trip-info" style="background-color: {{ tripColor }}; color: {{ textColor }};">
+                                    <strong>Conductor:</strong> {{ trip.driver.name }} {{ trip.driver.lastName }}<br>
+                                    <strong>Entrada:</strong> {{ entryHourIntervals[trip.entrySlot] }}<br>
+                                    <strong>Salida:</strong> {{ exitHourIntervals[trip.exitSlot] }}<br>
+                                    <strong>Pasajeros:</strong>
                                     {% if trip.passengers is not empty %}
                                         {% for passenger in trip.passengers %}
-                                            {{ passenger.name }}
-                                            {{ passenger.lastName }}<br>
+                                            {{ passenger.name }} {{ passenger.lastName }}<br>
                                         {% endfor %}
                                     {% else %}
                                         No tiene pasajeros<br>
                                     {% endif %}
                                     {% if trip.driver == app.user.driver %}
-                                        <a href="{{ path('confirm_trip', {'id': trip.id}) }}"
-                                           class="{{ trip.active == 1 ? 'btn' : 'btn_inactive' }}" {{ trip.active == 1 ? '' : 'disabled' }}>
+                                        <a href="{{ path('confirm_trip', {'id': trip.id}) }}" class="{{ trip.active == 1 ? 'btn' : 'btn_inactive' }}" {{ trip.active == 1 ? '' : 'disabled' }}>
                                             <i class="ti ti-check"></i>
                                         </a>
                                     {% endif %}
@@ -90,38 +62,12 @@
 
             <div class="button_container mt-4">
                 <a href="{{ path('timetable_main', {'id': timeTable.band.id}) }}" class="secondaryButton">
-                    <i class="ti ti-arrow-left"></i>
-                    Volver
+                    <i class="ti ti-arrow-left"></i> Volver
                 </a>
             </div>
         </div>
     </div>
-
-    <style>
-        .trip-info {
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 10px;
-        }
-
-        .btn {
-            color: black;
-            text-decoration: none;
-            font-size: x-large;
-        }
-
-        hr {
-            border-top: 1px solid #dee2e6;
-        }
-
-        .btn_inactive {
-            color: gray;
-            text-decoration: none;
-            font-size: x-large;
-            cursor: auto;
-        }
-    </style>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             {% if success is defined and success %}
@@ -130,8 +76,26 @@
                 text: 'El nuevo cuadrante ha sido creado exitosamente.',
                 icon: 'success',
                 confirmButtonText: 'Aceptar'
-            });{% endif %}
+            });
+            {% endif %}
+            {% if modify is defined and modify %}
+            Swal.fire({
+                title: '¡Cuadrante modificado con éxito!',
+                text: 'El cuadrante ha sido modificado exitosamente.',
+                icon: 'success',
+                confirmButtonText: 'Aceptar'
+            });
+            {% endif %}
+            {% if delete is defined and delete %}
+            Swal.fire({
+                title: '¡Viaje eliminado con éxito!',
+                text: 'El viaje ha sido eliminado exitosamente, ya que no hay pasajeros que necesiten de él.',
+                icon: 'success',
+                confirmButtonText: 'Aceptar'
+            });
+            {% endif %}
         });
+
         document.addEventListener('DOMContentLoaded', function () {
             var inactiveButtons = document.querySelectorAll('.btn_inactive');
 
@@ -141,6 +105,5 @@
                 });
             });
         });
-
     </script>
 {% endblock %}
