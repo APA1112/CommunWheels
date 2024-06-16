@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\TimeTable;
 use App\Entity\Trip;
 use App\Repository\DriverRepository;
+use App\Repository\TimeTableRepository;
 use App\Repository\TripRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -25,10 +26,8 @@ class TripController extends AbstractController
         $this->mailer = $mailer;
     }
     #[Route('/trip/confirm/{id}', name: 'confirm_trip')]
-    public function confirmTrip(Trip $trip, DriverRepository $driverRepository, TripRepository $tripRepository): Response
+    public function confirmTrip(Trip $trip, DriverRepository $driverRepository, TripRepository $tripRepository, TimeTableRepository $timeTableRepository): Response
     {
-        $driver = $this->getUser()->getDriver();
-
         if (!$trip) {
             $this->addFlash('error','No se ha encontrado viaje para el id ' . $trip->getId());
         }
@@ -55,7 +54,23 @@ class TripController extends AbstractController
 
         $trip->setActive(false);
 
+        $timeTable = $trip->getTimeTable();
+
+        $allInactive = true;
+        foreach ($timeTable->getTrips() as $t) {
+            if ($t->isActive()) {
+                $allInactive = false;
+                break;
+            }
+        }
+
+        if ($allInactive) {
+            $timeTable->setActive(false);
+        }
+
         $driverRepository->save();
+        $tripRepository->save();
+        $timeTableRepository->save();
 
         return $this->render('trip/new.html.twig', [
             'timeTable' => $trip->getTimeTable(),

@@ -53,13 +53,8 @@
 				<a href="{{ path('main') }}"><img src="{{ asset('images/LogoCommunWheelsWhite.png') }}" alt="Logo">CommunWheels</a>
 			</li>
 			<li class="hideOnMobile">
-				<a href="{{ path('group_main') }}" class="{{ current_path == 'group_main' ? 'active' : '' }}">Grupos</a>
+				<a href="{{ path('group_main') }}" class="{{ (current_path == 'group_main' or current_path=='timeTable_new' or current_path=='timetable_main' or current_path=='group_filter') ? 'active' : '' }}">Grupos</a>
 			</li>
-			{#
-			<li class="hideOnMobile">
-				<a href="#" class="{{ current_path == 'timetable_main' ? 'active' : '' }}">Cuadrantes</a>
-			</li>
-			#}
 			{% if is_granted('ROLE_GROUP_ADMIN') %}
 				<li class="hideOnMobile">
 					<a href="{{ path('driver_main') }}" class="{{ current_path == 'driver_main' ? 'active' : '' }}">Usuarios</a>
