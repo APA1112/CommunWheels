@@ -16,17 +16,17 @@ class NonSchoolDayType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('band', EntityType::class, [
+                'class' => Group::class,
+                'label' => 'Grupo',
+                'disabled' => true
+            ])
             ->add('description', TextType::class, [
                 'label' => 'Descripción',
             ])
             ->add('dayDate', DateType::class, [
                 'label' => 'Fecha',
                 'widget' => 'single_text'
-            ])
-            ->add('band', EntityType::class, [
-                'class' => Group::class,
-                'label' => 'grupo',
-                'disabled' => true
             ])
         ;
     }
