@@ -3,22 +3,10 @@
 {% block body %}
     <div class="container">
         {% if pagination is empty %}
-            <h2 class="titulo">Aun no perteneces a ningún grupo</h2>
+            <h2 class="titulo">No hay grupos con origen {{ origin }} y destino {{ destination }}</h2>
             <a href="{{ path('main') }}" class="secondaryButton">
                 <i class="ti ti-arrow-left"></i>Volver</a>
         {% else %}
-            {% if is_granted('ROLE_GROUP_ADMIN') %}
-                <div class="button_container">
-                    <a href="{{ path('group_new') }}" class="primaryButton">
-                        <i class="ti ti-plus"></i>Nuevo grupo</a>
-                    {% if app.request.attributes.get('_route')=='group_filter' %}
-                        <a href="{{ path('group_main') }}" class="secondaryButton">
-                            <i class="ti ti-arrow-left"></i>Volver</a>
-                    {% else %}
-                        <a href="{{ path('group_filter') }}" class="secondaryButton">Ver mis grupos</a>
-                    {% endif %}
-                </div>
-            {% endif %}
             <div class="card_container">
                 {% for group in pagination %}
                     <div class="expandable-container">
@@ -26,12 +14,12 @@
                             <span class="title">{{ group.name }}</span>
                             <div class="icons">
                                 {% if is_granted('ROLE_GROUP_ADMIN') %}
-                                    <a href="{{ path('group_mod', {'id':group.id}) }}" class="btn edit">
-                                        <i class="ti ti-edit" style="font-size: 1.5rem"></i>
-                                    </a>
-                                    <a href="#" class="btn delete" onclick="confirmDelete({{ group.id }})">
-                                        <i class="ti ti-trash" style="font-size: 1.5rem"></i>
-                                    </a>
+                                <a href="{{ path('group_mod', {'id':group.id}) }}" class="btn edit">
+                                    <i class="ti ti-edit" style="font-size: 1.5rem"></i>
+                                </a>
+                                <a href="#" class="btn delete" onclick="confirmDelete({{ group.id }})">
+                                    <i class="ti ti-trash" style="font-size: 1.5rem"></i>
+                                </a>
                                 {% endif %}
                                 <span class="icon">
 									<i class="ti ti-caret-down-filled" style="font-size: 1.5rem"></i>
@@ -61,14 +49,11 @@
                             </div>
                         </div>
                     </div>
-                {% else %}
-                    {% if app.request.attributes.get('_route')=='group_filter' %}
-                        <h2 class="titulo">No perteneces a ningún grupo</h2>
-                    {% else %}
-                        <h2 class="titulo">No hay grupos creados</h2>
-                    {% endif %}
-
                 {% endfor %}
+            </div>
+            <div class="button_container">
+                <a href="{{ path('main') }}" class="secondaryButton">
+                    <i class="ti ti-arrow-left"></i>Volver</a>
             </div>
             {# display navigation #}
             <div class="paginator">

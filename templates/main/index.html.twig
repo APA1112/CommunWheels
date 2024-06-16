@@ -1,47 +1,60 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-	<div class="scroll-container">
-		<div class="container">
-			<div class="section">
-				<input type="text" placeholder="Origen">
-				<input type="text" placeholder="Destino">
-				<div>
-					<a href="#" class="primaryButton">
-						<i class="ti ti-search"></i>
-						Buscar
-					</a>
-				</div>
-			</div>
-			<div class="section">
-				{% include 'groups/card.html.twig' %}
-				{% if is_granted('ROLE_GROUP_ADMIN') %}
-					{% include 'users/card.html.twig' %}
-				{% endif %}
-				{% include 'notify/card.html.twig' %}
-			</div>
-			<div class="footer-section">
-				<div class="footer-content">
-					<h1>Ultimos viajes</h1>
-					<a href="" id="scroll-to-cards" class="bouncing-arrow">
-						<i class="ti ti-circle-arrow-down" style="font-size: 2rem;"></i>
-					</a>
-				</div>
-			</div>
-		</div>
-		<div class="container" id="cards">
-			<div class="form_container">
-				<h1 class="titulo-principal">Ultimos viajes</h1>
-			</div>
-		</div>
-	</div>
-	<script>
-		document.addEventListener('DOMContentLoaded', function () {
-var scrollToCardsLink = document.getElementById('scroll-to-cards');
-scrollToCardsLink.addEventListener('click', function (event) {
-event.preventDefault();
-document.getElementById('cards').scrollIntoView({behavior: 'smooth'});
-});
-});
-	</script>
+    <div class="scroll-container">
+        <div class="container">
+            <div>
+                <form action="{{ path('group_search') }}" method="get" class="section">
+                    <input type="text" name="origin" placeholder="Origen">
+                    <input type="text" name="destination" placeholder="Destino">
+                    <div>
+                        <button type="submit" class="primaryButton">
+                            <i class="ti ti-search"></i>
+                            Buscar
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="section">
+                {% include 'groups/card.html.twig' %}
+                {% if is_granted('ROLE_GROUP_ADMIN') %}
+                    {% include 'users/card.html.twig' %}
+                {% endif %}
+                {% include 'notify/card.html.twig' %}
+            </div>
+            <div class="footer-section">
+                <div class="footer-content">
+                    <h1>Ultimos viajes</h1>
+                    <a href="" id="scroll-to-cards" class="bouncing-arrow">
+                        <i class="ti ti-circle-arrow-down" style="font-size: 2rem;"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="container" id="cards">
+            <div>
+                <h1 class="titulo-principal">Ultimos viajes</h1>
+                {% for trip in trips %}
+                    <div class="section">
+                        <p>{{ trip.driver }}</p>
+                        <p>{{ trip.tripDate | date('d-m-Y') }}</p>
+                        {% for passenger in trip.passengers %}
+                            <p>{{ passenger.name }} {{ passenger.lastName }}</p>
+                        {% else %}
+                            <p>Sin pasajeros</p>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var scrollToCardsLink = document.getElementById('scroll-to-cards');
+            scrollToCardsLink.addEventListener('click', function (event) {
+                event.preventDefault();
+                document.getElementById('cards').scrollIntoView({behavior: 'smooth'});
+            });
+        });
+    </script>
 {% endblock %}

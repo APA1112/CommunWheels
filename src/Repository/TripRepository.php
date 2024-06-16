@@ -21,7 +21,8 @@ class TripRepository extends ServiceEntityRepository
         parent::__construct($registry, Trip::class);
     }
 
-    public function findByTimeTable($timeTableId){
+    public function findByTimeTable($timeTableId)
+    {
         return $this->createQueryBuilder('t')
             ->select('t')
             ->where('t.timeTable = :timeTableId')
@@ -29,16 +30,30 @@ class TripRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findInactiveTrips()
+    {
+        return $this->createQueryBuilder('t')
+            ->select('t')
+            ->where('t.active = 0')
+            ->orderBy('t.tripDate', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
     public function save()
     {
         $this->getEntityManager()->flush();
     }
 
-    public function add(Trip $trip){
+    public function add(Trip $trip)
+    {
         $this->getEntityManager()->persist($trip);
         $this->getEntityManager()->flush();
     }
-    public function remove(Trip $trip){
+
+    public function remove(Trip $trip)
+    {
         $this->getEntityManager()->remove($trip);
         $this->getEntityManager()->flush();
     }

@@ -47,6 +47,23 @@ class GroupRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findByOriginAndDestinationPaginated($origin, $destination)
+    {
+        $qb = $this->createQueryBuilder('g');
+
+        if ($origin) {
+            $qb->andWhere('g.origin LIKE :origin')
+                ->setParameter('origin', '%'.$origin.'%');
+        }
+
+        if ($destination) {
+            $qb->andWhere('g.destination LIKE :destination')
+                ->setParameter('destination', '%'.$destination.'%');
+        }
+
+        return $qb->getQuery();
+    }
+
     public function findGroupById(int $id)
     {
         $qb = $this->createQueryBuilder('g');

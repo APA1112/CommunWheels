@@ -72,6 +72,32 @@ class GroupController extends AbstractController
         $groupRepository->add($group);
         return $this->modificar($group, $groupRepository, $request);
     }
+    #[Route('/grupos/buscar', name: 'group_search')]
+    public function search(GroupRepository $groupRepository, PaginatorInterface $paginator, Request $request): Response
+    {
+        $origin = $request->query->get('origin');
+        $destination = $request->query->get('destination');
+
+        if (empty($origin) || empty($destination)) {
+            $this->addFlash('error', 'Los campos de origen y destino no pueden estar vacíos.');
+            return $this->redirectToRoute('main');
+        }
+
+        $query = $groupRepository->findByOriginAndDestinationPaginated($origin, $destination);
+
+        $pagination = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            10 /*limit per page*/
+        );
+
+        return $this->render('groups/filter.html.twig', [
+            'groups' => $pagination->getItems(),
+            'pagination' => $pagination,
+            'origin' => $origin,
+            'destination' => $destination,
+        ]);
+    }
 
     #[Route('/grupo/modificar/{id}', name: 'group_mod')]
     public function modificar(Group $group, GroupRepository $groupRepository, Request $request):Response
