@@ -32,9 +32,6 @@
     border-radius: 10px; /* Borde redondeado completo */
     box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
 }
-.expandable img{
-    
-}
 .expandable.expanded {
     border-radius: 10px 10px 0 0; /* Borde redondeado superior cuando está expandido */
 }
