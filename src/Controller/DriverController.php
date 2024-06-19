@@ -112,14 +112,15 @@ class DriverController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                $driver->getUser()->setIsGroupAdmin($form->get('isAdmin')->getData());
+                if ($this->isGranted('ROLE_GROUP_ADMIN')) {
+                    $driver->getUser()->setIsGroupAdmin($form->get('isAdmin')->getData());
+                }
                 $driverRepository->save();
-
                 $this->addFlash('success', 'Cambios guardados con exito');
 
                 return $this->redirect($request->request->get('redirect') ?? $this->generateUrl('driver_main'));
             } catch (\Exception $e) {
-                $this->addFlash('error', 'No se han podido guardar los cambios');
+                $this->addFlash('error', 'No se han podido guardar los cambios' . $e->getMessage());
             }
         }
         return $this->render('users/modificar.html.twig', [
