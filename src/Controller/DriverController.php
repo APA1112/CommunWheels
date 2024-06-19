@@ -115,6 +115,7 @@ class DriverController extends AbstractController
                 if ($this->isGranted('ROLE_GROUP_ADMIN')) {
                     $driver->getUser()->setIsGroupAdmin($form->get('isAdmin')->getData());
                 }
+
                 $driverRepository->save();
                 $this->addFlash('success', 'Cambios guardados con exito');
 
