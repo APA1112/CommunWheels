@@ -32,7 +32,6 @@
     border-radius: 10px; /* Borde redondeado completo */
     box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
 }
-
 .expandable.expanded {
     border-radius: 10px 10px 0 0; /* Borde redondeado superior cuando está expandido */
 }
@@ -121,6 +120,19 @@
 
 .expanded_card .value {
     margin: 0;
+}
+.avatar {
+    width: 40px;
+    height: 40px;
+    background-color: grey; /* Color de fondo para simular la imagen */
+    border-radius: 50%;
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+
+.expandable .title {
+    margin-left: 10px; /* Espacio entre el avatar y el título */
+    flex-grow: 1;
 }
 @media (max-width: 960px) {
     .card_container {

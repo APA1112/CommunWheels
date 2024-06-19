@@ -32,16 +32,16 @@
             </div>
         </div>
         <div class="container" id="cards">
-            <div>
+            <div class='section_trips'>
                 <h1 class="titulo-principal">Ultimos viajes</h1>
                 {% for trip in trips %}
-                    <div class="section">
-                        <p>{{ trip.driver }}</p>
-                        <p>{{ trip.tripDate | date('d-m-Y') }}</p>
+                    <div class="trips">
+                        <p><strong>Conductor: </strong>{{ trip.driver }}</p>
+                        <p><strong>Fecha: </strong>{{ trip.tripDate | date('d-m-Y') }}</p>
                         {% for passenger in trip.passengers %}
-                            <p>{{ passenger.name }} {{ passenger.lastName }}</p>
+                            <p><strong>Pasajeros: </strong>{{ passenger.name }} {{ passenger.lastName }}</p>
                         {% else %}
-                            <p>Sin pasajeros</p>
+                            <p><strong>Pasajeros: </strong>Sin pasajeros</p>
                         {% endfor %}
                     </div>
                 {% endfor %}

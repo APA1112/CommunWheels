@@ -5,8 +5,8 @@
         <div class="button_container">
             <a href="{{ path('nonschoolday_new', {'id':group.id}) }}" class="primaryButton"><i class="ti ti-plus"></i>Añadir día festivo</a>
         </div>
+        <h2 class="titulo">Días festivos del grupo {{ group.name }}</h2>
         <div class="card_container">
-            <h2 class="titulo">Días festivos del grupo {{ group.name }}</h2>
             {% for nonSchoolDay in nonSchoolDays %}
                 <div class="expandable-container">
                     <div class="expandable">
