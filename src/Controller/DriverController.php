@@ -121,7 +121,7 @@ class DriverController extends AbstractController
 
                 return $this->redirect($request->request->get('redirect') ?? $this->generateUrl('driver_main'));
             } catch (\Exception $e) {
-                $this->addFlash('error', 'No se han podido guardar los cambios' . $e->getMessage());
+                $this->addFlash('error', 'No se han podido guardar los cambios');
             }
         }
         return $this->render('users/modificar.html.twig', [
